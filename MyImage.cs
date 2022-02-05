@@ -11,7 +11,7 @@ namespace Manon_Aubry_Manon_Goffinet
     {     
         public Pixel[,] image;
         public string typeImage; //cbon
-        public int tailleFichier;
+        public int tailleFichier;//cbon
         public int tailleOffset;
         public int largeurImage;
         public int longueurImage;
@@ -20,11 +20,19 @@ namespace Manon_Aubry_Manon_Goffinet
         public MyImage(string fileName)
         {
             byte[] Im = File.ReadAllBytes(fileName);
+
             #region TypeImage
-            Console.WriteLine(Im[0] + "et" + Im[1]);
+            //Console.WriteLine(Im[0] + "et" + Im[1]);
             char t = (char)Im[0];
             char f = (char)Im[1];
             typeImage = Convert.ToString(t) + f;
+            #endregion
+
+            #region tailleFichier
+            byte[] tailleEnBytes = new byte[] { Im[2], Im[3], Im[4],Im[5]}; // récupère les bytes 2,3,4,5 correspondant a la taille de l'image
+            Console.WriteLine(Im[2] + " " + Im[3] + " " + Im[4]+" "+Im[5]);
+            tailleFichier = Convert_Endian_To_Int(tailleEnBytes);
+            Console.WriteLine(tailleFichier);
             #endregion
 
 
