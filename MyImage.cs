@@ -20,6 +20,7 @@ namespace Manon_Aubry_Manon_Goffinet
         public MyImage(string fileName)
         {
             byte[] Im = File.ReadAllBytes(fileName);
+
             #region TypeImage
             Console.WriteLine(Im[0] + "et" + Im[1]);
             char t = (char)Im[0];
@@ -27,8 +28,26 @@ namespace Manon_Aubry_Manon_Goffinet
             typeImage = Convert.ToString(t) + f;
             #endregion
 
+            #region HauteurImage
+            byte[] hauteurEnBytes = new byte[] { Im[19], Im[20], Im[21], Im[22] }; //récupère les bytes 19,20,21,22
+            Console.WriteLine(Im[19] + " " + Im[20] + " " + Im[21] + " " + Im[22]);
+            hauteurImage = Convert_Endian_To_Int(hauteurEnBytes);
+            Console.WriteLine(hauteurImage);
+            #endregion
 
+            #region LargeurImage
+            byte[] largeurEnBytes = new byte[] { Im[23], Im[24], Im[25], Im[26] }; //récupère les bytes 23,24,25,26
+            Console.WriteLine(Im[23] + " " + Im[24] + " " + Im[25] + " " + Im[26]);
+            largeurImage = Convert_Endian_To_Int(largeurEnBytes);
+            Console.WriteLine(largeurImage);
+            #endregion
 
+            #region NombreDeBitsCouleurs
+            byte[] nombreDeBitsCouleursEnBytes = new byte[] { Im[29], Im[30] }; //récupère les bytes 29,30
+            Console.WriteLine(Im[29] + " " + Im[30]);
+            //nombreDeBitsCouleurs = Convert_Endian_To_Int(nombreDeBitsCouleursEnBytes);
+            Console.WriteLine(nombreDeBitsCouleurs);
+            #endregion
         }
 
 
