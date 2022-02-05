@@ -11,7 +11,14 @@ namespace Manon_Aubry_Manon_Goffinet
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("hello world");
+            byte[] v = BitConverter.GetBytes(1548);
+
+            int nbEntier = BitConverter.ToInt32(v,0);
+
+            Console.WriteLine(nbEntier);
+
+
+
             Console.ReadKey();
         }
     }
