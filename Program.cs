@@ -13,6 +13,7 @@ namespace Manon_Aubry_Manon_Goffinet
         {
             
             Console.ReadKey();
+            MyImage test =
         }
     }
 }

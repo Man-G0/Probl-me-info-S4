@@ -24,10 +24,18 @@ namespace Manon_Aubry_Manon_Goffinet
             char t = (char)Im[0];
             char f = (char)Im[1];
             typeImage = Convert.ToString(t) + f;
+
+            byte a = (byte)t;
             //Console.WriteLine(typeImage);
         }
 
-        //public byte[] Convertir_Int_To_Endian(int val …) convertit un entier en séquence d’octets au format little endian
+        //public byte[] Convertir_Int_To_Endian(int val …) convertit un entier en séquence d’octets au format little endian 
+
+        /// <summary>
+        /// Récupère la valeur binaire d'un int, la converti en bytes (groupe de 8 chiffre binaires), et la met dans un tableau de bytes
+        /// </summary>
+        /// <param name="v">chiffre a convertir en bytes</param>
+        /// <returns></returns>
         public static byte[] Convertir_Int_To_Endian(int v)
         {
         byte[] tabBytes = BitConverter.GetBytes(v);
@@ -43,6 +51,10 @@ namespace Manon_Aubry_Manon_Goffinet
 
 
         //public void From_Image_To_File(string file) prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp
+        /// <summary>
+        /// Prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp permettant sa lecture (son affichage)
+        /// </summary>
+        /// <param name="file">emplacement et nom du document.bmp à créer</param>
         public void From_Image_To_File(string file)
         {
             byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage);
