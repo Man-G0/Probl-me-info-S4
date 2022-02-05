@@ -20,13 +20,11 @@ namespace Manon_Aubry_Manon_Goffinet
         public MyImage(string fileName)
         {
             byte[] Im = File.ReadAllBytes(fileName);
-
+            Console.WriteLine(Im[0] + "et" + Im[1]);
             char t = (char)Im[0];
             char f = (char)Im[1];
             typeImage = Convert.ToString(t) + f;
-
-            byte a = (byte)t;
-            //Console.WriteLine(typeImage);
+            
         }
 
         //public byte[] Convertir_Int_To_Endian(int val …) convertit un entier en séquence d’octets au format little endian 
@@ -62,7 +60,7 @@ namespace Manon_Aubry_Manon_Goffinet
             byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs);
             byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier);
             byte[] tableauHauteur = Convertir_Int_To_Endian(longueurImage);
-            byte[] tableauType = new byte[] { Convert.ToByte(typeImage[0]), Convert.ToByte(typeImage[1]) };   //Encoding.ASCII.GetBytes(typeImage);
+            byte[] tableauType = new byte[] { (byte) typeImage[0], (byte) typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
 
 
             try
