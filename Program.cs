@@ -19,6 +19,9 @@ namespace Manon_Aubry_Manon_Goffinet
 
 
 
+            Console.WriteLine("hello world");
+            string fileN = "Test001.bmp";
+            MyImage test = new MyImage(fileN);
             Console.ReadKey();
         }
     }
