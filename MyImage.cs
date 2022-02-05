@@ -11,10 +11,10 @@ namespace Manon_Aubry_Manon_Goffinet
     {     
         public Pixel[,] image;
         public string typeImage; //cbon
-        public int tailleFichier;//cbon
-        public int tailleOffset;
-        public int largeurImage;
-        public int hauteurImage;
+        public int tailleFichier;//c
+        public int tailleOffset;//b
+        public int largeurImage;//b
+        public int hauteurImage;//b
         public int nombreDeBitsCouleurs;
 
         public MyImage(string fileName)
