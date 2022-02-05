@@ -14,7 +14,7 @@ namespace Manon_Aubry_Manon_Goffinet
         public int tailleFichier;//cbon
         public int tailleOffset;
         public int largeurImage;
-        public int longueurImage;
+        public int hauteurImage;
         public int nombreDeBitsCouleurs;
 
         public MyImage(string fileName)
@@ -30,9 +30,17 @@ namespace Manon_Aubry_Manon_Goffinet
 
             #region tailleFichier
             byte[] tailleEnBytes = new byte[] { Im[2], Im[3], Im[4],Im[5]}; // récupère les bytes 2,3,4,5 correspondant a la taille de l'image
-            Console.WriteLine(Im[2] + " " + Im[3] + " " + Im[4]+" "+Im[5]);
+            //Console.WriteLine(Im[2] + " " + Im[3] + " " + Im[4]+" "+Im[5]);
             tailleFichier = Convert_Endian_To_Int(tailleEnBytes);
             Console.WriteLine(tailleFichier);
+            #endregion
+
+            #region tailleOffset
+            byte[] tailleHeaderEnBytes = new byte[] { Im[14], Im[15], Im[16], Im[17] }; // récupère les bytes 14,15,16,17 correspondant a la taille du header
+            Console.WriteLine(Im[14] + " " + Im[15] + " " + Im[16] + " " + Im[17]);
+            int tailleHeader = Convert_Endian_To_Int(tailleHeaderEnBytes);
+            tailleOffset = tailleHeader + 14; //additionne la taille header plus la taille du header info qui est de 14
+            Console.WriteLine(tailleOffset);
             #endregion
 
 
@@ -81,7 +89,7 @@ namespace Manon_Aubry_Manon_Goffinet
             byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset);
             byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs);
             byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier);
-            byte[] tableauHauteur = Convertir_Int_To_Endian(longueurImage);
+            byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage);
             byte[] tableauType = new byte[] { (byte) typeImage[0], (byte) typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
 
 
@@ -152,7 +160,7 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         p = 4 - (largeurImage % 4);
                     }
-                    for (int i = 0; i < longueurImage; i++)
+                    for (int i = 0; i < hauteurImage; i++)
                     {
                         for (int j = 0; j < largeurImage + p; j++)
                         {
