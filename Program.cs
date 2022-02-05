@@ -12,8 +12,9 @@ namespace Manon_Aubry_Manon_Goffinet
         static void Main(string[] args)
         {
 
-            string fileN = "Test001.bmp";
+            string fileN = "coco.bmp";
             MyImage test = new MyImage(fileN);
+            test.From_Image_To_File("sortie.bmp");
 
             Console.ReadKey();
         }

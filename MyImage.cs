@@ -64,6 +64,17 @@ namespace Manon_Aubry_Manon_Goffinet
             //Console.WriteLine(nombreDeBitsCouleurs);
             #endregion
 
+            Console.WriteLine("Header\n");
+            for(int i =0; i < 14; i++)
+            {
+                Console.Write(Im[i] + "   ");
+            }
+            Console.WriteLine("\n\nHeader Infos\n");
+            for (int i = 14; i < tailleOffset; i++)
+            {
+                Console.Write(Im[i] + "   ");
+            }
+            Console.WriteLine("\n\nAFFICHER IMAGE\n");
             #region Pixel[,] image
 
             image = new Pixel[largeurImage,hauteurImage];
@@ -92,7 +103,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         j++;
                     }
                 }
-                AfficherMatricePixel(image);
+               AfficherMatricePixel(image);
             }
             catch (Exception e)
             {
@@ -103,7 +114,7 @@ namespace Manon_Aubry_Manon_Goffinet
             #endregion
         }
 
-
+       
         public void AfficherMatricePixel(Pixel[,] tabPix)
         {
             try
@@ -248,7 +259,7 @@ namespace Manon_Aubry_Manon_Goffinet
                                     switch (k)
                                     {
                                         case 0:
-                                            fc.WriteByte(image[i, j].Red);
+                                            fc.WriteByte(image[i, j].Red); // Problème ici
                                             break;
                                         case 1:
                                             fc.WriteByte(image[i, j].Green);
@@ -273,7 +284,7 @@ namespace Manon_Aubry_Manon_Goffinet
                     string sortie = "";
                     while ((sortie = lien.ReadLine()) != null)
                     {
-                    Console.WriteLine(sortie);
+                        Console.WriteLine(sortie);
                     }
                 }
             }
