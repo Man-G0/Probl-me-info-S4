@@ -10,7 +10,7 @@ namespace Manon_Aubry_Manon_Goffinet
     class MyImage 
     {     
         public Pixel[,] image;
-        public string typeImage;
+        public string typeImage; //cbon
         public int tailleFichier;
         public int tailleOffset;
         public int largeurImage;
@@ -20,13 +20,19 @@ namespace Manon_Aubry_Manon_Goffinet
         public MyImage(string fileName)
         {
             byte[] Im = File.ReadAllBytes(fileName);
+            #region TypeImage
             Console.WriteLine(Im[0] + "et" + Im[1]);
             char t = (char)Im[0];
             char f = (char)Im[1];
             typeImage = Convert.ToString(t) + f;
-            
+            #endregion
+
+
+
         }
 
+
+        #region public byte[] Convertir_Int_To_Endian(int val …)
         //public byte[] Convertir_Int_To_Endian(int val …) convertit un entier en séquence d’octets au format little endian 
 
         /// <summary>
@@ -36,18 +42,26 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <returns></returns>
         public static byte[] Convertir_Int_To_Endian(int v)
         {
-        byte[] tabBytes = BitConverter.GetBytes(v);
-        return tabBytes;
+            byte[] tabBytes = BitConverter.GetBytes(v);
+            return tabBytes;
         }
+        #endregion
 
-
+        #region public int Convertir_Endian_To_Int(byte[] tab …)
         //public int Convertir_Endian_To_Int(byte[] tab …) convertit une séquence d’octets au format little endian en entier 
-        /*public static int Convert_Endian_To_Int(byte[] v)
+        /// <summary>
+        /// récupère un tableau de byte et le convertit en int
+        /// </summary>
+        /// <param name="v"> tableau de byte à convertir en int </param>
+        /// <returns>nombre entier correspondant au tableau de byte</returns>
+        public static int Convert_Endian_To_Int(byte[] v)
         {
+            int nbEntier = BitConverter.ToInt32(v, 0);          
+            return nbEntier;
+        }
+        #endregion
 
-        }*/
-
-
+        #region From_Image_To_File(string file)
         //public void From_Image_To_File(string file) prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp
         /// <summary>
         /// Prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp permettant sa lecture (son affichage)
@@ -175,5 +189,7 @@ namespace Manon_Aubry_Manon_Goffinet
                 Console.WriteLine(Ex.ToString());
             }
         }
+
+        #endregion
     }
 }
