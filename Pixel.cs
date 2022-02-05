@@ -19,7 +19,6 @@ namespace Manon_Aubry_Manon_Goffinet
             this.red = red;
             this.green = green;
         }
-
         #region GetSet
         public byte Blue
         {

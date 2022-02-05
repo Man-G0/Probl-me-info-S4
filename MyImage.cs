@@ -36,17 +36,23 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <returns></returns>
         public static byte[] Convertir_Int_To_Endian(int v)
         {
-        byte[] tabBytes = BitConverter.GetBytes(v);
-        return tabBytes;
+            byte[] tabBytes = BitConverter.GetBytes(v);
+            return tabBytes;
         }
 
 
         //public int Convertir_Endian_To_Int(byte[] tab …) convertit une séquence d’octets au format little endian en entier 
-        /*public static int Convert_Endian_To_Int(byte[] v)
+        /// <summary>
+        /// récupère un tableau de byte et le convertit en int
+        /// </summary>
+        /// <param name="v"> tableau de byte à convertir en int </param>
+        /// <returns>nombre entier correspondant au tableau de byte</returns>
+        public static int Convert_Endian_To_Int(byte[] v)
         {
-
-        }*/
-
+            int nbEntier = BitConverter.ToInt32(v, 0);          
+            return nbEntier;
+        }
+        
 
         //public void From_Image_To_File(string file) prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp
         /// <summary>
