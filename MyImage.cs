@@ -27,7 +27,7 @@ namespace Manon_Aubry_Manon_Goffinet
             char f = (char)Im[1];
             typeImage = Convert.ToString(t) + f;
             #endregion
-
+            
             #region tailleFichier
             byte[] tailleEnBytes = new byte[] { Im[2], Im[3], Im[4],Im[5]}; // récupère les bytes 2,3,4,5 correspondant a la taille de l'image
             //Console.WriteLine(Im[2] + " " + Im[3] + " " + Im[4]+" "+Im[5]);
@@ -43,8 +43,26 @@ namespace Manon_Aubry_Manon_Goffinet
             Console.WriteLine(tailleOffset);
             #endregion
 
+            #region LargeurImage
+            byte[] largeurEnBytes = new byte[] { Im[23], Im[24], Im[25], Im[26] }; //récupère les bytes 23,24,25,26
+            Console.WriteLine(Im[23] + " " + Im[24] + " " + Im[25] + " " + Im[26]);
+            largeurImage = Convert_Endian_To_Int(largeurEnBytes);
+            Console.WriteLine(largeurImage);
+            #endregion
 
+            #region HauteurImage
+            byte[] hauteurEnBytes = new byte[] { Im[19], Im[20], Im[21], Im[22] }; //récupère les bytes 19,20,21,22
+            Console.WriteLine(Im[19] + " " + Im[20] + " " + Im[21] + " " + Im[22]);
+            hauteurImage = Convert_Endian_To_Int(hauteurEnBytes);
+            Console.WriteLine(hauteurImage);
+            #endregion
 
+            #region NombreDeBitsCouleurs
+            byte[] nombreDeBitsCouleursEnBytes = new byte[] { Im[29], Im[30] }; //récupère les bytes 29,30
+            Console.WriteLine(Im[29] + " " + Im[30]);
+            //nombreDeBitsCouleurs = Convert_Endian_To_Int(nombreDeBitsCouleursEnBytes);
+            Console.WriteLine(nombreDeBitsCouleurs);
+            #endregion
         }
 
 
