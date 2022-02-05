@@ -10,11 +10,11 @@ namespace Manon_Aubry_Manon_Goffinet
     class MyImage 
     {     
         public Pixel[,] image;
-        public string typeImage; //cbon
-        public int tailleFichier;//c
-        public int tailleOffset;//b
-        public int largeurImage;//b
-        public int hauteurImage;//b
+        public string typeImage; 
+        public int tailleFichier;
+        public int tailleOffset;
+        public int largeurImage;
+        public int hauteurImage;
         public int nombreDeBitsCouleurs;
 
         public MyImage(string fileName)
@@ -32,37 +32,96 @@ namespace Manon_Aubry_Manon_Goffinet
             byte[] tailleEnBytes = new byte[] { Im[2], Im[3], Im[4],Im[5]}; // récupère les bytes 2,3,4,5 correspondant a la taille de l'image
             //Console.WriteLine(Im[2] + " " + Im[3] + " " + Im[4]+" "+Im[5]);
             tailleFichier = Convert_Endian_To_Int(tailleEnBytes);
-            Console.WriteLine(tailleFichier);
+            //Console.WriteLine(tailleFichier);
             #endregion
 
             #region tailleOffset
             byte[] tailleHeaderEnBytes = new byte[] { Im[14], Im[15], Im[16], Im[17] }; // récupère les bytes 14,15,16,17 correspondant a la taille du header
-            Console.WriteLine(Im[14] + " " + Im[15] + " " + Im[16] + " " + Im[17]);
+            //Console.WriteLine(Im[14] + " " + Im[15] + " " + Im[16] + " " + Im[17]);
             int tailleHeader = Convert_Endian_To_Int(tailleHeaderEnBytes);
             tailleOffset = tailleHeader + 14; //additionne la taille header plus la taille du header info qui est de 14
-            Console.WriteLine(tailleOffset);
-            #endregion
-
-            #region LargeurImage
-            byte[] largeurEnBytes = new byte[] { Im[23], Im[24], Im[25], Im[26] }; //récupère les bytes 23,24,25,26
-            Console.WriteLine(Im[23] + " " + Im[24] + " " + Im[25] + " " + Im[26]);
-            largeurImage = Convert_Endian_To_Int(largeurEnBytes);
-            Console.WriteLine(largeurImage);
+            //Console.WriteLine(tailleOffset);
             #endregion
 
             #region HauteurImage
-            byte[] hauteurEnBytes = new byte[] { Im[19], Im[20], Im[21], Im[22] }; //récupère les bytes 19,20,21,22
-            Console.WriteLine(Im[19] + " " + Im[20] + " " + Im[21] + " " + Im[22]);
+            byte[] hauteurEnBytes = new byte[] { Im[22], Im[23], Im[24], Im[25] }; //récupère les bytes 23,24,25,26
+            //Console.WriteLine(Im[22] + " " + Im[23] + " " + Im[24] + " " + Im[25]);
             hauteurImage = Convert_Endian_To_Int(hauteurEnBytes);
-            Console.WriteLine(hauteurImage);
+            //Console.WriteLine(hauteurImage);
+            #endregion
+
+            #region LargeurImage
+            byte[] largeurEnBytes = new byte[] { Im[18], Im[19], Im[20], Im[21] }; //récupère les bytes 19,20,21,22
+            //Console.WriteLine(Im[18] + " " + Im[19] + " " + Im[20] + " " + Im[21]);
+            largeurImage = Convert_Endian_To_Int(largeurEnBytes);
+            //Console.WriteLine(largeurImage);
             #endregion
 
             #region NombreDeBitsCouleurs
-            byte[] nombreDeBitsCouleursEnBytes = new byte[] { Im[29], Im[30] }; //récupère les bytes 29,30
-            Console.WriteLine(Im[29] + " " + Im[30]);
-            //nombreDeBitsCouleurs = Convert_Endian_To_Int(nombreDeBitsCouleursEnBytes);
-            Console.WriteLine(nombreDeBitsCouleurs);
+            byte[] nombreDeBitsCouleursEnBytes = new byte[] { Im[28], Im[29], 0,0 }; //récupère les bytes 29,30
+            //Console.WriteLine(Im[28] + " " + Im[29]);
+            nombreDeBitsCouleurs = Convert_Endian_To_Int(nombreDeBitsCouleursEnBytes);
+            //Console.WriteLine(nombreDeBitsCouleurs);
             #endregion
+
+            #region Pixel[,] image
+
+            image = new Pixel[largeurImage,hauteurImage];
+            int k = 0;
+            int j = 0;
+            try
+            {
+                for (int i = tailleOffset; i < tailleFichier; i += 3) // taille offset = 54
+                {
+                    byte blue = Im[i];
+                    byte red = Im[i + 1];
+                    byte green = Im[i + 2];
+                    Pixel a = new Pixel(blue, red, green);
+
+                    if (j >= largeurImage)
+                    {
+                        j = 0;
+                        k++;
+                        image[j, k] = a;
+                        j++;
+                    }
+
+                    else
+                    {
+                        image[j, k] = a;
+                        j++;
+                    }
+                }
+                AfficherMatricePixel(image);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+
+            #endregion
+        }
+
+
+        public void AfficherMatricePixel(Pixel[,] tabPix)
+        {
+            try
+            {
+                for (int i = 0; i < tabPix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < tabPix.GetLength(1); j++)
+                    {
+                        Console.Write(tabPix[i, j].toString() + "   ");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
         }
 
 
@@ -90,7 +149,7 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <returns>nombre entier correspondant au tableau de byte</returns>
         public static int Convert_Endian_To_Int(byte[] v)
         {
-            int nbEntier = BitConverter.ToInt32(v, 0);          
+            int nbEntier = BitConverter.ToInt32(v, 0);
             return nbEntier;
         }
         #endregion

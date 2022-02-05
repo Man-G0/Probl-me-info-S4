@@ -38,5 +38,10 @@ namespace Manon_Aubry_Manon_Goffinet
         }
         #endregion
 
+        public string toString()
+        {
+            string a = blue + " " + red + " " + green;
+            return a;
+        }
     }
 }
