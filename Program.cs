@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Manon_Aubry_Manon_Goffinet
 {
@@ -10,6 +11,8 @@ namespace Manon_Aubry_Manon_Goffinet
     {
         static void Main(string[] args)
         {
+            
+            Console.ReadKey();
         }
     }
 }
