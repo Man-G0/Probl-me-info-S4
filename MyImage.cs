@@ -201,6 +201,8 @@ namespace Manon_Aubry_Manon_Goffinet
             byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage);
             byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
 
+            byte[] Header = new byte[tailleOffset];
+            byte[,] ImageSortie = new byte[hauteurImage, largeurImage];
 
             try
             {
@@ -216,24 +218,25 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         switch (i)
                         {
-                            case int j when j < 2:
-                                fc.WriteByte(tableauType[i]);
+                            case int j when j < 2: // normalement égale a 66 et 77 pour le format BM (bmp)
+                                Header[j] = tableauType[j];
                                 break;
 
                             case int j when j >= 2 && j < 6:
-                                fc.WriteByte(tableauTailleFichier[i - 2]);
+                                
+                                Header[j]=tableauTailleFichier[i - 2];
                                 break;
 
                             case int j when j >= 10 && j < 14:
-                                fc.WriteByte(tableauOffset[i - 10]);
+                                Header[j] = tableauOffset[i - 10];
                                 break;
 
                             case int j when j >= 14 && j < 18:
-                                fc.WriteByte(Convertir_Int_To_Endian(tailleOffset - 14)[i - 14]);
+                                Header[j] = Convertir_Int_To_Endian(tailleOffset - 14)[i - 14];
                                 break;
 
                             case int j when j >= 18 && j < 22:
-                                fc.WriteByte(tableauLargeur[i - 18]);
+                                Header[j] = tableauLargeur[i - 18];
                                 break;
 
                             case int j when j >= 22 && j < 26:
