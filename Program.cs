@@ -12,9 +12,13 @@ namespace Manon_Aubry_Manon_Goffinet
         static void Main(string[] args)
         {
 
-            string fileN = "coco.bmp";
-            MyImage test = new MyImage(fileN);
-            test.From_Image_To_File("sortie.bmp");
+            //string fileN = "coco.bmp";
+            MyImage image1 = new MyImage("Test001.bmp");
+           // test.From_Image_To_File("sortie.bmp");
+
+            MyImage image2 = image1.EffetMiroir();
+            image2.From_Image_To_File("sortie3.bmp");
+            image1.From_Image_To_File("sortie4.bmp");
 
             Console.ReadKey();
         }

@@ -7,19 +7,39 @@ using System.IO;
 
 namespace Manon_Aubry_Manon_Goffinet
 {
-    class MyImage 
-    {     
+    class MyImage
+    {
         public Pixel[,] image;
-        public string typeImage; 
+        public string typeImage;
         public int tailleFichier;
         public int tailleOffset;
         public int largeurImage;
         public int hauteurImage;
         public int nombreDeBitsCouleurs;
+        //public byte[] Im;
 
+        public MyImage(Pixel[,]image, string typeImage, int tailleFichier,int tailleOffset, int largeurImage, int hauteurImage, int nombreDeBitsCouleurs)
+        {
+            this.image = image;
+            this.typeImage = typeImage;
+            this.tailleFichier = tailleFichier;
+            this.tailleOffset = tailleOffset;
+            this.largeurImage = largeurImage;
+            this.hauteurImage = hauteurImage;
+            this.nombreDeBitsCouleurs = nombreDeBitsCouleurs;
+
+            /*Console.WriteLine(this.typeImage);
+            Console.WriteLine(this.tailleFichier);
+            Console.WriteLine(this.largeurImage);
+            Console.WriteLine(this.image.GetLength(1));
+            Console.WriteLine(this.hauteurImage);
+            Console.WriteLine(this.image.GetLength(0));
+            Console.WriteLine(this.nombreDeBitsCouleurs);
+            Console.WriteLine("\n\nAFFICHER IMAGE\n");*/
+        }
         public MyImage(string fileName)
         {
-            byte[] Im = File.ReadAllBytes(fileName);
+            byte[]Im = File.ReadAllBytes(fileName);
 
             #region TypeImage
             //Console.WriteLine(Im[0] + "et" + Im[1]);
@@ -27,9 +47,9 @@ namespace Manon_Aubry_Manon_Goffinet
             char f = (char)Im[1];
             typeImage = Convert.ToString(t) + f;
             #endregion
-            
+
             #region tailleFichier
-            byte[] tailleEnBytes = new byte[] { Im[2], Im[3], Im[4],Im[5]}; // récupère les bytes 2,3,4,5 correspondant a la taille de l'image
+            byte[] tailleEnBytes = new byte[] { Im[2], Im[3], Im[4], Im[5] }; // récupère les bytes 2,3,4,5 correspondant a la taille de l'image
             //Console.WriteLine(Im[2] + " " + Im[3] + " " + Im[4]+" "+Im[5]);
             tailleFichier = Convert_Endian_To_Int(tailleEnBytes);
             //Console.WriteLine(tailleFichier);
@@ -58,14 +78,14 @@ namespace Manon_Aubry_Manon_Goffinet
             #endregion
 
             #region NombreDeBitsCouleurs
-            byte[] nombreDeBitsCouleursEnBytes = new byte[] { Im[28], Im[29], 0,0 }; //récupère les bytes 29,30
+            byte[] nombreDeBitsCouleursEnBytes = new byte[] { Im[28], Im[29], 0, 0 }; //récupère les bytes 29,30
             //Console.WriteLine(Im[28] + " " + Im[29]);
             nombreDeBitsCouleurs = Convert_Endian_To_Int(nombreDeBitsCouleursEnBytes);
             //Console.WriteLine(nombreDeBitsCouleurs);
             #endregion
 
             Console.WriteLine("Header\n");
-            for(int i =0; i < 14; i++)
+            for (int i = 0; i < 14; i++)
             {
                 Console.Write(Im[i] + "   ");
             }
@@ -77,7 +97,7 @@ namespace Manon_Aubry_Manon_Goffinet
             Console.WriteLine("\n\nAFFICHER IMAGE\n");
             #region Pixel[,] image
 
-            image = new Pixel[largeurImage,hauteurImage];
+            image = new Pixel[largeurImage, hauteurImage];
             int k = 0;
             int j = 0;
             try
@@ -103,7 +123,8 @@ namespace Manon_Aubry_Manon_Goffinet
                         j++;
                     }
                 }
-               AfficherMatricePixel(image);
+                AfficherMatricePixel(image);
+                Console.WriteLine("\n\n");
             }
             catch (Exception e)
             {
@@ -114,7 +135,7 @@ namespace Manon_Aubry_Manon_Goffinet
             #endregion
         }
 
-       
+
         public void AfficherMatricePixel(Pixel[,] tabPix)
         {
             try
@@ -128,11 +149,11 @@ namespace Manon_Aubry_Manon_Goffinet
                     Console.WriteLine();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            
+
         }
 
 
@@ -171,21 +192,21 @@ namespace Manon_Aubry_Manon_Goffinet
         /// Prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp permettant sa lecture (son affichage)
         /// </summary>
         /// <param name="file">emplacement et nom du document.bmp à créer</param>
-        public void From_Image_To_File(string file)
+        /*public void From_Image_To_File2(string file)
         {
             byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage);
             byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset);
             byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs);
             byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier);
             byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage);
-            byte[] tableauType = new byte[] { (byte) typeImage[0], (byte) typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
+            byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
 
 
             try
             {
                 if (File.Exists(file))
                 {
-                File.Delete(file);
+                    File.Delete(file);
                 }
 
                 using (FileStream fc = new FileStream(file, FileMode.Create))
@@ -274,7 +295,6 @@ namespace Manon_Aubry_Manon_Goffinet
                             {
                                 fc.WriteByte(0);
                             }
-
                         }
                     }
                 }
@@ -290,10 +310,122 @@ namespace Manon_Aubry_Manon_Goffinet
             }
             catch (Exception Ex)
             {
-                Console.WriteLine(Ex.ToString());
+                Console.WriteLine(Ex.Message);
             }
-        }
+        }*/
+        public void From_Image_To_File(string myfile)
+        {
+            byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage);
+            byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset);
+            byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs);
+            byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier);
+            byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage);
+            byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1],0,0 };  //transforme le type de fichier (string) en un tableau de bytes
 
+            byte[] tab = new byte[tailleFichier];
+
+            for (int i = 0; i < 54; i++)
+            {
+                switch (i)
+                {
+                    case int j when j < 2:
+                        tab[i]=tableauType[i];
+                        break;
+
+                    case int j when j >= 2 && j < 6:
+                        tab[i]=tableauTailleFichier[i - 2];
+                        break;
+
+                    case int j when j >= 10 && j < 14:
+                        tab[i] = tableauOffset[i - 10];
+                        break;
+
+                    case int j when j >= 14 && j < 18:
+                        tab[i] = Convertir_Int_To_Endian(tailleOffset - 14)[i - 14];
+                        break;
+
+                    case int j when j >= 18 && j < 22:
+                        tab[i] = tableauLargeur[i - 18];
+                        break;
+
+                    case int j when j >= 22 && j < 26:
+                        tab[i] = tableauHauteur[i - 22];
+                        break;
+
+                    case 26:
+                        tab[i] = (byte)1;
+                        break;
+
+                    case int j when j >= 28 && j < 30:
+                        tab[i] = tabNombreDeBitsCouleurs[i - 28];
+                        break;
+
+                    case int j when j >= 34 && j < 38:
+                        tab[i] = Convertir_Int_To_Endian(tailleFichier - tailleOffset)[i - 34];
+                        break;
+
+                    case int j when j >= 38 && j < 42:
+                        tab[i] = Convertir_Int_To_Endian(2835)[i - 38];
+                        break;
+                    case int j when j >= 42 && j < 46:
+                        tab[i] = Convertir_Int_To_Endian(2835)[i - 42];
+                        break;
+                    default:
+                        tab[i] = (byte)0;
+                        break;
+                }
+            }
+            
+                int k = tailleOffset; // 54 normalement
+                for (int i = 0; i < image.GetLength(0); i++)
+                {
+                    for (int u = 0; u < image.GetLength(1); u++)
+                    {
+                        tab[k] = image[i, u].Red;
+                        tab[k + 1] = image[i, u].Green;
+                        tab[k + 2] = image[i, u].Blue;
+                        k += 3;
+
+
+                    }
+                }
+                File.WriteAllBytes(myfile, tab);
+            
+        }
         #endregion
+        #region Effet miroir
+        /// <summary>
+        /// recevoir une image et la transformée pour qu'elle devienne sont reflet dans un miroir
+        /// </summary>
+        public MyImage EffetMiroir()
+        {
+            try
+            {
+                Pixel[,] a = new Pixel[hauteurImage, largeurImage];
+                int j = 0;
+                for (int i = 0; i < hauteurImage; i++)
+                {
+                    j = largeurImage - 1;
+                    for (int u = 0; u < largeurImage; u++)
+                    {
+                       a[i, u] = image[i, j];
+                        j--;
+                        Console.Write(a[i, u].toString()+ "   ");
+                    }
+                    Console.WriteLine();
+                }
+                MyImage image2 = new MyImage(a, typeImage, tailleFichier,tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                
+                return image2;
+            }
+            catch (Exception e)
+            {
+                MyImage image3 = new MyImage(image, typeImage, tailleFichier,tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                Console.WriteLine(e.Message);
+                return image3;
+            }
+
+        }
+#endregion
     }
 }
