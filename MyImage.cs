@@ -94,7 +94,7 @@ namespace Manon_Aubry_Manon_Goffinet
             #endregion
 
             #region NombreDeBitsCouleurs
-            byte[] nombreDeBitsCouleursEnBytes = new byte[] { Im[28], Im[29], 0, 0 }; //récupère les bytes 29,30
+            byte[] nombreDeBitsCouleursEnBytes = new byte[] {Im[28], Im[29]}; //récupère les bytes 29,30
             //Console.WriteLine(Im[28] + " " + Im[29]);
             nombreDeBitsCouleurs = Convert_Endian_To_Int(nombreDeBitsCouleursEnBytes);
             //Console.WriteLine(nombreDeBitsCouleurs);
@@ -221,28 +221,21 @@ namespace Manon_Aubry_Manon_Goffinet
         /// </summary>
         /// <param name="v">chiffre a convertir en bytes</param>
         /// <returns></returns>
-        public byte[] Convertir_Int_To_Endian(int v)
+        public byte[] Convertir_Int_To_Endian(int v, int taille)
         {
-            //Console.WriteLine(v);
-            byte[] tabBytes = BitConverter.GetBytes(v);
-            /*for(int i = 0; i < tabBytes.Length; i++)
+
+            //byte[] tabBytes = BitConverter.GetBytes(v);
+            byte[] tabBytes = new byte[taille];
+            for(int i =0; i < taille; i++)
             {
-                Console.WriteLine(tabBytes[i]);
-            }*/
-            
+                tabBytes[i] = (byte)(v % 256);
+                v /= 256;
+            }
+
             return tabBytes;
         }
 
-        public byte[] Convertir_Int_To_Endian2(int v)
-        {
-            //Console.WriteLine(v);
-            byte[] tabBytes = new byte[] {(byte) v};
-            /*for (int i = 0; i < tabBytes.Length; i++)
-            {
-                Console.WriteLine(tabBytes[i]);
-            }*/
-            return tabBytes;
-        }
+       
         #endregion
 
         #region public int Convertir_Endian_To_Int(byte[] tab …)
@@ -254,8 +247,12 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <returns>nombre entier correspondant au tableau de byte</returns>
         public static int Convert_Endian_To_Int(byte[] v)
         {
-            int nbEntier = BitConverter.ToInt32(v, 0);
-            return nbEntier;
+            int res = 0;
+            for(int i=0; i < v.Length; i++)
+            {
+                res += (int) Math.Pow(256, i) * v[i];
+            }
+            return res;
         }
         #endregion
 
@@ -266,13 +263,16 @@ namespace Manon_Aubry_Manon_Goffinet
         /// Prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp permettant sa lecture (son affichage)
         /// </summary>
         /// <param name="file">emplacement et nom du document.bmp à créer</param>
+        
+
+        /*
         public void From_Image_To_File2(string file)
         {
-            byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage);
-            byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset);
-            byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs);
-            byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier);
-            byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage);
+            byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage,4);
+            byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset,4);
+            byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs,2);
+            byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier,4);
+            byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage,4);
             byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
 
             byte[] Header = new byte[tailleOffset];
@@ -306,7 +306,7 @@ namespace Manon_Aubry_Manon_Goffinet
                                 break;
 
                             case int j when j >= 14 && j < 18:
-                                Header[j] = Convertir_Int_To_Endian(tailleOffset - 14)[i - 14];
+                                Header[j] = Convertir_Int_To_Endian(tailleOffset - 14,)[i - 14];
                                 break;
 
                             case int j when j >= 18 && j < 22:
@@ -390,14 +390,16 @@ namespace Manon_Aubry_Manon_Goffinet
                 Console.WriteLine(Ex.Message);
             }
         }
+        */
         public void From_Image_To_File(string myfile)
         {
-            byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage);
-            byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset);
-            byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs);
-            byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier);
-            byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage);
-            byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1], 0, 0 };  //transforme le type de fichier (string) en un tableau de bytes
+            byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage, 4);
+            byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset, 4);
+            byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs, 2);
+            byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier, 4);
+            byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage, 4);
+            byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
+            
 
             byte[] tab = new byte[tailleFichier];
 
@@ -418,7 +420,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         break;
 
                     case int j when j >= 14 && j < 18:
-                        tab[i] = Convertir_Int_To_Endian(tailleOffset - 14)[i - 14];
+                        tab[i] = Convertir_Int_To_Endian(tailleOffset - 14,4)[i - 14];
                         break;
 
                     case int j when j >= 18 && j < 22:
@@ -438,14 +440,14 @@ namespace Manon_Aubry_Manon_Goffinet
                         break;
 
                     case int j when j >= 34 && j < 38:
-                        tab[i] = Convertir_Int_To_Endian(tailleFichier - tailleOffset)[i - 34];
+                        tab[i] = Convertir_Int_To_Endian(tailleFichier - tailleOffset,4)[i - 34]; // Taille image codée entre les bytes 34 et 38
                         break;
 
                     case int j when j >= 38 && j < 42:
-                        tab[i] = Convertir_Int_To_Endian(2835)[i - 38];
+                        tab[i] = Convertir_Int_To_Endian(2835,4)[i - 38];
                         break;
                     case int j when j >= 42 && j < 46:
-                        tab[i] = Convertir_Int_To_Endian(2835)[i - 42];
+                        tab[i] = Convertir_Int_To_Endian(2835,4)[i - 42];
                         break;
                     default:
                         tab[i] = (byte)0;
@@ -505,24 +507,23 @@ namespace Manon_Aubry_Manon_Goffinet
 
         }
         #endregion
+
         #region Grey
         public MyImage ConvertToGrey()
         {
             try
             {
-                MyImage resul = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                Pixel[,] mat = new Pixel[hauteurImage, largeurImage];
                 for (int i = 0; i < image.GetLength(0); i++)
                 {
                     for (int u = 0; u < image.GetLength(1); u++)
                     {
                         byte m = Convert.ToByte((image[i, u].Blue + image[i, u].Red + image[i, u].Green) / 3);
-                        resul.image[i, u].Blue = m;
-                        resul.image[i, u].Red = m;
-                        resul.image[i, u].Green = m;
+                        mat[i, u] = new Pixel(m, m, m);
                     }
                 }
-                //AfficherMatricePixel(resul.image);
-                //Console.WriteLine("\n\nfini");
+                
+                MyImage resul = new MyImage(mat, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 return resul;
             }
             catch (Exception e)
@@ -531,6 +532,43 @@ namespace Manon_Aubry_Manon_Goffinet
                 MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 return Im;
             }
+        }
+        #endregion
+
+
+        #region Rotation
+        public MyImage Rotation(int angle)
+        {
+            Pixel[,] im=image;
+            int tailleFichierRes=tailleFichier;
+            int largeurImageRes=largeurImage;
+            int hauteurImageres=largeurImage;
+            while (angle > 360) angle = angle - 360;
+            if (angle == 90)
+            {
+                largeurImageRes = hauteurImage;
+                hauteurImageres = largeurImage;
+                tailleFichierRes = tailleFichier;
+                im = new Pixel[hauteurImageres, largeurImageRes];
+                for(int i = 0; i < hauteurImageres; i++)
+                {
+                    for(int j = 0; j < largeurImageRes; j++)
+                    {
+                        im[i, j] = image[j, i];
+                    }
+                }
+            }else if (angle == 180)
+            {
+
+            }else if (angle == 270)
+            {
+
+            }else if (angle == 360)
+            {
+
+            }
+            MyImage resul = new MyImage(im,typeImage,tailleFichierRes,tailleOffset,largeurImageRes,hauteurImageres,nombreDeBitsCouleurs);
+            return resul;
         }
         #endregion
     }
