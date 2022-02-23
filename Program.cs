@@ -12,6 +12,8 @@ namespace Manon_Aubry_Manon_Goffinet
         static void Main(string[] args)
         {
 
+
+            
             string fileN = "coco.bmp";
             MyImage image1 = new MyImage(fileN);
             //image1.From_Image_To_File("sortie.bmp");
