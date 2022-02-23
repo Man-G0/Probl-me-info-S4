@@ -16,8 +16,18 @@ namespace Manon_Aubry_Manon_Goffinet
         public int largeurImage;
         public int hauteurImage;
         public int nombreDeBitsCouleurs;
-        //public byte[] Im;
 
+
+        /// <summary>
+        /// Constructeur créant une instance de MyImage a partir de tous les attributs de la classe.
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="typeImage"></param>
+        /// <param name="tailleFichier"></param>
+        /// <param name="tailleOffset"></param>
+        /// <param name="largeurImage"></param>
+        /// <param name="hauteurImage"></param>
+        /// <param name="nombreDeBitsCouleurs"></param>
         public MyImage(Pixel[,]image, string typeImage, int tailleFichier,int tailleOffset, int largeurImage, int hauteurImage, int nombreDeBitsCouleurs)
         {
             this.image = image;
@@ -37,6 +47,11 @@ namespace Manon_Aubry_Manon_Goffinet
             Console.WriteLine(this.nombreDeBitsCouleurs);
             Console.WriteLine("\n\nAFFICHER IMAGE\n");*/
         }
+
+        /// <summary>
+        /// Constructeur créant une instance de MyImage a partir d'une image à l'emplacement donné : convertie une image en instance MyImage
+        /// </summary>
+        /// <param name="fileName">Emplacement de l'image à convertir en instance MyImage</param>
         public MyImage(string fileName)
         {
             byte[]Im = File.ReadAllBytes(fileName);
@@ -84,6 +99,8 @@ namespace Manon_Aubry_Manon_Goffinet
             //Console.WriteLine(nombreDeBitsCouleurs);
             #endregion
 
+            #region AffichageHeader
+
             Console.WriteLine("Header\n");
             for (int i = 0; i < 14; i++)
             {
@@ -94,8 +111,11 @@ namespace Manon_Aubry_Manon_Goffinet
             {
                 Console.Write(Im[i] + "   ");
             }
+            #endregion
+
+            #region AffichageImageBytes
             Console.WriteLine("\n\nAFFICHER IMAGE\n");
-            #region Pixel[,] image
+            
 
             image = new Pixel[largeurImage, hauteurImage];
             int k = 0;
@@ -135,7 +155,42 @@ namespace Manon_Aubry_Manon_Goffinet
             #endregion
         }
 
+        #region Get&Set
 
+        public Pixel[,] Image
+        {
+            get { return image; }
+        }
+
+        public string TypeImage
+        {
+            get { return typeImage; }
+        }
+
+        public int TailleFichier
+        {
+            get { return tailleFichier; }
+        }
+        public int TailleOffset
+        {
+            get { return tailleOffset; }
+        }
+        public int LargeurImage
+        {
+            get { return largeurImage; }
+        }
+
+        public int HauteurImage
+        {
+            get { return hauteurImage; }
+        }
+        public int NombreDeBitsCouleurs
+        {
+            get { return nombreDeBitsCouleurs; }
+        }
+
+
+        #endregion
         public void AfficherMatricePixel(Pixel[,] tabPix)
         {
             try
@@ -165,9 +220,26 @@ namespace Manon_Aubry_Manon_Goffinet
         /// </summary>
         /// <param name="v">chiffre a convertir en bytes</param>
         /// <returns></returns>
-        public static byte[] Convertir_Int_To_Endian(int v)
+        public byte[] Convertir_Int_To_Endian(int v)
         {
+            Console.WriteLine(v);
             byte[] tabBytes = BitConverter.GetBytes(v);
+            for(int i = 0; i < tabBytes.Length; i++)
+            {
+                Console.WriteLine(tabBytes[i]);
+            }
+            
+            return tabBytes;
+        }
+
+        public byte[] Convertir_Int_To_Endian2(int v)
+        {
+            Console.WriteLine(v);
+            byte[] tabBytes = new byte[] {(byte) v};
+            for (int i = 0; i < tabBytes.Length; i++)
+            {
+                Console.WriteLine(tabBytes[i]);
+            }
             return tabBytes;
         }
         #endregion
@@ -187,12 +259,13 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region From_Image_To_File(string file)
+        
         //public void From_Image_To_File(string file) prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp
         /// <summary>
         /// Prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp permettant sa lecture (son affichage)
         /// </summary>
         /// <param name="file">emplacement et nom du document.bmp à créer</param>
-        /*public void From_Image_To_File2(string file)
+        public void From_Image_To_File2(string file)
         {
             byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage);
             byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset);
@@ -315,7 +388,7 @@ namespace Manon_Aubry_Manon_Goffinet
             {
                 Console.WriteLine(Ex.Message);
             }
-        }*/
+        }
         public void From_Image_To_File(string myfile)
         {
             byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage);
@@ -396,6 +469,7 @@ namespace Manon_Aubry_Manon_Goffinet
             
         }
         #endregion
+
         #region Effet miroir
         /// <summary>
         /// recevoir une image et la transformée pour qu'elle devienne sont reflet dans un miroir
