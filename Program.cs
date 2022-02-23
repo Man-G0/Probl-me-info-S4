@@ -12,6 +12,8 @@ namespace Manon_Aubry_Manon_Goffinet
         static void Main(string[] args)
         {
 
+
+            
             string fileN = "coco.bmp";
             MyImage image1 = new MyImage(fileN);
             image1.From_Image_To_File("sortie.bmp");
@@ -21,7 +23,16 @@ namespace Manon_Aubry_Manon_Goffinet
             //image1.From_Image_To_File("sortie4.bmp");
 
             //byte[] tableauLargeur = image1.Convertir_Int_To_Endian(image1.LargeurImage);
-            //byte[] tableauLargeur2 = image1.Convertir_Int_To_Endian2(image1.LargeurImage);
+
+            MyImage image3 = image1.ConvertToGrey();
+            image3.From_Image_To_File("sortie5.bmp");
+
+            /*Pixel[,] mat = image1.ConvertToGrey2();
+            MyImage image4 = new MyImage(mat, image1.TypeImage, image1.TailleFichier, image1.TailleOffset, image1.LargeurImage, image1.HauteurImage, image1.NombreDeBitsCouleurs);
+            image4.From_Image_To_File("sortie6.bmp");*/
+
+
+            //byte[] tableauLargeur2 = image1.Convertir_Int_To_Endian2(image1.LargeurImage)
             Console.ReadKey();
         }
     }

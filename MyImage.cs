@@ -108,7 +108,8 @@ namespace Manon_Aubry_Manon_Goffinet
                 Console.Write(Im[i] + "   ");
             }
             Console.WriteLine("\n\nHeader Infos\n");
-            for (int i = 14; i < tailleOffset; i++)
+            Console.WriteLine("taille offset : " + tailleOffset);
+            for (int i = 14; i < 54; i++)
             {
                 Console.Write(Im[i] + "   ");
             }
@@ -452,10 +453,13 @@ namespace Manon_Aubry_Manon_Goffinet
                         break;
                 }
             }
-            
-                int k = tailleOffset; // 54 normalement
-                for (int i = 0; i < image.GetLength(0); i++)
+            int k = tailleOffset; // 54 normalement
+            for (int i = 0; i < image.GetLength(0); i++)
+            {
+                for (int u = 0; u < image.GetLength(1); u++)
                 {
+
+                   
                     for (int u = 0; u < image.GetLength(1); u++)
                     {
                         tab[k] = image[i, u].Blue;
@@ -465,9 +469,10 @@ namespace Manon_Aubry_Manon_Goffinet
 
 
                     }
+
                 }
-                File.WriteAllBytes(myfile, tab);
-            
+            }
+            File.WriteAllBytes(myfile, tab);
         }
         #endregion
 
@@ -503,6 +508,56 @@ namespace Manon_Aubry_Manon_Goffinet
                 return image3;
             }
 
+        }
+        #endregion
+
+        #region Grey
+        public MyImage ConvertToGrey()
+        {
+            try
+            {
+                Pixel[,] mat = new Pixel[image.GetLength(0), image.GetLength(1)];
+                for (int i = 0; i < image.GetLength(0); i++)
+                {
+                    for (int u = 0; u < image.GetLength(1); u++)
+                    {
+                        mat[i, u].Blue = image[i, u].Blue; //+ image[i, u].Red + image[i, u].Green) / 3);
+                        mat[i, u].Red = Convert.ToByte(image[i, u].Blue);// + image[i, u].Red + image[i, u].Green) / 3);
+                        mat[i, u].Green = Convert.ToByte(image[i, u].Blue);// + image[i, u].Red + image[i, u].Green) / 3);
+                    }
+                }
+                MyImage resul = new MyImage(mat, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return resul;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
+        }
+
+        public Pixel[,] ConvertToGrey2()
+        {
+            try
+            {
+                Pixel[,] mat = new Pixel[image.GetLength(0), image.GetLength(1)];
+                for (int i = 0; i < image.GetLength(0); i++)
+                {
+                    for (int u = 0; u < image.GetLength(1); u++)
+                    {
+                        mat[i, u].Blue = Convert.ToByte((image[i, u].Blue + image[i, u].Red + image[i, u].Green) / 3);
+                        mat[i, u].Red = Convert.ToByte((image[i, u].Blue + image[i, u].Red + image[i, u].Green) / 3);
+                        mat[i, u].Green = Convert.ToByte((image[i, u].Blue + image[i, u].Red + image[i, u].Green) / 3);
+                    }
+                }
+                return mat;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return image;
+            }
         }
         #endregion
     }
