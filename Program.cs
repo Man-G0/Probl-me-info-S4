@@ -17,8 +17,10 @@ namespace Manon_Aubry_Manon_Goffinet
            // test.From_Image_To_File("sortie.bmp");
 
             MyImage image2 = image1.EffetMiroir();
-            image2.From_Image_To_File("sortie3.bmp");
-            image1.From_Image_To_File("sortie4.bmp");
+            //image2.From_Image_To_File("sortie3.bmp");
+            //image1.From_Image_To_File("sortie4.bmp");
+
+            byte[] tableauLargeur = image1.Convertir_Int_To_Endian(image1.LargeurImage);
 
             Console.ReadKey();
         }
