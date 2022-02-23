@@ -28,7 +28,7 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <param name="largeurImage"></param>
         /// <param name="hauteurImage"></param>
         /// <param name="nombreDeBitsCouleurs"></param>
-        public MyImage(Pixel[,]image, string typeImage, int tailleFichier,int tailleOffset, int largeurImage, int hauteurImage, int nombreDeBitsCouleurs)
+        public MyImage(Pixel[,] image, string typeImage, int tailleFichier, int tailleOffset, int largeurImage, int hauteurImage, int nombreDeBitsCouleurs)
         {
             this.image = image;
             this.typeImage = typeImage;
@@ -54,7 +54,7 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <param name="fileName">Emplacement de l'image à convertir en instance MyImage</param>
         public MyImage(string fileName)
         {
-            byte[]Im = File.ReadAllBytes(fileName);
+            byte[] Im = File.ReadAllBytes(fileName);
 
             #region TypeImage
             //Console.WriteLine(Im[0] + "et" + Im[1]);
@@ -108,19 +108,18 @@ namespace Manon_Aubry_Manon_Goffinet
                 Console.Write(Im[i] + "   ");
             }
             Console.WriteLine("\n\nHeader Infos\n");
-            Console.WriteLine("taille offset : " + tailleOffset);
-            for (int i = 14; i < 54; i++)
+            for (int i = 14; i < tailleOffset; i++)
             {
                 Console.Write(Im[i] + "   ");
             }
             #endregion
 
             #region AffichageImageBytes
-            
-            Console.WriteLine("\n\nAFFICHER IMAGE\n");
-            
 
-            image = new Pixel[hauteurImage, largeurImage ];
+            Console.WriteLine("\n\nAFFICHER IMAGE\n");
+
+
+            image = new Pixel[hauteurImage, largeurImage];
             int k = 0;
             int j = 0;
             try
@@ -137,7 +136,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         j = 0;
                         k++;
                         image[k, j] = a;
-                        
+
                         j++;
                     }
 
@@ -155,7 +154,7 @@ namespace Manon_Aubry_Manon_Goffinet
                 Console.WriteLine(e.Message);
             }
 
-            
+
             #endregion
         }
 
@@ -226,18 +225,18 @@ namespace Manon_Aubry_Manon_Goffinet
         {
             Console.WriteLine(v);
             byte[] tabBytes = BitConverter.GetBytes(v);
-            for(int i = 0; i < tabBytes.Length; i++)
+            for (int i = 0; i < tabBytes.Length; i++)
             {
                 Console.WriteLine(tabBytes[i]);
             }
-            
+
             return tabBytes;
         }
 
         public byte[] Convertir_Int_To_Endian2(int v)
         {
             Console.WriteLine(v);
-            byte[] tabBytes = new byte[] {(byte) v};
+            byte[] tabBytes = new byte[] { (byte)v };
             for (int i = 0; i < tabBytes.Length; i++)
             {
                 Console.WriteLine(tabBytes[i]);
@@ -261,7 +260,7 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region From_Image_To_File(string file)
-        
+
         //public void From_Image_To_File(string file) prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp
         /// <summary>
         /// Prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp permettant sa lecture (son affichage)
@@ -298,8 +297,8 @@ namespace Manon_Aubry_Manon_Goffinet
                                 break;
 
                             case int j when j >= 2 && j < 6:
-                                
-                                Header[j]=tableauTailleFichier[i - 2];
+
+                                Header[j] = tableauTailleFichier[i - 2];
                                 break;
 
                             case int j when j >= 10 && j < 14:
@@ -398,7 +397,7 @@ namespace Manon_Aubry_Manon_Goffinet
             byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs);
             byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier);
             byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage);
-            byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1],0,0 };  //transforme le type de fichier (string) en un tableau de bytes
+            byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1], 0, 0 };  //transforme le type de fichier (string) en un tableau de bytes
 
             byte[] tab = new byte[tailleFichier];
 
@@ -407,11 +406,11 @@ namespace Manon_Aubry_Manon_Goffinet
                 switch (i)
                 {
                     case int j when j < 2:
-                        tab[i]=tableauType[i];
+                        tab[i] = tableauType[i];
                         break;
 
                     case int j when j >= 2 && j < 6:
-                        tab[i]=tableauTailleFichier[i - 2];
+                        tab[i] = tableauTailleFichier[i - 2];
                         break;
 
                     case int j when j >= 10 && j < 14:
@@ -453,26 +452,22 @@ namespace Manon_Aubry_Manon_Goffinet
                         break;
                 }
             }
+
             int k = tailleOffset; // 54 normalement
             for (int i = 0; i < image.GetLength(0); i++)
             {
                 for (int u = 0; u < image.GetLength(1); u++)
                 {
+                    tab[k] = image[i, u].Blue;
+                    tab[k + 1] = image[i, u].Red;
+                    tab[k + 2] = image[i, u].Green;
+                    k += 3;
 
-                   
-                    for (int u = 0; u < image.GetLength(1); u++)
-                    {
-                        tab[k] = image[i, u].Blue;
-                        tab[k + 1] = image[i, u].Red;
-                        tab[k + 2] = image[i, u].Green;
-                        k += 3;
-
-
-                    }
 
                 }
             }
             File.WriteAllBytes(myfile, tab);
+
         }
         #endregion
 
@@ -491,73 +486,23 @@ namespace Manon_Aubry_Manon_Goffinet
                     j = largeurImage - 1;
                     for (int u = 0; u < largeurImage; u++)
                     {
-                       a[i, u] = image[i, j];
+                        a[i, u] = image[i, j];
                         j--;
-                        Console.Write(a[i, u].toString()+ "   ");
+                        Console.Write(a[i, u].toString() + "   ");
                     }
                     Console.WriteLine();
                 }
-                MyImage image2 = new MyImage(a, typeImage, tailleFichier,tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
-                
+                MyImage image2 = new MyImage(a, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+
                 return image2;
             }
             catch (Exception e)
             {
-                MyImage image3 = new MyImage(image, typeImage, tailleFichier,tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                MyImage image3 = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 Console.WriteLine(e.Message);
                 return image3;
             }
 
-        }
-        #endregion
-
-        #region Grey
-        public MyImage ConvertToGrey()
-        {
-            try
-            {
-                Pixel[,] mat = new Pixel[image.GetLength(0), image.GetLength(1)];
-                for (int i = 0; i < image.GetLength(0); i++)
-                {
-                    for (int u = 0; u < image.GetLength(1); u++)
-                    {
-                        mat[i, u].Blue = image[i, u].Blue; //+ image[i, u].Red + image[i, u].Green) / 3);
-                        mat[i, u].Red = Convert.ToByte(image[i, u].Blue);// + image[i, u].Red + image[i, u].Green) / 3);
-                        mat[i, u].Green = Convert.ToByte(image[i, u].Blue);// + image[i, u].Red + image[i, u].Green) / 3);
-                    }
-                }
-                MyImage resul = new MyImage(mat, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
-                return resul;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
-                return Im;
-            }
-        }
-
-        public Pixel[,] ConvertToGrey2()
-        {
-            try
-            {
-                Pixel[,] mat = new Pixel[image.GetLength(0), image.GetLength(1)];
-                for (int i = 0; i < image.GetLength(0); i++)
-                {
-                    for (int u = 0; u < image.GetLength(1); u++)
-                    {
-                        mat[i, u].Blue = Convert.ToByte((image[i, u].Blue + image[i, u].Red + image[i, u].Green) / 3);
-                        mat[i, u].Red = Convert.ToByte((image[i, u].Blue + image[i, u].Red + image[i, u].Green) / 3);
-                        mat[i, u].Green = Convert.ToByte((image[i, u].Blue + image[i, u].Red + image[i, u].Green) / 3);
-                    }
-                }
-                return mat;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return image;
-            }
         }
         #endregion
     }
