@@ -223,24 +223,24 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <returns></returns>
         public byte[] Convertir_Int_To_Endian(int v)
         {
-            Console.WriteLine(v);
+            //Console.WriteLine(v);
             byte[] tabBytes = BitConverter.GetBytes(v);
-            for(int i = 0; i < tabBytes.Length; i++)
+            /*for(int i = 0; i < tabBytes.Length; i++)
             {
                 Console.WriteLine(tabBytes[i]);
-            }
+            }*/
             
             return tabBytes;
         }
 
         public byte[] Convertir_Int_To_Endian2(int v)
         {
-            Console.WriteLine(v);
+            //Console.WriteLine(v);
             byte[] tabBytes = new byte[] {(byte) v};
-            for (int i = 0; i < tabBytes.Length; i++)
+            /*for (int i = 0; i < tabBytes.Length; i++)
             {
                 Console.WriteLine(tabBytes[i]);
-            }
+            }*/
             return tabBytes;
         }
         #endregion
@@ -503,6 +503,34 @@ namespace Manon_Aubry_Manon_Goffinet
                 return image3;
             }
 
+        }
+        #endregion
+        #region Grey
+        public MyImage ConvertToGrey()
+        {
+            try
+            {
+                MyImage resul = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                for (int i = 0; i < image.GetLength(0); i++)
+                {
+                    for (int u = 0; u < image.GetLength(1); u++)
+                    {
+                        byte m = Convert.ToByte((image[i, u].Blue + image[i, u].Red + image[i, u].Green) / 3);
+                        resul.image[i, u].Blue = m;
+                        resul.image[i, u].Red = m;
+                        resul.image[i, u].Green = m;
+                    }
+                }
+                //AfficherMatricePixel(resul.image);
+                //Console.WriteLine("\n\nfini");
+                return resul;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
         }
         #endregion
     }
