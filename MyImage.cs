@@ -9,13 +9,13 @@ namespace Manon_Aubry_Manon_Goffinet
 {
     class MyImage
     {
-        public Pixel[,] image;
-        public string typeImage;
-        public int tailleFichier;
-        public int tailleOffset;
-        public int largeurImage;
-        public int hauteurImage;
-        public int nombreDeBitsCouleurs;
+        Pixel[,] image;
+        string typeImage;
+        int tailleFichier;
+        int tailleOffset;
+        int largeurImage;
+        int hauteurImage;
+        int nombreDeBitsCouleurs;
 
 
         /// <summary>
