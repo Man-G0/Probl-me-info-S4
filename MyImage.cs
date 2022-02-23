@@ -75,6 +75,7 @@ namespace Manon_Aubry_Manon_Goffinet
             //Console.WriteLine(Im[14] + " " + Im[15] + " " + Im[16] + " " + Im[17]);
             int tailleHeader = Convert_Endian_To_Int(tailleHeaderEnBytes);
             tailleOffset = tailleHeader + 14; //additionne la taille header plus la taille du header info qui est de 14
+            Console.WriteLine(tailleOffset);
             //Console.WriteLine(tailleOffset);
             #endregion
 
@@ -114,10 +115,11 @@ namespace Manon_Aubry_Manon_Goffinet
             #endregion
 
             #region AffichageImageBytes
+            
             Console.WriteLine("\n\nAFFICHER IMAGE\n");
             
 
-            image = new Pixel[largeurImage, hauteurImage];
+            image = new Pixel[hauteurImage, largeurImage ];
             int k = 0;
             int j = 0;
             try
@@ -133,25 +135,26 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         j = 0;
                         k++;
-                        image[j, k] = a;
+                        image[k, j] = a;
+                        
                         j++;
                     }
 
                     else
                     {
-                        image[j, k] = a;
+                        image[k, j] = a;
                         j++;
                     }
                 }
-                AfficherMatricePixel(image);
-                Console.WriteLine("\n\n");
+                //AfficherMatricePixel(image);
+                //Console.WriteLine("\n\n");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
 
-
+            
             #endregion
         }
 
@@ -455,9 +458,9 @@ namespace Manon_Aubry_Manon_Goffinet
                 {
                     for (int u = 0; u < image.GetLength(1); u++)
                     {
-                        tab[k] = image[i, u].Red;
-                        tab[k + 1] = image[i, u].Green;
-                        tab[k + 2] = image[i, u].Blue;
+                        tab[k] = image[i, u].Blue;
+                        tab[k + 1] = image[i, u].Red;
+                        tab[k + 2] = image[i, u].Green;
                         k += 3;
 
 
