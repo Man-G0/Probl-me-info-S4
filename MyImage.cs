@@ -18,6 +18,7 @@ namespace Manon_Aubry_Manon_Goffinet
         public int nombreDeBitsCouleurs;
         //public byte[] Im;
 
+        
         public MyImage(Pixel[,]image, string typeImage, int tailleFichier,int tailleOffset, int largeurImage, int hauteurImage, int nombreDeBitsCouleurs)
         {
             this.image = image;
@@ -134,8 +135,6 @@ namespace Manon_Aubry_Manon_Goffinet
 
             #endregion
         }
-
-
         public void AfficherMatricePixel(Pixel[,] tabPix)
         {
             try
@@ -156,10 +155,8 @@ namespace Manon_Aubry_Manon_Goffinet
 
         }
 
-
         #region public byte[] Convertir_Int_To_Endian(int val …)
         //public byte[] Convertir_Int_To_Endian(int val …) convertit un entier en séquence d’octets au format little endian 
-
         /// <summary>
         /// Récupère la valeur binaire d'un int, la converti en bytes (groupe de 8 chiffre binaires), et la met dans un tableau de bytes
         /// </summary>
@@ -429,6 +426,6 @@ namespace Manon_Aubry_Manon_Goffinet
             }
 
         }
-#endregion
+        #endregion
     }
 }
