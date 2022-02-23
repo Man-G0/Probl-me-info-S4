@@ -12,9 +12,11 @@ namespace Manon_Aubry_Manon_Goffinet
         static void Main(string[] args)
         {
 
-            //string fileN = "coco.bmp";
-            MyImage image1 = new MyImage("coco.bmp");
-            // test.From_Image_To_File("sortie.bmp");
+
+            
+            string fileN = "coco.bmp";
+            MyImage image1 = new MyImage(fileN);
+            image1.From_Image_To_File("sortie.bmp");
 
             //MyImage image2 = image1.EffetMiroir();
             //image2.From_Image_To_File("sortie3.bmp");
@@ -29,6 +31,8 @@ namespace Manon_Aubry_Manon_Goffinet
             MyImage image4 = new MyImage(mat, image1.TypeImage, image1.TailleFichier, image1.TailleOffset, image1.LargeurImage, image1.HauteurImage, image1.NombreDeBitsCouleurs);
             image4.From_Image_To_File("sortie6.bmp");*/
 
+
+            //byte[] tableauLargeur2 = image1.Convertir_Int_To_Endian2(image1.LargeurImage)
             Console.ReadKey();
         }
     }

@@ -38,14 +38,7 @@ namespace Manon_Aubry_Manon_Goffinet
         }
         #endregion
 
-        #region Gris
-        /// <summary>
-        /// Passage d’une photo couleur à une photo en nuances de gris et en noir et blanc
-        /// </summary>
-        /// chaque pixel a 3 couleurs/chaque couleurs a un nombre de bit/on fait la moyenne du nb de bit des 3 couleurs/et on remplace les bitCouleurs par la moyenne => gris
-        /// <returns></returns>
         
-        #endregion
         public string toString()
         {
             string a = blue + " " + red + " " + green;
