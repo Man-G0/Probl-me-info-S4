@@ -263,134 +263,7 @@ namespace Manon_Aubry_Manon_Goffinet
         /// Prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp permettant sa lecture (son affichage)
         /// </summary>
         /// <param name="file">emplacement et nom du document.bmp à créer</param>
-        
-
-        /*
-        public void From_Image_To_File2(string file)
-        {
-            byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage,4);
-            byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset,4);
-            byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs,2);
-            byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier,4);
-            byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage,4);
-            byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
-
-            byte[] Header = new byte[tailleOffset];
-            byte[,] ImageSortie = new byte[hauteurImage, largeurImage];
-
-            try
-            {
-                if (File.Exists(file))
-                {
-                    File.Delete(file);
-                }
-
-                using (FileStream fc = new FileStream(file, FileMode.Create))
-                {
-
-                    for (int i = 0; i < tailleOffset; i++)
-                    {
-                        switch (i)
-                        {
-                            case int j when j < 2: // normalement égale a 66 et 77 pour le format BM (bmp)
-                                Header[j] = tableauType[j];
-                                break;
-
-                            case int j when j >= 2 && j < 6:
-
-                                Header[j] = tableauTailleFichier[i - 2];
-                                break;
-
-                            case int j when j >= 10 && j < 14:
-                                Header[j] = tableauOffset[i - 10];
-                                break;
-
-                            case int j when j >= 14 && j < 18:
-                                Header[j] = Convertir_Int_To_Endian(tailleOffset - 14,)[i - 14];
-                                break;
-
-                            case int j when j >= 18 && j < 22:
-                                Header[j] = tableauLargeur[i - 18];
-                                break;
-
-                            case int j when j >= 22 && j < 26:
-                                fc.WriteByte(tableauHauteur[i - 22]);
-                                break;
-
-                            case 26:
-                                fc.WriteByte((byte)1);
-                                break;
-
-                            case int j when j >= 28 && j < 30:
-                                fc.WriteByte(tabNombreDeBitsCouleurs[i - 28]);
-                                break;
-
-                            case int j when j >= 34 && j < 38:
-                                fc.WriteByte(Convertir_Int_To_Endian(tailleFichier - tailleOffset)[i - 34]);
-                                break;
-
-                            case int j when j >= 38 && j < 42:
-                                fc.WriteByte(Convertir_Int_To_Endian(2835)[i - 38]);
-                                break;
-                            case int j when j >= 42 && j < 46:
-                                fc.WriteByte(Convertir_Int_To_Endian(2835)[i - 42]);
-                                break;
-                            default:
-                                fc.WriteByte((byte)0);
-                                break;
-                        }
-                    }
-
-                    int p = 0;
-                    if (largeurImage % 4 != 0)   //la largeur de l'image doit être un multiple de 4
-                    {
-                        p = 4 - (largeurImage % 4);
-                    }
-                    for (int i = 0; i < hauteurImage; i++)
-                    {
-                        for (int j = 0; j < largeurImage + p; j++)
-                        {
-                            if (j < largeurImage)
-                            {
-                                for (int k = 0; k < nombreDeBitsCouleurs / 8; k++)
-                                {
-                                    switch (k)
-                                    {
-                                        case 0:
-                                            fc.WriteByte(image[i, j].Red); // Problème ici
-                                            break;
-                                        case 1:
-                                            fc.WriteByte(image[i, j].Green);
-                                            break;
-                                        case 2:
-                                            fc.WriteByte(image[i, j].Blue);
-                                            break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                fc.WriteByte(0);
-                            }
-                        }
-                    }
-                }
-
-                using (StreamReader lien = File.OpenText(file))
-                {
-                    string sortie = "";
-                    while ((sortie = lien.ReadLine()) != null)
-                    {
-                        Console.WriteLine(sortie);
-                    }
-                }
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine(Ex.Message);
-            }
-        }
-        */
+              
         public void From_Image_To_File(string myfile)
         {
             byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage, 4);
@@ -539,36 +412,137 @@ namespace Manon_Aubry_Manon_Goffinet
         #region Rotation
         public MyImage Rotation(int angle)
         {
-            Pixel[,] im=image;
-            int tailleFichierRes=tailleFichier;
-            int largeurImageRes=largeurImage;
-            int hauteurImageres=largeurImage;
-            while (angle > 360) angle = angle - 360;
-            if (angle == 90)
+            //try
             {
-                largeurImageRes = hauteurImage;
-                hauteurImageres = largeurImage;
-                tailleFichierRes = tailleFichier;
-                im = new Pixel[hauteurImageres, largeurImageRes];
-                for(int i = 0; i < hauteurImageres; i++)
+                Pixel[,] im = image;
+                int tailleFichierRes = tailleFichier;
+                int largeurImageRes = largeurImage;
+                int hauteurImageRes = hauteurImage;
+                while (angle > 360) angle = angle - 360;
+                if (angle == 90)
                 {
-                    for(int j = 0; j < largeurImageRes; j++)
+                    largeurImageRes = hauteurImage;
+                    hauteurImageRes = largeurImage;
+                    tailleFichierRes = tailleFichier;
+                    im = new Pixel[hauteurImageRes, largeurImageRes];
+                    for (int i = 0; i < hauteurImageRes; i++)
                     {
-                        im[i, j] = image[j, i];
+                        for (int j = 0; j < largeurImageRes; j++)
+                        {
+                            im[i, j] = image[j, i];
+                        }
                     }
                 }
-            }else if (angle == 180)
-            {
+                else if (angle == 180)
+                {
+                    im = new Pixel[hauteurImageRes, largeurImageRes];
+                    for (int i = 0; i < hauteurImageRes; i++)
+                    {
+                        for (int j = 0; j < largeurImageRes; j++)
+                        {
+                            im[i, j] = image[hauteurImageRes - 1 - i, largeurImageRes - 1 - j];
+                        }
+                    }
+                }
+                else if (angle == 270)
+                {
+                    largeurImageRes = hauteurImage;
+                    hauteurImageRes = largeurImage;
+                    tailleFichierRes = tailleFichier;
+                    im = new Pixel[hauteurImageRes, largeurImageRes];
+                    for (int i = 0; i < hauteurImageRes; i++)
+                    {
+                        for (int j = 0; j < largeurImageRes; j++)
+                        {
+                            im[i, j] = image[largeurImageRes - 1 - j, hauteurImageRes - 1 - i];
+                        }
+                    }
+                }
+                else if (angle == 360)
+                {
 
-            }else if (angle == 270)
-            {
+                }
+                else
+                {
+                    int décalageHauteur = Math.Abs((int)Math.Tan((double)angle) * largeurImage / 2);// voir schéma d'explications
+                    int décalageLargeur = Math.Abs((int)Math.Tan((double)angle) * hauteurImage / 2);
 
-            }else if (angle == 360)
-            {
 
+                    largeurImageRes = largeurImage + décalageLargeur * 2;
+                    hauteurImageRes = hauteurImage + décalageHauteur * 2;
+                    tailleFichierRes = tailleOffset + largeurImageRes * hauteurImageRes * 3;
+
+                    im = new Pixel[hauteurImageRes, largeurImageRes];
+                    for (int i = 0; i < hauteurImageRes; i++)
+                    {
+                        for (int j = 0; j < largeurImageRes; j++)
+                        {
+                            im[i,j] = new Pixel(0,0,0);
+                        }
+                    }
+                    int a = 0;
+                    int c = 0;
+                    int d = 0;
+                    for (int i = 0; i < hauteurImage; i++)
+                    {
+                        c++;
+                        int b = 0;
+                        for (int j = décalageLargeur; j < largeurImage+décalageLargeur&&d<=j; j++)
+                        {
+                            /*if (i == 0 && j == 0)
+                            {
+                                im[i + décalageHauteur, j + décalageLargeur] = image[i, j];
+                            }
+                            else if (i == 0 && j == largeurImage - 1)
+                            {
+                                im[i - décalageHauteur, j + décalageLargeur] = image[i, j];
+                            }
+                            else if (i == hauteurImage - 1 && j == 0)
+                            {
+                                im[i + décalageHauteur, j - décalageLargeur] = image[i, j];
+                            }
+                            else if (i == hauteurImage - 1 && j==largeurImage - 1)
+                            {
+                                im[i - décalageHauteur, j - décalageLargeur] = image[i, j];
+                            }*/
+                            
+                            if (a >= 1 / (int)Math.Abs(Math.Tan((double)angle)))
+                            {
+                                b++;
+                                im[i + b,j-d]= image[i, j - décalageLargeur];
+                                a = 0;
+                                
+                            }
+                            else
+                            {
+                                im[i+b, j-d] = image[i, j - décalageLargeur];
+                                a++;
+                            }
+                        }
+
+                        if (c >= 1 / (int)Math.Abs(Math.Tan((double)angle)))
+                        {
+                            d++;
+                            
+
+                        }
+                        
+                        
+
+                    }
+
+
+                }
+                MyImage resul = new MyImage(im, typeImage, tailleFichierRes, tailleOffset, largeurImageRes, hauteurImageRes, nombreDeBitsCouleurs);
+                return resul;
             }
-            MyImage resul = new MyImage(im,typeImage,tailleFichierRes,tailleOffset,largeurImageRes,hauteurImageres,nombreDeBitsCouleurs);
-            return resul;
+            /*catch (Exception e)
+            {
+                Console.WriteLine("Problème dans la méthode Rotation : "+e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }*/
+            
         }
         #endregion
     }

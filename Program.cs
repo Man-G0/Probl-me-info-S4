@@ -29,8 +29,9 @@ namespace Manon_Aubry_Manon_Goffinet
 
             MyImage imageGrey = image.ConvertToGrey();
             imageGrey.From_Image_To_File("sortieGrey.bmp");
+            Console.WriteLine(Math.Tan(90));
 
-            MyImage ImageRotation = image.Rotation(90);
+            MyImage ImageRotation = image.Rotation(310);
             ImageRotation.From_Image_To_File("sortieRotation.bmp");
 
 
