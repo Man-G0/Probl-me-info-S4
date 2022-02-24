@@ -261,131 +261,7 @@ namespace Manon_Aubry_Manon_Goffinet
         /// Prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp permettant sa lecture (son affichage)
         /// </summary>
         /// <param name="file">emplacement et nom du document.bmp à créer</param>
-        public void From_Image_To_File2(string file)
-        {
-            byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage);
-            byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset);
-            byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs);
-            byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier);
-            byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage);
-            byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
-
-            byte[] Header = new byte[tailleOffset];
-            byte[,] ImageSortie = new byte[hauteurImage, largeurImage];
-
-            try
-            {
-                if (File.Exists(file))
-                {
-                    File.Delete(file);
-                }
-
-                using (FileStream fc = new FileStream(file, FileMode.Create))
-                {
-
-                    for (int i = 0; i < tailleOffset; i++)
-                    {
-                        switch (i)
-                        {
-                            case int j when j < 2: // normalement égale a 66 et 77 pour le format BM (bmp)
-                                Header[j] = tableauType[j];
-                                break;
-
-                            case int j when j >= 2 && j < 6:
-
-                                Header[j] = tableauTailleFichier[i - 2];
-                                break;
-
-                            case int j when j >= 10 && j < 14:
-                                Header[j] = tableauOffset[i - 10];
-                                break;
-
-                            case int j when j >= 14 && j < 18:
-                                Header[j] = Convertir_Int_To_Endian(tailleOffset - 14)[i - 14];
-                                break;
-
-                            case int j when j >= 18 && j < 22:
-                                Header[j] = tableauLargeur[i - 18];
-                                break;
-
-                            case int j when j >= 22 && j < 26:
-                                fc.WriteByte(tableauHauteur[i - 22]);
-                                break;
-
-                            case 26:
-                                fc.WriteByte((byte)1);
-                                break;
-
-                            case int j when j >= 28 && j < 30:
-                                fc.WriteByte(tabNombreDeBitsCouleurs[i - 28]);
-                                break;
-
-                            case int j when j >= 34 && j < 38:
-                                fc.WriteByte(Convertir_Int_To_Endian(tailleFichier - tailleOffset)[i - 34]);
-                                break;
-
-                            case int j when j >= 38 && j < 42:
-                                fc.WriteByte(Convertir_Int_To_Endian(2835)[i - 38]);
-                                break;
-                            case int j when j >= 42 && j < 46:
-                                fc.WriteByte(Convertir_Int_To_Endian(2835)[i - 42]);
-                                break;
-                            default:
-                                fc.WriteByte((byte)0);
-                                break;
-                        }
-                    }
-
-                    int p = 0;
-                    if (largeurImage % 4 != 0)   //la largeur de l'image doit être un multiple de 4
-                    {
-                        p = 4 - (largeurImage % 4);
-                    }
-                    for (int i = 0; i < hauteurImage; i++)
-                    {
-                        for (int j = 0; j < largeurImage + p; j++)
-                        {
-                            if (j < largeurImage)
-                            {
-                                for (int k = 0; k < nombreDeBitsCouleurs / 8; k++)
-                                {
-                                    switch (k)
-                                    {
-                                        case 0:
-                                            fc.WriteByte(image[i, j].Red); // Problème ici
-                                            break;
-                                        case 1:
-                                            fc.WriteByte(image[i, j].Green);
-                                            break;
-                                        case 2:
-                                            fc.WriteByte(image[i, j].Blue);
-                                            break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                fc.WriteByte(0);
-                            }
-                        }
-                    }
-                }
-
-                using (StreamReader lien = File.OpenText(file))
-                {
-                    string sortie = "";
-                    while ((sortie = lien.ReadLine()) != null)
-                    {
-                        Console.WriteLine(sortie);
-                    }
-                }
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine(Ex.Message);
-            }
-        }
-        public void From_Image_To_File(string myfile)
+    public void From_Image_To_File(string myfile)
         {
             byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage, 4);
             byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset, 4);
@@ -571,6 +447,55 @@ namespace Manon_Aubry_Manon_Goffinet
         }
 
         public MyImage Réduire()
+        {
+            try
+            {
+                Console.WriteLine("De combien de pourcent voulez-vous réduire l'image ? ");
+                int nbPourcent0 = Convert.ToInt32(Console.ReadLine());
+                int nbPourcent = 1 - nbPourcent0 / 100;
+
+                Pixel[,] mat = new Pixel[image.GetLength(0) * nbPourcent, image.GetLength(1) * nbPourcent];
+                MyImage resul = new MyImage(mat, typeImage, image.GetLength(1) * nbPourcent * (image.GetLength(0) * nbPourcent) * 9 + tailleOffset, tailleOffset, image.GetLength(1) * nbPourcent, image.GetLength(0) * nbPourcent, nombreDeBitsCouleurs);
+                
+                int k = 0;
+                int j = 0;
+                for (int i = 0; i < resul.image.GetLength(0); i++)
+                {
+                    for (int u = 0; u < resul.image.GetLength(1); u++)
+                    {
+                        byte m1 = 0;
+                        byte m2 = 0;
+                        byte m3 = 0;
+                        for (int a = 0; a <= nbPourcent0; a++)
+                        { 
+                            for (int b = 0; b <= nbPourcent0; b++)
+                            {
+                                m1 += image[k + a, j + b].Blue;
+                                m2 += image[k + a, j + b].Red;
+                                m3 += image[k + a, j + b].Green;
+                            }
+                        }
+                        m1 = Convert.ToByte(m1 / nbPourcent0);
+                        m2 = Convert.ToByte(m2 / nbPourcent0);
+                        m3 = Convert.ToByte(m3 / nbPourcent0);
+
+                        resul.image[i, u] = new Pixel(m1, m2, m3);
+
+                        j += nbPourcent0 + 1;
+                    }
+                    j = 0;
+                    k += nbPourcent0 + 1;
+                }
+                return resul;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
+        }
+        public MyImage Réduire2()
         {
             try
             {
