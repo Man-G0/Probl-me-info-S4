@@ -559,36 +559,137 @@ namespace Manon_Aubry_Manon_Goffinet
         #region Rotation
         public MyImage Rotation(int angle)
         {
-            Pixel[,] im=image;
-            int tailleFichierRes=tailleFichier;
-            int largeurImageRes=largeurImage;
-            int hauteurImageres=largeurImage;
-            while (angle > 360) angle = angle - 360;
-            if (angle == 90)
+            //try
             {
-                largeurImageRes = hauteurImage;
-                hauteurImageres = largeurImage;
-                tailleFichierRes = tailleFichier;
-                im = new Pixel[hauteurImageres, largeurImageRes];
-                for(int i = 0; i < hauteurImageres; i++)
+                Pixel[,] im = image;
+                int tailleFichierRes = tailleFichier;
+                int largeurImageRes = largeurImage;
+                int hauteurImageRes = hauteurImage;
+                while (angle > 360) angle = angle - 360;
+                if (angle == 90)
                 {
-                    for(int j = 0; j < largeurImageRes; j++)
+                    largeurImageRes = hauteurImage;
+                    hauteurImageRes = largeurImage;
+                    tailleFichierRes = tailleFichier;
+                    im = new Pixel[hauteurImageRes, largeurImageRes];
+                    for (int i = 0; i < hauteurImageRes; i++)
                     {
-                        im[i, j] = image[j, i];
+                        for (int j = 0; j < largeurImageRes; j++)
+                        {
+                            im[i, j] = image[j, i];
+                        }
                     }
                 }
-            }else if (angle == 180)
-            {
+                else if (angle == 180)
+                {
+                    im = new Pixel[hauteurImageRes, largeurImageRes];
+                    for (int i = 0; i < hauteurImageRes; i++)
+                    {
+                        for (int j = 0; j < largeurImageRes; j++)
+                        {
+                            im[i, j] = image[hauteurImageRes - 1 - i, largeurImageRes - 1 - j];
+                        }
+                    }
+                }
+                else if (angle == 270)
+                {
+                    largeurImageRes = hauteurImage;
+                    hauteurImageRes = largeurImage;
+                    tailleFichierRes = tailleFichier;
+                    im = new Pixel[hauteurImageRes, largeurImageRes];
+                    for (int i = 0; i < hauteurImageRes; i++)
+                    {
+                        for (int j = 0; j < largeurImageRes; j++)
+                        {
+                            im[i, j] = image[largeurImageRes - 1 - j, hauteurImageRes - 1 - i];
+                        }
+                    }
+                }
+                else if (angle == 360)
+                {
 
-            }else if (angle == 270)
-            {
+                }
+                else
+                {
+                    int décalageHauteur = Math.Abs((int)Math.Tan((double)angle) * largeurImage / 2);// voir schéma d'explications
+                    int décalageLargeur = Math.Abs((int)Math.Tan((double)angle) * hauteurImage / 2);
 
-            }else if (angle == 360)
-            {
 
+                    largeurImageRes = largeurImage + décalageLargeur * 2;
+                    hauteurImageRes = hauteurImage + décalageHauteur * 2;
+                    tailleFichierRes = tailleOffset + largeurImageRes * hauteurImageRes * 3;
+
+                    im = new Pixel[hauteurImageRes, largeurImageRes];
+                    for (int i = 0; i < hauteurImageRes; i++)
+                    {
+                        for (int j = 0; j < largeurImageRes; j++)
+                        {
+                            im[i,j] = new Pixel(0,0,0);
+                        }
+                    }
+                    int a = 0;
+                    int c = 0;
+                    int d = 0;
+                    for (int i = 0; i < hauteurImage; i++)
+                    {
+                        c++;
+                        int b = 0;
+                        for (int j = décalageLargeur; j < largeurImage+décalageLargeur&&d<=j; j++)
+                        {
+                            /*if (i == 0 && j == 0)
+                            {
+                                im[i + décalageHauteur, j + décalageLargeur] = image[i, j];
+                            }
+                            else if (i == 0 && j == largeurImage - 1)
+                            {
+                                im[i - décalageHauteur, j + décalageLargeur] = image[i, j];
+                            }
+                            else if (i == hauteurImage - 1 && j == 0)
+                            {
+                                im[i + décalageHauteur, j - décalageLargeur] = image[i, j];
+                            }
+                            else if (i == hauteurImage - 1 && j==largeurImage - 1)
+                            {
+                                im[i - décalageHauteur, j - décalageLargeur] = image[i, j];
+                            }*/
+                            
+                            if (a >= 1 / (int)Math.Abs(Math.Tan((double)angle)))
+                            {
+                                b++;
+                                im[i + b,j-d]= image[i, j - décalageLargeur];
+                                a = 0;
+                                
+                            }
+                            else
+                            {
+                                im[i+b, j-d] = image[i, j - décalageLargeur];
+                                a++;
+                            }
+                        }
+
+                        if (c >= 1 / (int)Math.Abs(Math.Tan((double)angle)))
+                        {
+                            d++;
+                            
+
+                        }
+                        
+                        
+
+                    }
+
+
+                }
+                MyImage resul = new MyImage(im, typeImage, tailleFichierRes, tailleOffset, largeurImageRes, hauteurImageRes, nombreDeBitsCouleurs);
+                return resul;
             }
-            MyImage resul = new MyImage(im,typeImage,tailleFichierRes,tailleOffset,largeurImageRes,hauteurImageres,nombreDeBitsCouleurs);
-            return resul;
+            /*catch (Exception e)
+            {
+                Console.WriteLine("Problème dans la méthode Rotation : "+e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }*/
+            
         }
         #endregion
 

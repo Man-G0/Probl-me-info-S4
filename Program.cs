@@ -25,11 +25,16 @@ namespace Manon_Aubry_Manon_Goffinet
             //byte[] tableauLargeur = image1.Convertir_Int_To_Endian(image1.LargeurImage);
             //byte[] tableauLargeur2 = image1.Convertir_Int_To_Endian2(image1.LargeurImage);
 
-            //MyImage image3 = image1.ConvertToGrey();
-            //image3.From_Image_To_File("sortie5.bmp");
+           
 
+            MyImage imageGrey = image.ConvertToGrey();
+            imageGrey.From_Image_To_File("sortieGrey.bmp");
+            Console.WriteLine(Math.Tan(90));
             //MyImage imageAgrandir = image1.Agrandir();
             //imageAgrandir.From_Image_To_File("sortie6.bmp");
+            MyImage ImageRotation = image.Rotation(310);
+            ImageRotation.From_Image_To_File("sortieRotation.bmp");
+
 
             MyImage imageReduire = image1.Réduire();
             imageReduire.From_Image_To_File("sortie7.bmp");
