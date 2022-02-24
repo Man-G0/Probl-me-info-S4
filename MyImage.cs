@@ -115,9 +115,7 @@ namespace Manon_Aubry_Manon_Goffinet
             #endregion
 
             #region AffichageImageBytes
-
             Console.WriteLine("\n\nAFFICHER IMAGE\n");
-
 
             image = new Pixel[hauteurImage, largeurImage];
             int k = 0;
@@ -337,8 +335,6 @@ namespace Manon_Aubry_Manon_Goffinet
                     tab[k + 1] = image[i, u].Red;
                     tab[k + 2] = image[i, u].Green;
                     k += 3;
-
-
                 }
             }
             File.WriteAllBytes(myfile, tab);
@@ -398,6 +394,109 @@ namespace Manon_Aubry_Manon_Goffinet
                 
                 MyImage resul = new MyImage(mat, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 return resul;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
+        }
+        #endregion
+
+        #region Agrandir et Réduire
+        public MyImage Agrandir()
+        {
+            try
+            {
+                Console.WriteLine("De combien de pixels voulez-vous agrandir l'image ? ");
+                int nbPixel = Convert.ToInt32(Console.ReadLine());
+
+                Pixel[,] mat = new Pixel[image.GetLength(0) * (nbPixel+1), image.GetLength(1) * (nbPixel + 1)];
+                MyImage resul = new MyImage(mat, typeImage, image.GetLength(1) * (nbPixel + 1)* image.GetLength(0) * (nbPixel + 1)*9 + tailleOffset, tailleOffset, image.GetLength(1) * (nbPixel + 1), image.GetLength(0) * (nbPixel + 1), nombreDeBitsCouleurs);
+
+                int k = 0;
+                int j = 0;
+                for (int i = 0; i < image.GetLength(0); i ++)
+                {
+                    for (int u = 0; u < image.GetLength(1); u ++)
+                    {
+                        byte m1 = image[i, u].Blue;
+                        byte m2 = image[i, u].Red;
+                        byte m3 = image[i, u].Green;
+
+                        for (int a = 0; a <= nbPixel; a++)
+                        {
+                            for (int b = 0; b <= nbPixel; b++)
+                            {
+                                resul.image[k + a, j + b] = new Pixel(m1,m2,m3);
+                            }
+                        }
+                        j += nbPixel + 1;
+                    }
+                    j = 0;
+                    k += nbPixel + 1;
+                }
+                return resul;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
+        }
+
+        public MyImage Réduire()
+        {
+            try
+            {
+                Console.WriteLine("De combien de pixels voulez-vous réduire l'image ? ");
+                int nbPixel = Convert.ToInt32(Console.ReadLine());
+                if (image.GetLength(0) % nbPixel == 0 && image.GetLength(1) % nbPixel == 0)
+                {
+                    Pixel[,] mat = new Pixel[image.GetLength(0) / nbPixel, image.GetLength(1) / nbPixel];
+                    MyImage resul = new MyImage(mat, typeImage, image.GetLength(1) / nbPixel * (image.GetLength(0) / nbPixel) * 9 + tailleOffset, tailleOffset, image.GetLength(1) / nbPixel, image.GetLength(0) / nbPixel, nombreDeBitsCouleurs);
+
+                    int k = 0;
+                    int j = 0;
+                    for (int i = 0; i < image.GetLength(0); i++)
+                    {
+                        for (int u = 0; u < image.GetLength(1); u++)
+                        {
+                            byte m1 = 0;
+                            byte m2 = 0;
+                            byte m3 = 0;
+
+                            for (int a = 0; a <= nbPixel; a++)
+                            {
+                                for (int b = 0; b <= nbPixel; b++)
+                                {
+                                    m1 += image[k + a, j + b].Blue;
+                                    m2 += image[k + a, j + b].Red;
+                                    m3 += image[k + a, j + b].Green;
+                                }
+                            }
+                            m1 = Convert.ToByte(m1 / nbPixel + 1);
+                            m2 = Convert.ToByte(m2 / nbPixel + 1);
+                            m3 = Convert.ToByte(m3 / nbPixel + 1);
+
+                            resul.image[i,u] = new Pixel(m1, m2, m3);
+
+                            j += nbPixel + 1;
+                        }
+                        j = 0;
+                        k += nbPixel + 1;
+                    }
+                    return resul;
+                }
+                else
+                {
+                    Console.WriteLine("\nchoisir un autre nb de réduc");
+                    MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                    return Im;
+                }
+
             }
             catch (Exception e)
             {
@@ -545,5 +644,6 @@ namespace Manon_Aubry_Manon_Goffinet
             
         }
         #endregion
+
     }
 }
