@@ -261,8 +261,7 @@ namespace Manon_Aubry_Manon_Goffinet
         /// Prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp permettant sa lecture (son affichage)
         /// </summary>
         /// <param name="file">emplacement et nom du document.bmp à créer</param>
-              
-        public void From_Image_To_File(string myfile)
+    public void From_Image_To_File(string myfile)
         {
             byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage, 4);
             byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset, 4);
@@ -451,52 +450,38 @@ namespace Manon_Aubry_Manon_Goffinet
         {
             try
             {
-                Console.WriteLine("De combien de pixels voulez-vous réduire l'image ? ");
-                int nbPixel = Convert.ToInt32(Console.ReadLine());
-                if (image.GetLength(0) % nbPixel == 0 && image.GetLength(1) % nbPixel == 0)
-                {
-                    Pixel[,] mat = new Pixel[image.GetLength(0) / nbPixel, image.GetLength(1) / nbPixel];
-                    MyImage resul = new MyImage(mat, typeImage, image.GetLength(1) / nbPixel * (image.GetLength(0) / nbPixel) * 9 + tailleOffset, tailleOffset, image.GetLength(1) / nbPixel, image.GetLength(0) / nbPixel, nombreDeBitsCouleurs);
+                Console.WriteLine("De combien de pourcent voulez-vous réduire l'image ? ");
+                int multiple = Convert.ToInt32(Console.ReadLine());
 
-                    int k = 0;
-                    int j = 0;
-                    for (int i = 0; i < image.GetLength(0); i++)
+                Pixel[,] mat = new Pixel[image.GetLength(0) / multiple, image.GetLength(1) / multiple];
+                MyImage resul = new MyImage(mat, typeImage, image.GetLength(1) / multiple * (image.GetLength(0) / multiple) * 9 + tailleOffset, tailleOffset, image.GetLength(1) / multiple, image.GetLength(0) / multiple, nombreDeBitsCouleurs);
+
+                for (int i = 0; i < resul.image.GetLength(0); i++) //remplir la matrice de pixel noir
+                {
+                    for (int u = 0; u < resul.image.GetLength(1); u++)
                     {
-                        for (int u = 0; u < image.GetLength(1); u++)
-                        {
-                            byte m1 = 0;
-                            byte m2 = 0;
-                            byte m3 = 0;
-
-                            for (int a = 0; a <= nbPixel; a++)
-                            {
-                                for (int b = 0; b <= nbPixel; b++)
-                                {
-                                    m1 += image[k + a, j + b].Blue;
-                                    m2 += image[k + a, j + b].Red;
-                                    m3 += image[k + a, j + b].Green;
-                                }
-                            }
-                            m1 = Convert.ToByte(m1 / nbPixel + 1);
-                            m2 = Convert.ToByte(m2 / nbPixel + 1);
-                            m3 = Convert.ToByte(m3 / nbPixel + 1);
-
-                            resul.image[i,u] = new Pixel(m1, m2, m3);
-
-                            j += nbPixel + 1;
-                        }
-                        j = 0;
-                        k += nbPixel + 1;
+                        resul.image[i, u] = new Pixel(0, 0, 0);
                     }
-                    return resul;
                 }
-                else
+                
+                int k = 0;
+                int j = 0;
+                for (int i = 0; i < resul.image.GetLength(0); i++)    //réduction
                 {
-                    Console.WriteLine("\nchoisir un autre nb de réduc");
-                    MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
-                    return Im;
-                }
+                    for (int u = 0; u < resul.image.GetLength(1); u++)
+                    {
+                        byte m1 = Convert.ToByte(image[k, j].Blue);
+                        byte m2 = Convert.ToByte(image[k, j].Red);
+                        byte m3 = Convert.ToByte(image[k, j].Green);
+                        
+                        resul.image[i, u] = new Pixel(m1, m2, m3);
 
+                        j += multiple;
+                    }
+                    j = 0;
+                    k += multiple;
+                }
+                return resul;
             }
             catch (Exception e)
             {
@@ -506,7 +491,6 @@ namespace Manon_Aubry_Manon_Goffinet
             }
         }
         #endregion
-
 
         #region Rotation
         public MyImage Rotation(int angleDegré)
@@ -608,5 +592,66 @@ namespace Manon_Aubry_Manon_Goffinet
         }
         #endregion
 
+        #region Flou
+        public MyImage Flou()
+        {
+            try
+            {
+                MyImage resultat = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+
+                /*for (int i = 0; i < resultat.image.GetLength(0); i++) //remplir la matrice de pixel noir
+                {
+                    for (int u = 0; u < resultat.image.GetLength(1); u++)
+                    {
+                        resultat.image[i, u] = new Pixel(0, 0, 0);
+                    }
+                }*/
+
+                int[,] mat = { { 1,1,1 }, { 1,1,1 }, { 1,1,1 } };
+                for (int i = 1; i < resultat.image.GetLength(0)-1; i++) //remplir la matrice de pixel noir
+                {
+                    for (int u = 1; u < resultat.image.GetLength(1)-1; u++)
+                    {
+                        resultat.image[i - 1, u - 1].Red = Convert.ToByte(mat[0, 0] / 9 * resultat.image[i - 1, u - 1].Red);
+                        resultat.image[i - 1, u].Red = Convert.ToByte(mat[0, 1] / 9 * resultat.image[i - 1, u].Red);
+                        resultat.image[i - 1, u + 1].Red = Convert.ToByte(mat[0, 2] / 9 * resultat.image[i - 1, u + 1].Red);
+                        resultat.image[i , u - 1].Red = Convert.ToByte(mat[1, 0] / 9 * resultat.image[i, u - 1].Red);
+                        resultat.image[i, u].Red = Convert.ToByte(mat[1, 1] / 9 * resultat.image[i, u].Red);
+                        resultat.image[i, u + 1].Red = Convert.ToByte(mat[1, 2] / 9 * resultat.image[i, u + 1].Red);
+                        resultat.image[i + 1, u - 1].Red = Convert.ToByte(mat[2, 0] / 9 * resultat.image[i + 1, u - 1].Red);
+                        resultat.image[i + 1, u].Red = Convert.ToByte(mat[2, 1] / 9 * resultat.image[i + 1, u].Red);
+                        resultat.image[i + 1, u + 1].Red = Convert.ToByte(mat[2, 2] / 9 * resultat.image[i + 1, u + 1].Red);
+
+                        resultat.image[i - 1, u - 1].Blue = Convert.ToByte(mat[0, 0] / 9 * resultat.image[i - 1, u - 1].Blue);
+                        resultat.image[i - 1, u].Blue = Convert.ToByte(mat[0, 1] / 9 * resultat.image[i - 1, u].Blue);
+                        resultat.image[i - 1, u + 1].Blue = Convert.ToByte(mat[0, 2] / 9 * resultat.image[i - 1, u + 1].Blue);
+                        resultat.image[i, u - 1].Blue = Convert.ToByte(mat[1, 0] / 9 * resultat.image[i, u - 1].Blue);
+                        resultat.image[i, u].Blue = Convert.ToByte(mat[1, 1] / 9 * resultat.image[i, u].Blue);
+                        resultat.image[i, u + 1].Blue = Convert.ToByte(mat[1, 2] / 9 * resultat.image[i, u + 1].Blue);
+                        resultat.image[i + 1, u - 1].Blue = Convert.ToByte(mat[2, 0] / 9 * resultat.image[i + 1, u - 1].Blue);
+                        resultat.image[i + 1, u].Blue = Convert.ToByte(mat[2, 1] / 9 * resultat.image[i + 1, u].Blue);
+                        resultat.image[i + 1, u + 1].Blue = Convert.ToByte(mat[2, 2] / 9 * resultat.image[i + 1, u + 1].Blue);
+
+                        resultat.image[i - 1, u - 1].Green = Convert.ToByte(mat[0, 0] / 9 * resultat.image[i - 1, u - 1].Green);
+                        resultat.image[i - 1, u].Green = Convert.ToByte(mat[0, 1] / 9 * resultat.image[i - 1, u].Green);
+                        resultat.image[i - 1, u + 1].Green = Convert.ToByte(mat[0, 2] / 9 * resultat.image[i - 1, u + 1].Green);
+                        resultat.image[i, u - 1].Green = Convert.ToByte(mat[1, 0] / 9 * resultat.image[i, u - 1].Green);
+                        resultat.image[i, u].Green = Convert.ToByte(mat[1, 1] / 9 * resultat.image[i, u].Green);
+                        resultat.image[i, u + 1].Green = Convert.ToByte(mat[1, 2] / 9 * resultat.image[i, u + 1].Green);
+                        resultat.image[i + 1, u - 1].Green = Convert.ToByte(mat[2, 0] / 9 * resultat.image[i + 1, u - 1].Green) ;
+                        resultat.image[i + 1, u].Green = Convert.ToByte(mat[2, 1] / 9 * resultat.image[i + 1, u].Green);
+                        resultat.image[i + 1, u + 1].Green = Convert.ToByte(mat[2, 2] / 9 * resultat.image[i + 1, u + 1].Green);
+                    }
+                }
+                return resultat;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
+        }
+        #endregion
     }
 }
