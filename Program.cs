@@ -15,7 +15,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
             
             string fileN = "lena.bmp";
-            MyImage image1 = new MyImage(fileN);
+            MyImage image = new MyImage(fileN);
             //image1.From_Image_To_File("sortie.bmp");
 
             //MyImage image2 = image1.EffetMiroir();
@@ -27,17 +27,19 @@ namespace Manon_Aubry_Manon_Goffinet
 
            
 
-            MyImage imageGrey = image.ConvertToGrey();
-            imageGrey.From_Image_To_File("sortieGrey.bmp");
-            Console.WriteLine(Math.Tan(90));
+            //MyImage imageGrey = image.ConvertToGrey();
+            //imageGrey.From_Image_To_File("sortieGrey.bmp");
+            //Console.WriteLine(Math.Tan(90));
             //MyImage imageAgrandir = image1.Agrandir();
             //imageAgrandir.From_Image_To_File("sortie6.bmp");
-            MyImage ImageRotation = image.Rotation(310);
-            ImageRotation.From_Image_To_File("sortieRotation.bmp");
+            //MyImage ImageRotation = image.Rotation(310);
+            //ImageRotation.From_Image_To_File("sortieRotation.bmp");
 
+            //MyImage imageReduire = image.Réduire();
+            //imageReduire.From_Image_To_File("sortie7.bmp");
 
-            MyImage imageReduire = image1.Réduire();
-            imageReduire.From_Image_To_File("sortie7.bmp");
+            MyImage imageFlou = image.Flou();
+            imageFlou.From_Image_To_File("sortie8.bmp");
 
             Console.ReadKey();
         }
