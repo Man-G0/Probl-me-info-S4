@@ -509,16 +509,18 @@ namespace Manon_Aubry_Manon_Goffinet
 
 
         #region Rotation
-        public MyImage Rotation(int angle)
+        public MyImage Rotation(int angleDegré)
         {
             //try
             {
+                //while (angleDegré > 360) angleDegré = angleDegré - 360;
+                double angle = Math.PI * angleDegré / 180;
                 Pixel[,] im = image;
                 int tailleFichierRes = tailleFichier;
                 int largeurImageRes = largeurImage;
                 int hauteurImageRes = hauteurImage;
-                while (angle > 360) angle = angle - 360;
-                if (angle == 90)
+                
+                if (angleDegré == 90)
                 {
                     largeurImageRes = hauteurImage;
                     hauteurImageRes = largeurImage;
@@ -532,7 +534,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         }
                     }
                 }
-                else if (angle == 180)
+                else if (angleDegré == 180)
                 {
                     im = new Pixel[hauteurImageRes, largeurImageRes];
                     for (int i = 0; i < hauteurImageRes; i++)
@@ -543,7 +545,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         }
                     }
                 }
-                else if (angle == 270)
+                else if (angleDegré == 270)
                 {
                     largeurImageRes = hauteurImage;
                     hauteurImageRes = largeurImage;
@@ -557,82 +559,43 @@ namespace Manon_Aubry_Manon_Goffinet
                         }
                     }
                 }
-                else if (angle == 360)
+                else if (angleDegré == 360)
                 {
 
                 }
                 else
                 {
-                    int décalageHauteur = Math.Abs((int)Math.Tan((double)angle) * largeurImage / 2);// voir schéma d'explications
-                    int décalageLargeur = Math.Abs((int)Math.Tan((double)angle) * hauteurImage / 2);
+                    hauteurImageRes = Math.Abs((int) Math.Round(Math.Cos(angle) * hauteurImage + Math.Sin(angle) * largeurImage));
+                    largeurImageRes = Math.Abs((int) Math.Round(Math.Cos(angle) * largeurImage + Math.Sin(angle) * hauteurImage));
 
+                    if (hauteurImageRes % 4 != 0)
+                    {
+                        hauteurImageRes += (hauteurImageRes % 4);
+                    }
+                    if (largeurImageRes % 4 != 0)
+                    {
+                        largeurImageRes += (largeurImageRes % 4);
+                    }
 
-                    largeurImageRes = largeurImage + décalageLargeur * 2;
-                    hauteurImageRes = hauteurImage + décalageHauteur * 2;
                     tailleFichierRes = tailleOffset + largeurImageRes * hauteurImageRes * 3;
-
+                    Console.WriteLine(hauteurImageRes);
+                    Console.WriteLine(largeurImageRes);
+                    Console.WriteLine(tailleFichierRes);
                     im = new Pixel[hauteurImageRes, largeurImageRes];
+                    
                     for (int i = 0; i < hauteurImageRes; i++)
                     {
                         for (int j = 0; j < largeurImageRes; j++)
                         {
-                            im[i,j] = new Pixel(0,0,0);
+                            im[i,j] = new Pixel(0,0,0); //remplissage de la matrice en noir pour que toute les pixels de l'image soient remplies
                         }
                     }
-                    int a = 0;
-                    int c = 0;
-                    int d = 0;
-                    for (int i = 0; i < hauteurImage; i++)
-                    {
-                        c++;
-                        int b = 0;
-                        for (int j = décalageLargeur; j < largeurImage+décalageLargeur&&d<=j; j++)
-                        {
-                            /*if (i == 0 && j == 0)
-                            {
-                                im[i + décalageHauteur, j + décalageLargeur] = image[i, j];
-                            }
-                            else if (i == 0 && j == largeurImage - 1)
-                            {
-                                im[i - décalageHauteur, j + décalageLargeur] = image[i, j];
-                            }
-                            else if (i == hauteurImage - 1 && j == 0)
-                            {
-                                im[i + décalageHauteur, j - décalageLargeur] = image[i, j];
-                            }
-                            else if (i == hauteurImage - 1 && j==largeurImage - 1)
-                            {
-                                im[i - décalageHauteur, j - décalageLargeur] = image[i, j];
-                            }*/
-                            
-                            if (a >= 1 / (int)Math.Abs(Math.Tan((double)angle)))
-                            {
-                                b++;
-                                im[i + b,j-d]= image[i, j - décalageLargeur];
-                                a = 0;
-                                
-                            }
-                            else
-                            {
-                                im[i+b, j-d] = image[i, j - décalageLargeur];
-                                a++;
-                            }
-                        }
-
-                        if (c >= 1 / (int)Math.Abs(Math.Tan((double)angle)))
-                        {
-                            d++;
-                            
-
-                        }
-                        
-                        
-
-                    }
+                    
 
 
                 }
                 MyImage resul = new MyImage(im, typeImage, tailleFichierRes, tailleOffset, largeurImageRes, hauteurImageRes, nombreDeBitsCouleurs);
+                Console.WriteLine(typeImage + " " + tailleFichierRes + " " + tailleOffset + " " + largeurImageRes + " " + hauteurImageRes + " " + nombreDeBitsCouleurs);
                 return resul;
             }
             /*catch (Exception e)
