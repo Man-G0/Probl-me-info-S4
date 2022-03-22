@@ -733,5 +733,65 @@ namespace Manon_Aubry_Manon_Goffinet
             return res;
         }
         #endregion
+
+        #region Fractale
+        public MyImage Fractale()
+        {
+            double x1 = -2.1;
+            double x2 = 0.6;
+            double y1 = -1.2;
+            double y2 = 1.2;
+            int zoom = 100; //pour une distance de 1 sur le plan, on a 100 pixels sur l'image
+            double iteration_Max = 50;
+
+            double imageX = (x2 - x1) * zoom;
+            double imageY = (y2 - y1) * zoom;
+            Pixel[,] resultat = new Pixel[(int)imageX, (int)imageY];
+
+            for (int a = 0; a < resultat.GetLength(0); a++) //remplir la matrice de pixel noir
+            {
+                for (int b = 0; b < resultat.GetLength(1); b++)
+                {
+                    resultat[a, b] = new Pixel(0, 0, 0);
+                }
+            }
+
+            for (int x = 0; x < imageX; x++)
+            {
+                for(int y = 0; y < imageY; y++)
+                {
+                    double cR = x / zoom + x1;
+                    double cI = y / zoom + y1;
+                    double zR = 0;
+                    double zI = 0;
+                    int i = 0;
+
+                    double tmp = zR;
+                    zR = Math.Pow(zR, 2) - Math.Pow(zI, 2) + cR;
+                    zI = 2 * zI * tmp + cI;
+
+                    while(zR * zR + zI * zI < 4 && i < iteration_Max)
+                    {
+                        if (i == iteration_Max)
+                        {
+                            resultat[x, x] = new Pixel(255, 255, 255);
+                            //Console.Write(resultat[x, y] + " ");
+                        }
+                        else
+                        {                           
+                            resultat[x, x] = new Pixel(0, 0, (byte)(i * 255 / iteration_Max));
+                            //Console.Write(resultat[x, y] + " ");
+                        }
+                        //Console.Write(zR+" "+zI+"  "+i+" "+iteration_Max);
+                        i++;
+                    }
+                }
+            }
+            MyImage res = new MyImage(resultat, typeImage, tailleOffset+(resultat.GetLength(1) * resultat.GetLength(0) * 3), tailleOffset, resultat.GetLength(1), resultat.GetLength(0), nombreDeBitsCouleurs);
+
+            return res;
+
+        }
+        #endregion
     }
 }
