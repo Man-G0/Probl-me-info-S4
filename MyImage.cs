@@ -812,7 +812,7 @@ namespace Manon_Aubry_Manon_Goffinet
             int[] Rouge = new int[256];
             int[] Vert = new int[256];
             int[] Bleu = new int[256];
-            Pixel[,] His = new Pixel[600, 768];
+            Pixel[,] His;
             
             for (int i =0; i < Rouge.Length; i++)
             {
@@ -821,8 +821,8 @@ namespace Manon_Aubry_Manon_Goffinet
                 Bleu[i] = 0;
             }
 
-            
 
+            int max = 0;
             for(int i = 0; i < image.GetLength(0); i++)
             {
                 for(int j =0; j<image.GetLength(1); j++)
@@ -830,9 +830,21 @@ namespace Manon_Aubry_Manon_Goffinet
                     Rouge[image[i, j].Red]++;
                     Vert[image[i, j].Green]++;
                     Bleu[image[i, j].Blue]++;
+                    if(Rouge[image[i, j].Red]>= Vert[image[i, j].Green] && Rouge[image[i, j].Red]>=Bleu[image[i, j].Blue] && Rouge[image[i, j].Red] >=max)
+                    {
+                        max = Rouge[image[i, j].Red];
+                    }
+                    else if(Vert[image[i, j].Green] >= Rouge[image[i, j].Red] && Vert[image[i, j].Green] >= Bleu[image[i, j].Blue] && Vert[image[i, j].Green] >= max)
+                    {
+                        max = Vert[image[i, j].Green];
+                    }
+                    else if(Bleu[image[i, j].Blue] >= Rouge[image[i, j].Red] && Bleu[image[i, j].Blue]>= Vert[image[i, j].Green] && Bleu[image[i, j].Blue] >= max)
+                    {
+                        max = Bleu[image[i, j].Blue];
+                    }
                 }
             }
-
+            His = new Pixel[max, 768];
             for (int i = 0; i < His.GetLength(0); i++)
             {
                 for (int j = 0; j < His.GetLength(1); j++)
