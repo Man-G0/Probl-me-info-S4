@@ -144,7 +144,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         j++;
                     }
                 }
-                //AfficherMatricePixel(image);
+                //AfficherimPixel(image);
                 //Console.WriteLine("\n\n");
             }
             catch (Exception e)
@@ -192,7 +192,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
 
         #endregion
-        public void AfficherMatricePixel(Pixel[,] tabPix)
+        public void AfficherimPixel(Pixel[,] tabPix)
         {
             try
             {
@@ -337,7 +337,6 @@ namespace Manon_Aubry_Manon_Goffinet
                 }
             }
             File.WriteAllBytes(myfile, tab);
-
         }
         #endregion
 
@@ -456,7 +455,7 @@ namespace Manon_Aubry_Manon_Goffinet
                 Pixel[,] mat = new Pixel[image.GetLength(0) / multiple, image.GetLength(1) / multiple];
                 MyImage resul = new MyImage(mat, typeImage, image.GetLength(1) / multiple * (image.GetLength(0) / multiple) * 9 + tailleOffset, tailleOffset, image.GetLength(1) / multiple, image.GetLength(0) / multiple, nombreDeBitsCouleurs);
 
-                for (int i = 0; i < resul.image.GetLength(0); i++) //remplir la matrice de pixel noir
+                for (int i = 0; i < resul.image.GetLength(0); i++) //remplir la im de pixel noir
                 {
                     for (int u = 0; u < resul.image.GetLength(1); u++)
                     {
@@ -493,93 +492,135 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region Rotation
+        
+        public Pixel[,] Rotation90(Pixel[,] imag, int hauteurImageRes, int largeurImageRes, int n)
+        {
+            Pixel[,] im = new Pixel[hauteurImageRes, largeurImageRes];
+            for (int i = 0; i < hauteurImageRes; i++)
+            {
+                for (int j = 0; j < largeurImageRes; j++)
+                {
+                    if (n == 90)
+                    {
+                        im[i, j] = imag[j, i];
+                    }
+                    else if(n == 180)
+                    {
+                        im[i, j] = imag[hauteurImageRes - 1 - i, largeurImageRes - 1 - j];
+                    }
+                    else if (n == 270)
+                    {
+                        im[i, j] = imag[largeurImageRes - 1 - j, hauteurImageRes - 1 - i];
+                    }
+                    else if (n == 360)
+                    {
+                        im[i, j] = imag[i, j];
+                    }
+                    
+                    
+                }
+            }
+            return im;
+        }
         public MyImage Rotation(int angleDegré)
+
         {
             //try
             {
-                //while (angleDegré > 360) angleDegré = angleDegré - 360;
-                double angle = Math.PI * angleDegré / 180;
-                Pixel[,] im = image;
+                while (angleDegré > 360) angleDegré = angleDegré - 360;                
+                Pixel[,] im = new Pixel [image.GetLength(0),image.GetLength(1)];
                 int tailleFichierRes = tailleFichier;
                 int largeurImageRes = largeurImage;
                 int hauteurImageRes = hauteurImage;
+                
 
-                if (angleDegré == 90)
+                
+                if (angleDegré % 90 == 0)
                 {
-                    largeurImageRes = hauteurImage;
-                    hauteurImageRes = largeurImage;
-                    tailleFichierRes = tailleFichier;
+                    Pixel[,] imag=im;
+                    for (int i = 0; i < angleDegré / 90; i++)
+                    {
+                        
+                         int a = largeurImageRes;
+                         largeurImageRes = hauteurImageRes;
+                         hauteurImageRes = a;
+                         
+                    }
+                    im = Rotation90(imag, hauteurImageRes, largeurImageRes, angleDegré);
+                }
+                else if (angleDegré%90!=0)
+                {
+                    
+                    int angleRestant = angleDegré % 90; // si on a 184 récupère 4 
+                    int angle90 = angleDegré-angleRestant;// avec l'ex d'au dessus récupère 180
+                    Console.WriteLine(angle90);
+
+                    Pixel[,] imag = im;
+                    for (int i = 0; i < angle90 / 90; i++)
+                    {
+
+                        int a = largeurImageRes;
+                        largeurImageRes = hauteurImageRes;
+                        hauteurImageRes = a;
+
+                    }
+                    im = Rotation90(imag, hauteurImageRes, largeurImageRes, angle90);
+
+
+                    double angle = Math.PI * angleRestant / 180; //passage en radiant de l'angle restant
+                    double sin = Math.Sin(angle);
+                    double cos = Math.Cos(angle);
+
+
+                    hauteurImageRes = Math.Abs((int)Math.Round(cos * hauteurImage + sin * largeurImage));
+                    largeurImageRes = Math.Abs((int)Math.Round(cos* largeurImage + sin * hauteurImage));
+
+                    int ajout = 0;
+                    int complementTailleIm = 0;
+                    if ((largeurImageRes * (nombreDeBitsCouleurs / 8)) % 4 != 0)
+                    {
+                        ajout = 4 - (largeurImageRes * (nombreDeBitsCouleurs / 8) % 4); 
+                    }
+                    complementTailleIm = hauteurImageRes * ((nombreDeBitsCouleurs / 8 * largeurImageRes) + ajout);
+
+                    
+                    if (complementTailleIm != 0)
+                    {
+                        tailleFichierRes = tailleOffset + complementTailleIm;
+                    }
+                    else
+                    {
+                        tailleFichierRes = tailleOffset + 3*largeurImageRes*hauteurImageRes;
+                    }
+
                     im = new Pixel[hauteurImageRes, largeurImageRes];
+
                     for (int i = 0; i < hauteurImageRes; i++)
                     {
                         for (int j = 0; j < largeurImageRes; j++)
                         {
-                            im[i, j] = image[j, i];
+                            im[i,j] = new Pixel(0,0,0); //remplissage de la matrice en noir pour que toute les pixels de l'image soient remplies
                         }
                     }
-                }
-                else if (angleDegré == 180)
-                {
-                    im = new Pixel[hauteurImageRes, largeurImageRes];
-                    for (int i = 0; i < hauteurImageRes; i++)
+
+                    
+                    for (double i = 0; i < hauteurImage-0.5; i+=0.5)
                     {
-                        for (int j = 0; j < largeurImageRes; j++)
+                        for (double j = 0; j < largeurImage-0.5; j+=0.5)
                         {
-                            im[i, j] = image[hauteurImageRes - 1 - i, largeurImageRes - 1 - j];
+                            im[(int)Math.Floor(Math.Sin(angle) * j + Math.Cos(angle) * i),      (int)Math.Floor(Math.Sin(angle) * (hauteurImage - 1) + Math.Cos(angle) * j - Math.Cos(angle) * i)] = image[(int)Math.Floor(i), (int)Math.Floor(j)];
+                            //im[(int)Math.Floor(sin * (largeurImage - 1) + sin * j - Math.Sin(angle) * i), (int)Math.Floor(cos * j + sin * i)] = image[(int)Math.Floor(i), (int)Math.Floor(j)];
+
                         }
                     }
-                }
-                else if (angleDegré == 270)
-                {
-                    largeurImageRes = hauteurImage;
-                    hauteurImageRes = largeurImage;
-                    tailleFichierRes = tailleFichier;
-                    im = new Pixel[hauteurImageRes, largeurImageRes];
-                    for (int i = 0; i < hauteurImageRes; i++)
-                    {
-                        for (int j = 0; j < largeurImageRes; j++)
-                        {
-                            im[i, j] = image[largeurImageRes - 1 - j, hauteurImageRes - 1 - i];
-                        }
-                    }
-                }
-                else if (angleDegré == 360)
-                {
 
-                }
-                else
-                {
-                    hauteurImageRes = Math.Abs((int)Math.Round(Math.Cos(angle) * hauteurImage + Math.Sin(angle) * largeurImage));
-                    largeurImageRes = Math.Abs((int)Math.Round(Math.Cos(angle) * largeurImage + Math.Sin(angle) * hauteurImage));
 
-                    if (hauteurImageRes % 4 != 0)
-                    {
-                        hauteurImageRes += (hauteurImageRes % 4);
-                    }
-                    if (largeurImageRes % 4 != 0)
-                    {
-                        largeurImageRes += (largeurImageRes % 4);
-                    }
-
-                    tailleFichierRes = tailleOffset + largeurImageRes * hauteurImageRes * 3;
-                    Console.WriteLine(hauteurImageRes);
-                    Console.WriteLine(largeurImageRes);
-                    Console.WriteLine(tailleFichierRes);
-                    im = new Pixel[hauteurImageRes, largeurImageRes];
-
-                    for (int i = 0; i < hauteurImageRes; i++)
-                    {
-                        for (int j = 0; j < largeurImageRes; j++)
-                        {
-                            im[i, j] = new Pixel(0, 0, 0); //remplissage de la matrice en noir pour que toute les pixels de l'image soient remplies
-                        }
-                    }
 
 
 
                 }
                 MyImage resul = new MyImage(im, typeImage, tailleFichierRes, tailleOffset, largeurImageRes, hauteurImageRes, nombreDeBitsCouleurs);
-                Console.WriteLine(typeImage + " " + tailleFichierRes + " " + tailleOffset + " " + largeurImageRes + " " + hauteurImageRes + " " + nombreDeBitsCouleurs);
+                //Console.WriteLine(typeImage + " " + tailleFichierRes + " " + tailleOffset + " " + largeurImageRes + " " + hauteurImageRes + " " + nombreDeBitsCouleurs);
                 return resul;
             }
             /*catch (Exception e)
@@ -793,5 +834,142 @@ namespace Manon_Aubry_Manon_Goffinet
 
         }
         #endregion
+
+        #region  Repoussage
+        public MyImage Repoussage()
+        {
+            int[,] noyau = { { 0, 1, 2 }, { -1, 1, 1 }, { -2, -1, 0 } };
+            MyImage res = Convolution(noyau);
+            return res;
+        }
+        #endregion
+
+        #region Détection des bords
+        public MyImage DétectionDesBords()
+        {
+            int[,] noyau = { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };
+            MyImage res = Convolution(noyau);
+            return res;
+        }
+        #endregion
+
+        #region Renforcement des bords
+        public MyImage RenforcementDesBords()
+        {
+            int[,] noyau = { { 0, 0, 0 }, { -1, 1, 0 }, { 0, 0, 0 } };
+            MyImage res = Convolution(noyau);
+            return res;
+        }
+        #endregion
+
+        #region Histogramme
+
+        public void AffichageHistogramme(int[] tab)
+        {
+            Console.WriteLine("Histogramme de l'image : \n");
+            for(int i =0; i < tab.Length; i++)
+            {
+                if(i < 10)
+                {
+                    Console.Write(" ." + i + "   ");
+                }
+                else if (i<100)
+                {
+                    Console.Write(" ." + i + "  ");
+                }
+                else
+                {
+                    Console.Write(" ." + i + " ");
+                }
+                
+            }
+            Console.WriteLine();
+            for (int i = 0; i < tab.Length; i++)
+            {
+                //if (tab[i] < 10)
+                {
+                    Console.Write(" |" + tab[i] + "   ");
+                }
+                
+
+            }
+        }
+        public MyImage Histogramme()
+        {
+            int[] Rouge = new int[256];
+            int[] Vert = new int[256];
+            int[] Bleu = new int[256];
+            Pixel[,] His;
+            
+            for (int i =0; i < Rouge.Length; i++)
+            {
+                Rouge[i] = 0;
+                Vert[i] = 0;
+                Bleu[i] = 0;
+            }
+
+
+            int max = 0;
+            for(int i = 0; i < image.GetLength(0); i++)
+            {
+                for(int j =0; j<image.GetLength(1); j++)
+                {
+                    Rouge[image[i, j].Red]++;
+                    Vert[image[i, j].Green]++;
+                    Bleu[image[i, j].Blue]++;
+                    if(Rouge[image[i, j].Red]>= Vert[image[i, j].Green] && Rouge[image[i, j].Red]>=Bleu[image[i, j].Blue] && Rouge[image[i, j].Red] >=max)
+                    {
+                        max = Rouge[image[i, j].Red];
+                    }
+                    else if(Vert[image[i, j].Green] >= Rouge[image[i, j].Red] && Vert[image[i, j].Green] >= Bleu[image[i, j].Blue] && Vert[image[i, j].Green] >= max)
+                    {
+                        max = Vert[image[i, j].Green];
+                    }
+                    else if(Bleu[image[i, j].Blue] >= Rouge[image[i, j].Red] && Bleu[image[i, j].Blue]>= Vert[image[i, j].Green] && Bleu[image[i, j].Blue] >= max)
+                    {
+                        max = Bleu[image[i, j].Blue];
+                    }
+                }
+            }
+            His = new Pixel[max, 768];
+            for (int i = 0; i < His.GetLength(0); i++)
+            {
+                for (int j = 0; j < His.GetLength(1); j++)
+                {
+                    His[i, j] = new Pixel(0, 0, 0); // image noire
+                }
+            }
+
+            for (int i = 0; i < His.GetLength(0); i++)
+            {
+                for (int j = 0; j < His.GetLength(1); j++)
+                {
+                    if (j < 256&&Rouge[j]!=0)
+                    {
+                        His[i, j].Red = 255;
+                        Rouge[j]--;
+                    }
+                    else if (j < 512 && j>=256&& Vert[j-256] != 0)
+                    {
+                        His[i, j].Green = 255;
+                        Vert[j-256]--;
+                    }
+                    else if(j>=512&&Bleu[j-512] != 0)
+                    {
+                        His[i, j].Blue = 255;
+                        Bleu[j-512]--;
+                    }
+                }
+            }
+
+            int tailleFichierRes = tailleOffset + His.GetLength(0) * His.GetLength(1) * 3;
+           // AffichageHistogramme(Rouge);
+            MyImage resultat = new MyImage(His, typeImage, tailleFichierRes, tailleOffset, His.GetLength(1), His.GetLength(0), nombreDeBitsCouleurs);
+            return resultat;
+        }
+        #endregion
+
+
+
     }
 }
