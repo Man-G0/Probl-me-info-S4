@@ -94,7 +94,7 @@ namespace Manon_Aubry_Manon_Goffinet
             #endregion
 
             #region NombreDeBitsCouleurs
-            byte[] nombreDeBitsCouleursEnBytes = new byte[] {Im[28], Im[29]}; //récupère les bytes 29,30
+            byte[] nombreDeBitsCouleursEnBytes = new byte[] { Im[28], Im[29] }; //récupère les bytes 29,30
             //Console.WriteLine(Im[28] + " " + Im[29]);
             nombreDeBitsCouleurs = Convert_Endian_To_Int(nombreDeBitsCouleursEnBytes);
             //Console.WriteLine(nombreDeBitsCouleurs);
@@ -224,7 +224,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
             //byte[] tabBytes = BitConverter.GetBytes(v);
             byte[] tabBytes = new byte[taille];
-            for(int i =0; i < taille; i++)
+            for (int i = 0; i < taille; i++)
             {
                 tabBytes[i] = (byte)(v % 256);
                 v /= 256;
@@ -233,7 +233,7 @@ namespace Manon_Aubry_Manon_Goffinet
             return tabBytes;
         }
 
-       
+
         #endregion
 
         #region public int Convertir_Endian_To_Int(byte[] tab …)
@@ -246,9 +246,9 @@ namespace Manon_Aubry_Manon_Goffinet
         public static int Convert_Endian_To_Int(byte[] v)
         {
             int res = 0;
-            for(int i=0; i < v.Length; i++)
+            for (int i = 0; i < v.Length; i++)
             {
-                res += (int) Math.Pow(256, i) * v[i];
+                res += (int)Math.Pow(256, i) * v[i];
             }
             return res;
         }
@@ -261,7 +261,7 @@ namespace Manon_Aubry_Manon_Goffinet
         /// Prend une instance de MyImage et la transforme en fichier binaire respectant la structure du fichier.bmp permettant sa lecture (son affichage)
         /// </summary>
         /// <param name="file">emplacement et nom du document.bmp à créer</param>
-    public void From_Image_To_File(string myfile)
+        public void From_Image_To_File(string myfile)
         {
             byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage, 4);
             byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset, 4);
@@ -269,7 +269,7 @@ namespace Manon_Aubry_Manon_Goffinet
             byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier, 4);
             byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage, 4);
             byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
-            
+
 
             byte[] tab = new byte[tailleFichier];
 
@@ -290,7 +290,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         break;
 
                     case int j when j >= 14 && j < 18:
-                        tab[i] = Convertir_Int_To_Endian(tailleOffset - 14,4)[i - 14];
+                        tab[i] = Convertir_Int_To_Endian(tailleOffset - 14, 4)[i - 14];
                         break;
 
                     case int j when j >= 18 && j < 22:
@@ -310,14 +310,14 @@ namespace Manon_Aubry_Manon_Goffinet
                         break;
 
                     case int j when j >= 34 && j < 38:
-                        tab[i] = Convertir_Int_To_Endian(tailleFichier - tailleOffset,4)[i - 34]; // Taille image codée entre les bytes 34 et 38
+                        tab[i] = Convertir_Int_To_Endian(tailleFichier - tailleOffset, 4)[i - 34]; // Taille image codée entre les bytes 34 et 38
                         break;
 
                     case int j when j >= 38 && j < 42:
-                        tab[i] = Convertir_Int_To_Endian(2835,4)[i - 38];
+                        tab[i] = Convertir_Int_To_Endian(2835, 4)[i - 38];
                         break;
                     case int j when j >= 42 && j < 46:
-                        tab[i] = Convertir_Int_To_Endian(2835,4)[i - 42];
+                        tab[i] = Convertir_Int_To_Endian(2835, 4)[i - 42];
                         break;
                     default:
                         tab[i] = (byte)0;
@@ -390,7 +390,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         mat[i, u] = new Pixel(m, m, m);
                     }
                 }
-                
+
                 MyImage resul = new MyImage(mat, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 return resul;
             }
@@ -411,14 +411,14 @@ namespace Manon_Aubry_Manon_Goffinet
                 Console.WriteLine("De combien de pixels voulez-vous agrandir l'image ? ");
                 int nbPixel = Convert.ToInt32(Console.ReadLine());
 
-                Pixel[,] mat = new Pixel[image.GetLength(0) * (nbPixel+1), image.GetLength(1) * (nbPixel + 1)];
-                MyImage resul = new MyImage(mat, typeImage, image.GetLength(1) * (nbPixel + 1)* image.GetLength(0) * (nbPixel + 1)*9 + tailleOffset, tailleOffset, image.GetLength(1) * (nbPixel + 1), image.GetLength(0) * (nbPixel + 1), nombreDeBitsCouleurs);
+                Pixel[,] mat = new Pixel[image.GetLength(0) * (nbPixel + 1), image.GetLength(1) * (nbPixel + 1)];
+                MyImage resul = new MyImage(mat, typeImage, image.GetLength(1) * (nbPixel + 1) * image.GetLength(0) * (nbPixel + 1) * 9 + tailleOffset, tailleOffset, image.GetLength(1) * (nbPixel + 1), image.GetLength(0) * (nbPixel + 1), nombreDeBitsCouleurs);
 
                 int k = 0;
                 int j = 0;
-                for (int i = 0; i < image.GetLength(0); i ++)
+                for (int i = 0; i < image.GetLength(0); i++)
                 {
-                    for (int u = 0; u < image.GetLength(1); u ++)
+                    for (int u = 0; u < image.GetLength(1); u++)
                     {
                         byte m1 = image[i, u].Blue;
                         byte m2 = image[i, u].Red;
@@ -428,7 +428,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         {
                             for (int b = 0; b <= nbPixel; b++)
                             {
-                                resul.image[k + a, j + b] = new Pixel(m1,m2,m3);
+                                resul.image[k + a, j + b] = new Pixel(m1, m2, m3);
                             }
                         }
                         j += nbPixel + 1;
@@ -438,7 +438,7 @@ namespace Manon_Aubry_Manon_Goffinet
                 }
                 return resul;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
@@ -463,7 +463,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         resul.image[i, u] = new Pixel(0, 0, 0);
                     }
                 }
-                
+
                 int k = 0;
                 int j = 0;
                 for (int i = 0; i < resul.image.GetLength(0); i++)    //réduction
@@ -473,7 +473,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         byte m1 = Convert.ToByte(image[k, j].Blue);
                         byte m2 = Convert.ToByte(image[k, j].Red);
                         byte m3 = Convert.ToByte(image[k, j].Green);
-                        
+
                         resul.image[i, u] = new Pixel(m1, m2, m3);
 
                         j += multiple;
@@ -503,7 +503,7 @@ namespace Manon_Aubry_Manon_Goffinet
                 int tailleFichierRes = tailleFichier;
                 int largeurImageRes = largeurImage;
                 int hauteurImageRes = hauteurImage;
-                
+
                 if (angleDegré == 90)
                 {
                     largeurImageRes = hauteurImage;
@@ -549,8 +549,8 @@ namespace Manon_Aubry_Manon_Goffinet
                 }
                 else
                 {
-                    hauteurImageRes = Math.Abs((int) Math.Round(Math.Cos(angle) * hauteurImage + Math.Sin(angle) * largeurImage));
-                    largeurImageRes = Math.Abs((int) Math.Round(Math.Cos(angle) * largeurImage + Math.Sin(angle) * hauteurImage));
+                    hauteurImageRes = Math.Abs((int)Math.Round(Math.Cos(angle) * hauteurImage + Math.Sin(angle) * largeurImage));
+                    largeurImageRes = Math.Abs((int)Math.Round(Math.Cos(angle) * largeurImage + Math.Sin(angle) * hauteurImage));
 
                     if (hauteurImageRes % 4 != 0)
                     {
@@ -566,15 +566,15 @@ namespace Manon_Aubry_Manon_Goffinet
                     Console.WriteLine(largeurImageRes);
                     Console.WriteLine(tailleFichierRes);
                     im = new Pixel[hauteurImageRes, largeurImageRes];
-                    
+
                     for (int i = 0; i < hauteurImageRes; i++)
                     {
                         for (int j = 0; j < largeurImageRes; j++)
                         {
-                            im[i,j] = new Pixel(0,0,0); //remplissage de la matrice en noir pour que toute les pixels de l'image soient remplies
+                            im[i, j] = new Pixel(0, 0, 0); //remplissage de la matrice en noir pour que toute les pixels de l'image soient remplies
                         }
                     }
-                    
+
 
 
                 }
@@ -588,7 +588,84 @@ namespace Manon_Aubry_Manon_Goffinet
                 MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 return Im;
             }*/
-            
+
+        }
+        #endregion
+
+        #region  Convolution
+        public int Somme(int[,] noyau, Pixel[,] resul, int ligne, int colonne,char lettre)
+        {
+            int somme = 0;
+            int ligneNoyau = noyau.GetLength(0);
+            int colonneNoyau = noyau.GetLength(1);
+
+            for (int i = 0; i < ligneNoyau; i++)
+            {
+                for (int u = 0; u < colonneNoyau; u++)
+                {
+                    /*int x = i + (ligne - ligneNoyau / 2);
+                    if (x < 0) x = resul.GetLength(0) - 1;
+                    if (x >= resul.GetLength(0)) x = 0;
+                    int y = u + (colonne - colonneNoyau / 2);
+                    if (y < 0) y = resul.GetLength(1) - 1;
+                    if (y >= resul.GetLength(1)) y = 0;
+                    somme += resul[x, y].Red * noyau[i, u];*/
+                    if (lettre == 'R') somme += resul[ligne - 1 + i, colonne - 1 + u].Red * noyau[i, u];
+                    if (lettre == 'B') somme += resul[ligne - 1 + i, colonne - 1 + u].Blue * noyau[i, u];
+                    if (lettre == 'G') somme += resul[ligne - 1 + i, colonne - 1 + u].Green * noyau[i, u];
+                }
+            }
+            if (somme < 0) somme = 0;
+            if (somme > 255) somme = 255;
+            return somme;
+        }
+      
+        public MyImage Convolution(int[,]noyau)
+        {
+            try
+            {
+                //resultat = resultat.ConvertToGrey();
+
+                
+                Pixel[,] imagecalcul = new Pixel[image.GetLength(0), image.GetLength(1)];
+                for (int i = 0; i < image.GetLength(0); i++) //remplir la matrice de pixel noir
+                {
+                    for (int u = 0; u < image.GetLength(1); u++)
+                    {
+                        imagecalcul[i, u] = new Pixel(0, 0, 0);
+                    }
+                }
+
+                //int[,] mat1 = { { -1, 0, 1 }, { -1, 0, 1 }, { -1, 0, 1 } }; //matrice double
+                //int[,] mat2 = { { -1, -1, -1 }, { 0, 0, 0 }, { 1, 1, 1 } };//matrice double
+                //int[,] noyau = { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };  //matrice détection des bords  /docgimps.org
+                //int[,] noyau = { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };  //matrice détection des bords  /docgimps.org
+                //int[,] noyau = { { 0, 0, 0 }, { -1, 1, 0 }, { 0, 0, 0 } }; //matrice renforcement des bords /docgimps.org
+                //int[,] noyau = { { 0, 1, 2 }, { -1, 1, 1 }, { -2, -1, 0 } }; //matrice REPOUSSAGE /docgimps.org//
+                //int[,] noyau = { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } }; //matrice détection des bords  /wiki
+                //int[,] noyau = { { -1, 0, 1 }, { 0, 0, 0 }, { 1, 0, -1 } };  //matrice détection des bords  /wiki
+                //int[,] noyau = { { 1, 0, -1 }, { 0, 1, 0 }, { -1, 0, 1 } };  //test
+                //int[,] noyau = { { 1, 0, -1 }, { 1, 0, -1 }, { -1, 0, 1 } };  //test
+                //int[,] noyau = { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } };  //matrice test  /wiki
+
+                for (int i = 1; i < image.GetLength(0) - 1; i++)
+                {
+                    for (int u = 1; u < image.GetLength(1) - 1; u++)
+                    {
+                        imagecalcul[i, u].Red = Convert.ToByte(Somme(noyau, image, i, u, 'R'));
+                        imagecalcul[i, u].Blue = Convert.ToByte(Somme(noyau, image, i, u, 'B'));
+                        imagecalcul[i, u].Green = Convert.ToByte(Somme(noyau, image, i, u, 'G'));
+                    }
+                }
+                MyImage resultat = new MyImage(imagecalcul, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return resultat;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
         }
         #endregion
 
@@ -597,60 +674,63 @@ namespace Manon_Aubry_Manon_Goffinet
         {
             try
             {
-                MyImage resultat = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
-
-                /*for (int i = 0; i < resultat.image.GetLength(0); i++) //remplir la matrice de pixel noir
+                Pixel[,] imagecalcul = new Pixel[image.GetLength(0), image.GetLength(1)];
+                for (int i = 0; i < image.GetLength(0); i++) //remplir la matrice de pixel noir
                 {
-                    for (int u = 0; u < resultat.image.GetLength(1); u++)
+                    for (int u = 0; u < image.GetLength(1); u++)
                     {
-                        resultat.image[i, u] = new Pixel(0, 0, 0);
-                    }
-                }*/
-
-                int[,] mat = { { 1,1,1 }, { 1,1,1 }, { 1,1,1 } };
-                for (int i = 1; i < resultat.image.GetLength(0)-1; i++) //remplir la matrice de pixel noir
-                {
-                    for (int u = 1; u < resultat.image.GetLength(1)-1; u++)
-                    {
-                        resultat.image[i - 1, u - 1].Red = Convert.ToByte(mat[0, 0] / 9 * resultat.image[i - 1, u - 1].Red);
-                        resultat.image[i - 1, u].Red = Convert.ToByte(mat[0, 1] / 9 * resultat.image[i - 1, u].Red);
-                        resultat.image[i - 1, u + 1].Red = Convert.ToByte(mat[0, 2] / 9 * resultat.image[i - 1, u + 1].Red);
-                        resultat.image[i , u - 1].Red = Convert.ToByte(mat[1, 0] / 9 * resultat.image[i, u - 1].Red);
-                        resultat.image[i, u].Red = Convert.ToByte(mat[1, 1] / 9 * resultat.image[i, u].Red);
-                        resultat.image[i, u + 1].Red = Convert.ToByte(mat[1, 2] / 9 * resultat.image[i, u + 1].Red);
-                        resultat.image[i + 1, u - 1].Red = Convert.ToByte(mat[2, 0] / 9 * resultat.image[i + 1, u - 1].Red);
-                        resultat.image[i + 1, u].Red = Convert.ToByte(mat[2, 1] / 9 * resultat.image[i + 1, u].Red);
-                        resultat.image[i + 1, u + 1].Red = Convert.ToByte(mat[2, 2] / 9 * resultat.image[i + 1, u + 1].Red);
-
-                        resultat.image[i - 1, u - 1].Blue = Convert.ToByte(mat[0, 0] / 9 * resultat.image[i - 1, u - 1].Blue);
-                        resultat.image[i - 1, u].Blue = Convert.ToByte(mat[0, 1] / 9 * resultat.image[i - 1, u].Blue);
-                        resultat.image[i - 1, u + 1].Blue = Convert.ToByte(mat[0, 2] / 9 * resultat.image[i - 1, u + 1].Blue);
-                        resultat.image[i, u - 1].Blue = Convert.ToByte(mat[1, 0] / 9 * resultat.image[i, u - 1].Blue);
-                        resultat.image[i, u].Blue = Convert.ToByte(mat[1, 1] / 9 * resultat.image[i, u].Blue);
-                        resultat.image[i, u + 1].Blue = Convert.ToByte(mat[1, 2] / 9 * resultat.image[i, u + 1].Blue);
-                        resultat.image[i + 1, u - 1].Blue = Convert.ToByte(mat[2, 0] / 9 * resultat.image[i + 1, u - 1].Blue);
-                        resultat.image[i + 1, u].Blue = Convert.ToByte(mat[2, 1] / 9 * resultat.image[i + 1, u].Blue);
-                        resultat.image[i + 1, u + 1].Blue = Convert.ToByte(mat[2, 2] / 9 * resultat.image[i + 1, u + 1].Blue);
-
-                        resultat.image[i - 1, u - 1].Green = Convert.ToByte(mat[0, 0] / 9 * resultat.image[i - 1, u - 1].Green);
-                        resultat.image[i - 1, u].Green = Convert.ToByte(mat[0, 1] / 9 * resultat.image[i - 1, u].Green);
-                        resultat.image[i - 1, u + 1].Green = Convert.ToByte(mat[0, 2] / 9 * resultat.image[i - 1, u + 1].Green);
-                        resultat.image[i, u - 1].Green = Convert.ToByte(mat[1, 0] / 9 * resultat.image[i, u - 1].Green);
-                        resultat.image[i, u].Green = Convert.ToByte(mat[1, 1] / 9 * resultat.image[i, u].Green);
-                        resultat.image[i, u + 1].Green = Convert.ToByte(mat[1, 2] / 9 * resultat.image[i, u + 1].Green);
-                        resultat.image[i + 1, u - 1].Green = Convert.ToByte(mat[2, 0] / 9 * resultat.image[i + 1, u - 1].Green) ;
-                        resultat.image[i + 1, u].Green = Convert.ToByte(mat[2, 1] / 9 * resultat.image[i + 1, u].Green);
-                        resultat.image[i + 1, u + 1].Green = Convert.ToByte(mat[2, 2] / 9 * resultat.image[i + 1, u + 1].Green);
+                        imagecalcul[i, u] = new Pixel(0, 0, 0);
                     }
                 }
+
+
+                int[,] mat = { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } };
+                for (int i = 1; i < image.GetLength(0) - 1; i++)
+                {
+                    for (int u = 1; u < image.GetLength(1) - 1; u++)
+                    {
+                        imagecalcul[i, u].Red = Convert.ToByte((mat[0, 0] * image[i - 1, u - 1].Red + mat[0, 1] * image[i - 1, u].Red + mat[0, 2] * image[i - 1, u + 1].Red + mat[1, 0] * image[i, u - 1].Red + mat[1, 1] * image[i, u].Red + mat[1, 2] * image[i, u + 1].Red + mat[2, 0] * image[i + 1, u - 1].Red + mat[2, 1] * image[i + 1, u].Red + mat[2, 2] * image[i + 1, u + 1].Red) / 9);
+                        imagecalcul[i, u].Blue = Convert.ToByte((mat[0, 0] * image[i - 1, u - 1].Blue + mat[0, 1] * image[i - 1, u].Blue + mat[0, 2] * image[i - 1, u + 1].Blue + mat[1, 0] * image[i, u - 1].Blue + mat[1, 1] * image[i, u].Blue + mat[1, 2] * image[i, u + 1].Blue + mat[2, 0] * image[i + 1, u - 1].Blue + mat[2, 1] * image[i + 1, u].Blue + mat[2, 2] * image[i + 1, u + 1].Blue) / 9);
+                        imagecalcul[i, u].Green = Convert.ToByte((mat[0, 0] * image[i - 1, u - 1].Green + mat[0, 1] * image[i - 1, u].Green + mat[0, 2] * image[i - 1, u + 1].Green + mat[1, 0] * image[i, u - 1].Green + mat[1, 1] * image[i, u].Green + mat[1, 2] * image[i, u + 1].Green + mat[2, 0] * image[i + 1, u - 1].Green + mat[2, 1] * image[i + 1, u].Green + mat[2, 2] * image[i + 1, u + 1].Green) / 9);
+                    }
+                }
+                MyImage resultat = new MyImage(imagecalcul, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+
                 return resultat;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 return Im;
             }
+        }
+        #endregion
+
+        #region  Repoussage
+        public MyImage Repoussage()
+        {
+            int[,] noyau = { { 0, 1, 2 }, { -1, 1, 1 }, { -2, -1, 0 } };
+            MyImage res = Convolution(noyau);
+            return res;
+        }
+        #endregion
+
+        #region Détection des bords
+        public MyImage DétectionDesBords()
+        {
+            int[,] noyau = { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };
+            MyImage res = Convolution(noyau);
+            return res;
+        }
+        #endregion
+
+        #region Renforcement des bords
+        public MyImage RenforcementDesBords()
+        {
+            int[,] noyau = { { 0, 0, 0 }, { -1, 1, 0 }, { 0, 0, 0 } };
+            MyImage res = Convolution(noyau);
+            return res;
         }
         #endregion
     }

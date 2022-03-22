@@ -25,23 +25,30 @@ namespace Manon_Aubry_Manon_Goffinet
             //byte[] tableauLargeur = image1.Convertir_Int_To_Endian(image1.LargeurImage);
             //byte[] tableauLargeur2 = image1.Convertir_Int_To_Endian2(image1.LargeurImage);
 
-           
 
-            MyImage imageGrey = image.ConvertToGrey();
-            imageGrey.From_Image_To_File("sortieGrey.bmp");
-            
+
+            //MyImage imageGrey = image.ConvertToGrey();
+            //imageGrey.From_Image_To_File("sortieGrey.bmp");
+
             //MyImage imageAgrandir = image1.Agrandir();
             //imageAgrandir.From_Image_To_File("sortie6.bmp");
-            MyImage ImageRotation = image.Rotation(200);
-            ImageRotation.From_Image_To_File("sortieRotation.bmp");
+            //MyImage ImageRotation = image.Rotation(200);
+            //ImageRotation.From_Image_To_File("sortieRotation.bmp");
 
             //MyImage imageReduire = image.Réduire();
             //imageReduire.From_Image_To_File("sortie7.bmp");
 
-            //MyImage imageReduire = image.Réduire();
-            //imageReduire.From_Image_To_File("sortie7.bmp");
             MyImage imageFlou = image.Flou();
-            imageFlou.From_Image_To_File("sortie8.bmp");
+            imageFlou.From_Image_To_File("sortie-Flou.bmp");
+
+            MyImage imageRepoussage = image.Repoussage();
+            imageRepoussage.From_Image_To_File("sortie-Repoussage.bmp");
+
+            MyImage imagedétectionDesBords = image.DétectionDesBords();
+            imagedétectionDesBords.From_Image_To_File("sortie-DétectionDesBords.bmp");
+
+            MyImage imageRenforcementDesBords = image.RenforcementDesBords();
+            imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");
 
             Console.ReadKey();
         }
