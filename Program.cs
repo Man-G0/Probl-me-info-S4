@@ -27,21 +27,20 @@ namespace Manon_Aubry_Manon_Goffinet
 
            
 
-            MyImage imageGrey = image.ConvertToGrey();
-            imageGrey.From_Image_To_File("sortieGrey.bmp");
+            //MyImage imageGrey = image.ConvertToGrey();
+            //imageGrey.From_Image_To_File("sortieGrey.bmp");
             
             //MyImage imageAgrandir = image1.Agrandir();
             //imageAgrandir.From_Image_To_File("sortie6.bmp");
-            MyImage ImageRotation = image.Rotation(200);
+            MyImage ImageRotation = image.Rotation(70);
             ImageRotation.From_Image_To_File("sortieRotation.bmp");
 
             //MyImage imageReduire = image.Réduire();
             //imageReduire.From_Image_To_File("sortie7.bmp");
 
-            //MyImage imageReduire = image.Réduire();
-            //imageReduire.From_Image_To_File("sortie7.bmp");
-            MyImage imageFlou = image.Flou();
-            imageFlou.From_Image_To_File("sortie8.bmp");
+
+            //MyImage imageFlou = image.Flou();
+            //imageFlou.From_Image_To_File("sortie8.bmp");
 
             Console.ReadKey();
         }
