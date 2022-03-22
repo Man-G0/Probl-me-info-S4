@@ -774,5 +774,103 @@ namespace Manon_Aubry_Manon_Goffinet
             return res;
         }
         #endregion
+
+        #region Histogramme
+
+        public void AffichageHistogramme(int[] tab)
+        {
+            Console.WriteLine("Histogramme de l'image : \n");
+            for(int i =0; i < tab.Length; i++)
+            {
+                if(i < 10)
+                {
+                    Console.Write(" ." + i + "   ");
+                }
+                else if (i<100)
+                {
+                    Console.Write(" ." + i + "  ");
+                }
+                else
+                {
+                    Console.Write(" ." + i + " ");
+                }
+                
+            }
+            Console.WriteLine();
+            for (int i = 0; i < tab.Length; i++)
+            {
+                //if (tab[i] < 10)
+                {
+                    Console.Write(" |" + tab[i] + "   ");
+                }
+                
+
+            }
+        }
+        public MyImage Histogramme()
+        {
+            int[] Rouge = new int[256];
+            int[] Vert = new int[256];
+            int[] Bleu = new int[256];
+            Pixel[,] His = new Pixel[600, 768];
+            
+            for (int i =0; i < Rouge.Length; i++)
+            {
+                Rouge[i] = 0;
+                Vert[i] = 0;
+                Bleu[i] = 0;
+            }
+
+            
+
+            for(int i = 0; i < image.GetLength(0); i++)
+            {
+                for(int j =0; j<image.GetLength(1); j++)
+                {
+                    Rouge[image[i, j].Red]++;
+                    Vert[image[i, j].Green]++;
+                    Bleu[image[i, j].Blue]++;
+                }
+            }
+
+            for (int i = 0; i < His.GetLength(0); i++)
+            {
+                for (int j = 0; j < His.GetLength(1); j++)
+                {
+                    His[i, j] = new Pixel(0, 0, 0); // image noire
+                }
+            }
+
+            for (int i = 0; i < His.GetLength(0); i++)
+            {
+                for (int j = 0; j < His.GetLength(1); j++)
+                {
+                    if (j < 256&&Rouge[j]!=0)
+                    {
+                        His[i, j].Red = 255;
+                        Rouge[j]--;
+                    }
+                    else if (j < 512 && j>=256&& Vert[j-256] != 0)
+                    {
+                        His[i, j].Green = 255;
+                        Vert[j-256]--;
+                    }
+                    else if(j>=512&&Bleu[j-512] != 0)
+                    {
+                        His[i, j].Blue = 255;
+                        Bleu[j-512]--;
+                    }
+                }
+            }
+
+            int tailleFichierRes = tailleOffset + His.GetLength(0) * His.GetLength(1) * 3;
+           // AffichageHistogramme(Rouge);
+            MyImage resultat = new MyImage(His, typeImage, tailleFichierRes, tailleOffset, His.GetLength(1), His.GetLength(0), nombreDeBitsCouleurs);
+            return resultat;
+        }
+        #endregion
+
+
+
     }
 }
