@@ -11,7 +11,7 @@ namespace Manon_Aubry_Manon_Goffinet
     {
         static void Main(string[] args)
         {            
-            string fileN = "test001.bmp";
+            string fileN = "Test001.bmp";
             MyImage image = new MyImage(fileN);
             //image1.From_Image_To_File("sortie.bmp");
 
@@ -21,8 +21,6 @@ namespace Manon_Aubry_Manon_Goffinet
 
             //byte[] tableauLargeur = image1.Convertir_Int_To_Endian(image1.LargeurImage);
             //byte[] tableauLargeur2 = image1.Convertir_Int_To_Endian2(image1.LargeurImage);
-
-
 
             //MyImage imageGrey = image.ConvertToGrey();
             //imageGrey.From_Image_To_File("sortieGrey.bmp");
@@ -47,25 +45,25 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage imageRenforcementDesBords = image.RenforcementDesBords();
             //imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");
 
-            MyImage Histogramme  = image.Histogramme();
-            Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
-            /*MyImage imageFlou = image.Flou();
-            imageFlou.From_Image_To_File("sortie-Flou.bmp");
+            //MyImage Histogramme  = image.Histogramme();
+            //Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
 
-            MyImage imageRepoussage = image.Repoussage();
-            imageRepoussage.From_Image_To_File("sortie-Repoussage.bmp");
-
-            MyImage imagedétectionDesBords = image.DétectionDesBords();
-            imagedétectionDesBords.From_Image_To_File("sortie-DétectionDesBords.bmp");
-
-            MyImage imageRenforcementDesBords = image.RenforcementDesBords();
-            imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");*/
-
-            MyImage imageFractale = image.Fractale();
+            /*MyImage imageFractaleNOIR = image.FractaleNOIR();
             Console.WriteLine("fin");
-            imageFractale.From_Image_To_File("sortie-Fractale.bmp");
-            Console.WriteLine("fin");
+            imageFractaleNOIR.From_Image_To_File("sortie-FractaleNOIR.bmp");
+            Console.WriteLine("fin");*/
 
+            /*MyImage imageFractaleCOULEUR = image.FractaleCOULEURS();
+            Console.WriteLine("fin");
+            imageFractaleCOULEUR.From_Image_To_File("sortie-FractaleCOULEURS.bmp");
+            Console.WriteLine("fin");*/
+
+            MyImage ImageCoder  = image.CoderImage();
+            Console.WriteLine("fin");
+            ImageCoder.From_Image_To_File("sortieImageCoder.bmp");
+            Console.WriteLine("fin");
+            
+            
             Console.ReadKey();
         }
     }

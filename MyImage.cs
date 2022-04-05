@@ -776,200 +776,315 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region Fractale
-        public MyImage Fractale()
+        public MyImage FractaleCOULEURS()
+        {
+            try
+            {
+                double x1 = -2.1;
+                double x2 = 0.6;
+                double y1 = -1.2;
+                double y2 = 1.2;
+                int zoom = 100; //pour une distance de 1 sur le plan, on a 100 pixels sur l'image
+                double iteration_Max = 50 * image.GetLength(1) / 240;
+                int imageX = (int)((x2 - x1) * zoom + 1);
+                int imageY = (int)((y2 - y1) * zoom + 1);
+                Pixel[,] resultat = new Pixel[imageX, imageY];
+
+                for (int a = 0; a < resultat.GetLength(0); a++) //remplir la matrice de pixel noir
+                {
+                    for (int b = 0; b < resultat.GetLength(1); b++)
+                    {
+                        resultat[a, b] = new Pixel(0, 0, 0);
+                    }
+                }
+
+                for (int x = 0; x < imageX; x++)
+                {
+                    for (int y = 0; y < imageY; y++)
+                    {
+                        double cR = x / zoom + x1;
+                        double cI = y / zoom + y1;
+                        double zR = 0;
+                        double zI = 0;
+                        int i = 0;
+
+                        do
+                        {
+                            double tmp = zR;
+                            zR = Math.Pow(zR, 2) - Math.Pow(zI, 2) + cR;
+                            zI = 2 * zI * tmp + cI;
+                            i++;
+                        } while ((zR * zR + zI * zI) < 4 && i < iteration_Max);
+
+                        if (i == iteration_Max)
+                        {
+                            resultat[x, y] = new Pixel(0, 0, 0);
+                            //Console.Write(resultat[x, y] + " ");
+                        }
+                        else
+                        {
+                            resultat[x, y] = new Pixel(0, 0, (byte)(i * 255 / iteration_Max)); //(byte)((10 * i) % 256), (byte)((3 * i) % 256), (byte)((1 * i) % 256));  
+                                                                                               //Console.Write(resultat[x, y] + " ");
+                        }
+                        //Console.Write(zR+" "+zI+"  "+i+" "+iteration_Max);
+                        //i++;
+                    }
+                }
+                MyImage res = new MyImage(resultat, typeImage, tailleOffset + (resultat.GetLength(1) * resultat.GetLength(0) * 3), tailleOffset, resultat.GetLength(1), resultat.GetLength(0), nombreDeBitsCouleurs);
+
+                return res;
+                //screen.set_at((x, y), ((3 * n) % 256, (1 * n) % 256, (10 * n) % 256))   ---(byte)((3 * i) % 256), (byte)((1 * i) % 256), (byte)((10 * i) % 256)
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
+            
+        }
+
+        public MyImage FractaleNOIR()
         {
             double x1 = -2.1;
             double x2 = 0.6;
             double y1 = -1.2;
             double y2 = 1.2;
-            int zoom = 100; //pour une distance de 1 sur le plan, on a 100 pixels sur l'image
-            double iteration_Max = 50;
+            double iteration_Max = 50*image.GetLength(1)/240;
 
-            double imageX = (x2 - x1) * zoom;
-            double imageY = (y2 - y1) * zoom;
-            Pixel[,] resultat = new Pixel[(int)imageX, (int)imageY];
+            int imageX = image.GetLength(0);
+            int imageY = image.GetLength(1);
+
+            double zoomX = imageX / (x2 - x1);
+            double zoomY = imageY / (y2 - y1);
+
+            Pixel[,] resultat = new Pixel[imageX, imageY];
 
             for (int a = 0; a < resultat.GetLength(0); a++) //remplir la matrice de pixel noir
             {
                 for (int b = 0; b < resultat.GetLength(1); b++)
                 {
-                    resultat[a, b] = new Pixel(0, 0, 0);
+                    resultat[a, b] = new Pixel(255, 255, 255);
                 }
             }
 
             for (int x = 0; x < imageX; x++)
             {
-                for(int y = 0; y < imageY; y++)
+                for (int y = 0; y < imageY; y++)
                 {
-                    double cR = x / zoom + x1;
-                    double cI = y / zoom + y1;
+                    double cR = x / zoomX + x1;
+                    double cI = y / zoomY + y1;
                     double zR = 0;
                     double zI = 0;
                     int i = 0;
 
-                    double tmp = zR;
-                    zR = Math.Pow(zR, 2) - Math.Pow(zI, 2) + cR;
-                    zI = 2 * zI * tmp + cI;
-
-                    while(zR * zR + zI * zI < 4 && i < iteration_Max)
+                    do
                     {
-                        if (i == iteration_Max)
-                        {
-                            resultat[x, x] = new Pixel(255, 255, 255);
-                            //Console.Write(resultat[x, y] + " ");
-                        }
-                        else
-                        {                           
-                            resultat[x, x] = new Pixel(0, 0, (byte)(i * 255 / iteration_Max));
-                            //Console.Write(resultat[x, y] + " ");
-                        }
-                        //Console.Write(zR+" "+zI+"  "+i+" "+iteration_Max);
+                        double tmp = zR;
+                        zR = Math.Pow(zR, 2) - Math.Pow(zI, 2) + cR;
+                        zI = 2 * zI * tmp + cI;
                         i++;
+                    } while (zR * zR + zI * zI < 4 && i < iteration_Max);
+
+                    if (i == iteration_Max)
+                    {
+                        resultat[x, y] = new Pixel(0, 0, 0);
+                        //Console.Write(resultat[x, y] + " ");
                     }
                 }
             }
-            MyImage res = new MyImage(resultat, typeImage, tailleOffset+(resultat.GetLength(1) * resultat.GetLength(0) * 3), tailleOffset, resultat.GetLength(1), resultat.GetLength(0), nombreDeBitsCouleurs);
+            MyImage res = new MyImage(resultat, typeImage, tailleOffset + (resultat.GetLength(1) * resultat.GetLength(0) * 3), tailleOffset, resultat.GetLength(1), resultat.GetLength(0), nombreDeBitsCouleurs);
 
-            return res;
-
-        }
-        #endregion
-
-        #region  Repoussage
-        public MyImage Repoussage()
-        {
-            int[,] noyau = { { 0, 1, 2 }, { -1, 1, 1 }, { -2, -1, 0 } };
-            MyImage res = Convolution(noyau);
-            return res;
-        }
-        #endregion
-
-        #region Détection des bords
-        public MyImage DétectionDesBords()
-        {
-            int[,] noyau = { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };
-            MyImage res = Convolution(noyau);
-            return res;
-        }
-        #endregion
-
-        #region Renforcement des bords
-        public MyImage RenforcementDesBords()
-        {
-            int[,] noyau = { { 0, 0, 0 }, { -1, 1, 0 }, { 0, 0, 0 } };
-            MyImage res = Convolution(noyau);
             return res;
         }
         #endregion
 
         #region Histogramme
 
-        public void AffichageHistogramme(int[] tab)
+        /*public void AffichageHistogramme(int[] tab)
+    {
+        Console.WriteLine("Histogramme de l'image : \n");
+        for(int i =0; i < tab.Length; i++)
         {
-            Console.WriteLine("Histogramme de l'image : \n");
-            for(int i =0; i < tab.Length; i++)
+            if(i < 10)
             {
-                if(i < 10)
-                {
-                    Console.Write(" ." + i + "   ");
-                }
-                else if (i<100)
-                {
-                    Console.Write(" ." + i + "  ");
-                }
-                else
-                {
-                    Console.Write(" ." + i + " ");
-                }
-                
+                Console.Write(" ." + i + "   ");
             }
-            Console.WriteLine();
-            for (int i = 0; i < tab.Length; i++)
+            else if (i<100)
             {
-                //if (tab[i] < 10)
-                {
-                    Console.Write(" |" + tab[i] + "   ");
-                }
-                
+                Console.Write(" ." + i + "  ");
+            }
+            else
+            {
+                Console.Write(" ." + i + " ");
+            }
 
+        }
+        Console.WriteLine();
+        for (int i = 0; i < tab.Length; i++)
+        {
+            //if (tab[i] < 10)
+            {
+                Console.Write(" |" + tab[i] + "   ");
+            }
+
+
+        }
+    }
+    public MyImage Histogramme()
+    {
+        int[] Rouge = new int[256];
+        int[] Vert = new int[256];
+        int[] Bleu = new int[256];
+        Pixel[,] His;
+
+        for (int i =0; i < Rouge.Length; i++)
+        {
+            Rouge[i] = 0;
+            Vert[i] = 0;
+            Bleu[i] = 0;
+        }
+
+
+        int max = 0;
+        for(int i = 0; i < image.GetLength(0); i++)
+        {
+            for(int j =0; j<image.GetLength(1); j++)
+            {
+                Rouge[image[i, j].Red]++;
+                Vert[image[i, j].Green]++;
+                Bleu[image[i, j].Blue]++;
+                if(Rouge[image[i, j].Red]>= Vert[image[i, j].Green] && Rouge[image[i, j].Red]>=Bleu[image[i, j].Blue] && Rouge[image[i, j].Red] >=max)
+                {
+                    max = Rouge[image[i, j].Red];
+                }
+                else if(Vert[image[i, j].Green] >= Rouge[image[i, j].Red] && Vert[image[i, j].Green] >= Bleu[image[i, j].Blue] && Vert[image[i, j].Green] >= max)
+                {
+                    max = Vert[image[i, j].Green];
+                }
+                else if(Bleu[image[i, j].Blue] >= Rouge[image[i, j].Red] && Bleu[image[i, j].Blue]>= Vert[image[i, j].Green] && Bleu[image[i, j].Blue] >= max)
+                {
+                    max = Bleu[image[i, j].Blue];
+                }
             }
         }
-        public MyImage Histogramme()
+        His = new Pixel[max, 768];
+        for (int i = 0; i < His.GetLength(0); i++)
         {
-            int[] Rouge = new int[256];
-            int[] Vert = new int[256];
-            int[] Bleu = new int[256];
-            Pixel[,] His;
-            
-            for (int i =0; i < Rouge.Length; i++)
+            for (int j = 0; j < His.GetLength(1); j++)
             {
-                Rouge[i] = 0;
-                Vert[i] = 0;
-                Bleu[i] = 0;
+                His[i, j] = new Pixel(0, 0, 0); // image noire
             }
-
-
-            int max = 0;
-            for(int i = 0; i < image.GetLength(0); i++)
-            {
-                for(int j =0; j<image.GetLength(1); j++)
-                {
-                    Rouge[image[i, j].Red]++;
-                    Vert[image[i, j].Green]++;
-                    Bleu[image[i, j].Blue]++;
-                    if(Rouge[image[i, j].Red]>= Vert[image[i, j].Green] && Rouge[image[i, j].Red]>=Bleu[image[i, j].Blue] && Rouge[image[i, j].Red] >=max)
-                    {
-                        max = Rouge[image[i, j].Red];
-                    }
-                    else if(Vert[image[i, j].Green] >= Rouge[image[i, j].Red] && Vert[image[i, j].Green] >= Bleu[image[i, j].Blue] && Vert[image[i, j].Green] >= max)
-                    {
-                        max = Vert[image[i, j].Green];
-                    }
-                    else if(Bleu[image[i, j].Blue] >= Rouge[image[i, j].Red] && Bleu[image[i, j].Blue]>= Vert[image[i, j].Green] && Bleu[image[i, j].Blue] >= max)
-                    {
-                        max = Bleu[image[i, j].Blue];
-                    }
-                }
-            }
-            His = new Pixel[max, 768];
-            for (int i = 0; i < His.GetLength(0); i++)
-            {
-                for (int j = 0; j < His.GetLength(1); j++)
-                {
-                    His[i, j] = new Pixel(0, 0, 0); // image noire
-                }
-            }
-
-            for (int i = 0; i < His.GetLength(0); i++)
-            {
-                for (int j = 0; j < His.GetLength(1); j++)
-                {
-                    if (j < 256&&Rouge[j]!=0)
-                    {
-                        His[i, j].Red = 255;
-                        Rouge[j]--;
-                    }
-                    else if (j < 512 && j>=256&& Vert[j-256] != 0)
-                    {
-                        His[i, j].Green = 255;
-                        Vert[j-256]--;
-                    }
-                    else if(j>=512&&Bleu[j-512] != 0)
-                    {
-                        His[i, j].Blue = 255;
-                        Bleu[j-512]--;
-                    }
-                }
-            }
-
-            int tailleFichierRes = tailleOffset + His.GetLength(0) * His.GetLength(1) * 3;
-           // AffichageHistogramme(Rouge);
-            MyImage resultat = new MyImage(His, typeImage, tailleFichierRes, tailleOffset, His.GetLength(1), His.GetLength(0), nombreDeBitsCouleurs);
-            return resultat;
         }
+
+        for (int i = 0; i < His.GetLength(0); i++)
+        {
+            for (int j = 0; j < His.GetLength(1); j++)
+            {
+                if (j < 256&&Rouge[j]!=0)
+                {
+                    His[i, j].Red = 255;
+                    Rouge[j]--;
+                }
+                else if (j < 512 && j>=256&& Vert[j-256] != 0)
+                {
+                    His[i, j].Green = 255;
+                    Vert[j-256]--;
+                }
+                else if(j>=512&&Bleu[j-512] != 0)
+                {
+                    His[i, j].Blue = 255;
+                    Bleu[j-512]--;
+                }
+            }
+        }
+
+        int tailleFichierRes = tailleOffset + His.GetLength(0) * His.GetLength(1) * 3;
+       // AffichageHistogramme(Rouge);
+        MyImage resultat = new MyImage(His, typeImage, tailleFichierRes, tailleOffset, His.GetLength(1), His.GetLength(0), nombreDeBitsCouleurs);
+        return resultat;
+    }*/
         #endregion
 
+        #region Coder une image
+        public MyImage CoderImage()
+        {
+            try
+            {
+                Pixel[,] resul1 = new Pixel[image.GetLength(0), image.GetLength(1)]; //matrice résultat n°1
+                
+                for (int i = 0; i < image.GetLength(0); i++) //met l'image en noir et blanc (pas de gris)
+                {
+                    for (int u = 0; u < image.GetLength(1); u++)
+                    {
+                        double valeur = image[i, u].Red + image[i, u].Blue + image[i, u].Green;
 
+                        if ((valeur / 3) < 127.5) resul1[i, u] = new Pixel(0, 0, 0);
+                        else resul1[i, u] = new Pixel(255, 255, 255);
+                    }
+                }
+
+                //création d'un tableau aléatoire de 0 et 1
+                //il a la même taille que l'image à chiffrer : chaque case = un bit (0 ou 1)
+                int[] tabAléatoire = new int[image.GetLength(0) * image.GetLength(1)];
+                int[,] resul2 = new int[image.GetLength(0), image.GetLength(1)]; // matrice résultat n°2
+                Random aleatoire = new Random();
+                for (int i = 0; i < tabAléatoire.Length; i++)
+                {
+                    int entier = aleatoire.Next(2); //Génère un entier aléatoire positif : 0 ou 1
+                    tabAléatoire[i] = entier;
+                }
+
+                //chiffrage entre le tableau aléatoire et l'image source avec XOR (OU EXCLUSIF) 
+                int a = 0;
+                for (int i = 0; i < resul1.GetLength(0); i++)
+                {
+                    for (int u = 0; u < resul1.GetLength(1); u++)
+                    {
+                        if (tabAléatoire[a] == 0 && resul1[i, u].Red == 0) resul2[i, u] = 0;
+                        if (tabAléatoire[a] == 1 && resul1[i, u].Red == 0) resul2[i, u] = 1;
+                        if (tabAléatoire[a] == 0 && resul1[i, u].Red == 1) resul2[i, u] = 1;
+                        if (tabAléatoire[a] == 1 && resul1[i, u].Red == 1) resul2[i, u] = 0;
+                        a++;
+                    }
+                }
+
+                //on applique les biPixel clé :
+                //si on a 0 ds la matrice source resul2, on met un pixel blanc/noir dans la matrice résultat
+                //si on a 1 ds la matrice source resul2, on met un pixel noir/blanc dans la matrice résultat
+
+                Pixel[,] resul3 = new Pixel[resul1.GetLength(0), resul1.GetLength(1)*2]; //matrice résultat n°3
+                int j = 0;
+                for (int i = 0; i < resul2.GetLength(0); i++)
+                {
+                    for (int u = 0; u < resul2.GetLength(1); u++)
+                    {
+                        if (resul2[i, u] == 0)
+                        {
+                            resul3[i, j] = new Pixel(255, 255, 255);
+                            resul3[i, j + 1] = new Pixel(0, 0, 0);
+                        }
+                        if (resul2[i, u] == 1)
+                        {
+                            resul3[i, j] = new Pixel(0, 0, 0);
+                            resul3[i, j + 1] = new Pixel(255, 255, 255);
+                        }
+                        j+=2;
+                    }
+                    j = 0;
+                }
+                
+                MyImage res = new MyImage(resul3, typeImage, resul3.GetLength(1) * resul3.GetLength(0)*3+ tailleOffset, tailleOffset, resul3.GetLength(1), resul3.GetLength(0), nombreDeBitsCouleurs);
+                return res;
+            }
+            catch (Exception e)
+            {
+                MyImage image2 = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                Console.WriteLine(e.Message);
+                return image2;
+            }
+        }
+        #endregion
 
     }
 }
