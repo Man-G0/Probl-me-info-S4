@@ -263,6 +263,18 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <param name="file">emplacement et nom du document.bmp à créer</param>
         public void From_Image_To_File(string myfile)
         {
+            int ajout = 0;
+            if ((largeurImage * (nombreDeBitsCouleurs / 8)) % 4 != 0)
+            {
+                ajout = 4 - (largeurImage * (nombreDeBitsCouleurs / 8) % 4);
+            }
+            int complementTailleIm = hauteurImage * ((nombreDeBitsCouleurs / 8 * largeurImage) + ajout);
+            if (complementTailleIm != 0)
+            {
+                tailleFichier = tailleOffset + complementTailleIm;
+            }
+            
+
             byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage, 4);
             byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset, 4);
             byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs, 2);
@@ -496,13 +508,22 @@ namespace Manon_Aubry_Manon_Goffinet
         public Pixel[,] Rotation90(Pixel[,] imag, int hauteurImageRes, int largeurImageRes, int n)
         {
             Pixel[,] im = new Pixel[hauteurImageRes, largeurImageRes];
+
             for (int i = 0; i < hauteurImageRes; i++)
+            {
+                for (int j = 0; j < largeurImageRes; j++)
+                {
+                    im[i, j] = new Pixel(0, 0, 0);
+                }
+            }
+                    for (int i = 0; i < hauteurImageRes; i++)
             {
                 for (int j = 0; j < largeurImageRes; j++)
                 {
                     if (n == 90)
                     {
                         im[i, j] = imag[j, i];
+                        //Console.WriteLine("f");
                     }
                     else if(n == 180)
                     {
@@ -516,10 +537,11 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         im[i, j] = imag[i, j];
                     }
-                    
+
                     
                 }
             }
+            //Console.WriteLine("fini");
             return im;
         }
         public MyImage Rotation(int angleDegré)
@@ -528,16 +550,30 @@ namespace Manon_Aubry_Manon_Goffinet
             //try
             {
                 while (angleDegré > 360) angleDegré = angleDegré - 360;                
-                Pixel[,] im = new Pixel [image.GetLength(0),image.GetLength(1)];
+                Pixel[,] im = new Pixel [hauteurImage,largeurImage];
                 int tailleFichierRes = tailleFichier;
                 int largeurImageRes = largeurImage;
                 int hauteurImageRes = hauteurImage;
-                
+                for (int i = 0; i < hauteurImageRes; i++)
+                {
+                    for (int j = 0; j < largeurImageRes; j++)
+                    {
+                        im[i, j] = image[i, j];
+                    }
+                }
 
-                
+
                 if (angleDegré % 90 == 0)
                 {
-                    Pixel[,] imag=im;
+                    Console.WriteLine("a");
+                    Pixel[,] imag=new Pixel [im.GetLength(0),im.GetLength(1)];
+                    for(int i = 0; i<hauteurImageRes; i++)
+                    {
+                        for(int j =0; j<largeurImageRes; j++)
+                        {
+                            imag[i, j] = im[i, j];
+                        }
+                    }
                     for (int i = 0; i < angleDegré / 90; i++)
                     {
                         
@@ -546,25 +582,30 @@ namespace Manon_Aubry_Manon_Goffinet
                          hauteurImageRes = a;
                          
                     }
+                    Console.WriteLine(hauteurImageRes + " " + largeurImageRes);
                     im = Rotation90(imag, hauteurImageRes, largeurImageRes, angleDegré);
+                    
                 }
-                else if (angleDegré%90!=0)
+                else 
                 {
                     
                     int angleRestant = angleDegré % 90; // si on a 184 récupère 4 
                     int angle90 = angleDegré-angleRestant;// avec l'ex d'au dessus récupère 180
-                    Console.WriteLine(angle90);
-
-                    Pixel[,] imag = im;
+                    int largeurImage90 = largeurImage;
+                    int hauteurImage90 = hauteurImage;
+                    //Console.WriteLine(angle90);
+                    //Console.WriteLine("angle " + angleRestant);
+                    Pixel[,] Rot90;// Image tournée de 90 degré le nombre de fois nécessaire pour ne plus qu'avoir un angle < 90° a tourner
+                    
                     for (int i = 0; i < angle90 / 90; i++)
                     {
 
-                        int a = largeurImageRes;
-                        largeurImageRes = hauteurImageRes;
-                        hauteurImageRes = a;
+                        int a = largeurImage90;
+                        largeurImage90 = hauteurImage90;
+                        hauteurImage90 = a;
 
                     }
-                    im = Rotation90(imag, hauteurImageRes, largeurImageRes, angle90);
+                    Rot90 = Rotation90(im, hauteurImage90, largeurImage90, angle90);
 
 
                     double angle = Math.PI * angleRestant / 180; //passage en radiant de l'angle restant
@@ -572,26 +613,39 @@ namespace Manon_Aubry_Manon_Goffinet
                     double cos = Math.Cos(angle);
 
 
-                    hauteurImageRes = Math.Abs((int)Math.Round(cos * hauteurImage + sin * largeurImage));
-                    largeurImageRes = Math.Abs((int)Math.Round(cos* largeurImage + sin * hauteurImage));
+                    hauteurImageRes = (int)Math.Round(cos * hauteurImage90 + sin * largeurImage90); // a partir de la hauteur et largeur de l'image résultat des rotations de 90 on recalcule la hauteur et la largeu rde l'image
+                    largeurImageRes = (int)Math.Round(cos * largeurImage90 + sin * hauteurImage90);
+
 
                     int ajout = 0;
                     int complementTailleIm = 0;
-                    if ((largeurImageRes * (nombreDeBitsCouleurs / 8)) % 4 != 0)
+                    if ((largeurImageRes * (nombreDeBitsCouleurs / 8)) % 4 != 0|| (hauteurImageRes * (nombreDeBitsCouleurs / 8)) % 4 != 0)
                     {
-                        ajout = 4 - (largeurImageRes * (nombreDeBitsCouleurs / 8) % 4); 
+                        ajout = 4 - (largeurImageRes * (nombreDeBitsCouleurs / 8) % 4)+ (hauteurImageRes * (nombreDeBitsCouleurs / 8)) % 4 ;
                     }
+                   
                     complementTailleIm = hauteurImageRes * ((nombreDeBitsCouleurs / 8 * largeurImageRes) + ajout);
 
                     
+
                     if (complementTailleIm != 0)
                     {
                         tailleFichierRes = tailleOffset + complementTailleIm;
+                        if ((largeurImageRes * (nombreDeBitsCouleurs / 8)) % 4 != 0)
+                        {
+                            largeurImageRes = largeurImageRes / 4 + largeurImageRes;
+                        }
+
+                        if((hauteurImageRes * (nombreDeBitsCouleurs / 8)) % 4 != 0)
+                        {
+                            hauteurImageRes = hauteurImageRes / 4 + hauteurImageRes;
+                        }
                     }
                     else
                     {
-                        tailleFichierRes = tailleOffset + 3*largeurImageRes*hauteurImageRes;
+                        tailleFichierRes = tailleOffset + 3 * largeurImageRes * hauteurImageRes;
                     }
+
 
                     im = new Pixel[hauteurImageRes, largeurImageRes];
 
@@ -599,24 +653,23 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         for (int j = 0; j < largeurImageRes; j++)
                         {
-                            im[i,j] = new Pixel(0,0,0); //remplissage de la matrice en noir pour que toute les pixels de l'image soient remplies
+                            im[i, j] = new Pixel(0, 0, 0); //remplissage de la matrice en noir pour que toute les pixels de l'image soient remplies
                         }
                     }
 
-                    
-                    for (double i = 0; i < hauteurImage-0.5; i+=0.5)
+
+
+                    for (double i = 0; i < hauteurImage90 - 0.5; i+=0.5)
                     {
-                        for (double j = 0; j < largeurImage-0.5; j+=0.5)
+                        for (double j = 0; j < largeurImage90 - 0.5; j+=0.5)
                         {
-                            im[(int)Math.Floor(Math.Sin(angle) * j + Math.Cos(angle) * i),      (int)Math.Floor(Math.Sin(angle) * (hauteurImage - 1) + Math.Cos(angle) * j - Math.Cos(angle) * i)] = image[(int)Math.Floor(i), (int)Math.Floor(j)];
-                            //im[(int)Math.Floor(sin * (largeurImage - 1) + sin * j - Math.Sin(angle) * i), (int)Math.Floor(cos * j + sin * i)] = image[(int)Math.Floor(i), (int)Math.Floor(j)];
-
+                            im[(int)Math.Floor(sin*(largeurImage90 - 1) - sin * j + cos * i), (int)Math.Floor(cos* j + sin * i)] = Rot90[(int)Math.Floor(i), (int)Math.Floor(j)];
                         }
                     }
 
 
 
-
+                  
 
                 }
                 MyImage resul = new MyImage(im, typeImage, tailleFichierRes, tailleOffset, largeurImageRes, hauteurImageRes, nombreDeBitsCouleurs);
@@ -832,33 +885,6 @@ namespace Manon_Aubry_Manon_Goffinet
 
             return res;
 
-        }
-        #endregion
-
-        #region  Repoussage
-        public MyImage Repoussage()
-        {
-            int[,] noyau = { { 0, 1, 2 }, { -1, 1, 1 }, { -2, -1, 0 } };
-            MyImage res = Convolution(noyau);
-            return res;
-        }
-        #endregion
-
-        #region Détection des bords
-        public MyImage DétectionDesBords()
-        {
-            int[,] noyau = { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };
-            MyImage res = Convolution(noyau);
-            return res;
-        }
-        #endregion
-
-        #region Renforcement des bords
-        public MyImage RenforcementDesBords()
-        {
-            int[,] noyau = { { 0, 0, 0 }, { -1, 1, 0 }, { 0, 0, 0 } };
-            MyImage res = Convolution(noyau);
-            return res;
         }
         #endregion
 
