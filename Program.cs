@@ -27,8 +27,8 @@ namespace Manon_Aubry_Manon_Goffinet
 
             //MyImage imageAgrandir = image1.Agrandir();
             //imageAgrandir.From_Image_To_File("sortie6.bmp");
-            //MyImage ImageRotation = image.Rotation(200);
-            //ImageRotation.From_Image_To_File("sortieRotation.bmp");
+            MyImage ImageRotation = image.Rotation(100);
+            ImageRotation.From_Image_To_File("sortieRotation.bmp");
 
             //MyImage imageReduire = image.Réduire();
             //imageReduire.From_Image_To_File("sortie7.bmp");
