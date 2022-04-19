@@ -11,7 +11,7 @@ namespace Manon_Aubry_Manon_Goffinet
     {
         static void Main(string[] args)
         {            
-            string fileN = "Test001.bmp";
+            string fileN = "lena.bmp";
             MyImage image = new MyImage(fileN);
             //image1.From_Image_To_File("sortie.bmp");
 
@@ -27,8 +27,8 @@ namespace Manon_Aubry_Manon_Goffinet
 
             //MyImage imageAgrandir = image1.Agrandir();
             //imageAgrandir.From_Image_To_File("sortie6.bmp");
-            MyImage ImageRotation = image.Rotation(100);
-            ImageRotation.From_Image_To_File("sortieRotation.bmp");
+            //MyImage ImageRotation = image.Rotation(100);
+            //ImageRotation.From_Image_To_File("sortieRotation.bmp");
 
             //MyImage imageReduire = image.Réduire();
             //imageReduire.From_Image_To_File("sortie7.bmp");
@@ -58,12 +58,21 @@ namespace Manon_Aubry_Manon_Goffinet
             imageFractaleCOULEUR.From_Image_To_File("sortie-FractaleCOULEURS.bmp");
             Console.WriteLine("fin");*/
 
+            /*MyImage NOIRetBLANC = image.NoirETBlanc();
+            Console.WriteLine("fin");
+            NOIRetBLANC.From_Image_To_File("sortieImageEnNoirEtBlanc.bmp");
+            Console.WriteLine("fin");*/
+
             MyImage ImageCoder  = image.CoderImage();
             Console.WriteLine("fin");
             ImageCoder.From_Image_To_File("sortieImageCoder.bmp");
             Console.WriteLine("fin");
-            
-            
+
+            MyImage ImageDECoder = image.DECoderImage();
+            Console.WriteLine("fin");
+            ImageDECoder.From_Image_To_File("sortieImageDECoder.bmp");
+            Console.WriteLine("fin");
+
             Console.ReadKey();
         }
     }

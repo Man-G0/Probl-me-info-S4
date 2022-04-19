@@ -16,6 +16,7 @@ namespace Manon_Aubry_Manon_Goffinet
         int largeurImage;
         int hauteurImage;
         int nombreDeBitsCouleurs;
+        int[] tabAléatoire;
 
 
         /// <summary>
@@ -189,6 +190,10 @@ namespace Manon_Aubry_Manon_Goffinet
         {
             get { return nombreDeBitsCouleurs; }
         }
+        public int[] TabAléatoire
+        {
+            get { return tabAléatoire; }
+        }
 
 
         #endregion
@@ -349,6 +354,23 @@ namespace Manon_Aubry_Manon_Goffinet
                 }
             }
             File.WriteAllBytes(myfile, tab);
+        }
+        #endregion
+
+        #region matrice noir/blanche
+        public Pixel[,] MatriceNOIRouBLANCHE(Pixel[,]mat,char C)
+        {
+            Pixel NOIR = new Pixel(0, 0, 0);              
+            Pixel BLANC = new Pixel(255, 255, 255);
+            for (int i = 0; i < image.GetLength(0); i++) //met l'image en noir et blanc (pas de gris)
+            {
+                for (int u = 0; u < image.GetLength(1); u++)
+                {
+                    if(C =='N') mat[i, u] = NOIR;
+                    if (C == 'B') mat[i, u] = BLANC;
+                }
+            }
+            return mat;
         }
         #endregion
 
@@ -721,14 +743,8 @@ namespace Manon_Aubry_Manon_Goffinet
                 //resultat = resultat.ConvertToGrey();
 
                 
-                Pixel[,] imagecalcul = new Pixel[image.GetLength(0), image.GetLength(1)];
-                for (int i = 0; i < image.GetLength(0); i++) //remplir la matrice de pixel noir
-                {
-                    for (int u = 0; u < image.GetLength(1); u++)
-                    {
-                        imagecalcul[i, u] = new Pixel(0, 0, 0);
-                    }
-                }
+                Pixel[,] mat0 = new Pixel[image.GetLength(0), image.GetLength(1)];
+                Pixel[,] imagecalcul = MatriceNOIRouBLANCHE(mat0, 'N');
 
                 //int[,] mat1 = { { -1, 0, 1 }, { -1, 0, 1 }, { -1, 0, 1 } }; //matrice double
                 //int[,] mat2 = { { -1, -1, -1 }, { 0, 0, 0 }, { 1, 1, 1 } };//matrice double
@@ -768,15 +784,8 @@ namespace Manon_Aubry_Manon_Goffinet
         {
             try
             {
-                Pixel[,] imagecalcul = new Pixel[image.GetLength(0), image.GetLength(1)];
-                for (int i = 0; i < image.GetLength(0); i++) //remplir la matrice de pixel noir
-                {
-                    for (int u = 0; u < image.GetLength(1); u++)
-                    {
-                        imagecalcul[i, u] = new Pixel(0, 0, 0);
-                    }
-                }
-
+                Pixel[,] mat0 = new Pixel[image.GetLength(0), image.GetLength(1)];
+                Pixel[,] imagecalcul = MatriceNOIRouBLANCHE(mat0, 'N');
 
                 int[,] mat = { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } };
                 for (int i = 1; i < image.GetLength(0) - 1; i++)
@@ -841,15 +850,10 @@ namespace Manon_Aubry_Manon_Goffinet
                 double iteration_Max = 50 * image.GetLength(1) / 240;
                 int imageX = (int)((x2 - x1) * zoom + 1);
                 int imageY = (int)((y2 - y1) * zoom + 1);
-                Pixel[,] resultat = new Pixel[imageX, imageY];
 
-                for (int a = 0; a < resultat.GetLength(0); a++) //remplir la matrice de pixel noir
-                {
-                    for (int b = 0; b < resultat.GetLength(1); b++)
-                    {
-                        resultat[a, b] = new Pixel(0, 0, 0);
-                    }
-                }
+                Pixel[,] mat0 = new Pixel[imageX, imageY];
+                Pixel[,] resultat = MatriceNOIRouBLANCHE(mat0, 'N'); //mettre la fonction en noir
+
 
                 for (int x = 0; x < imageX; x++)
                 {
@@ -911,15 +915,8 @@ namespace Manon_Aubry_Manon_Goffinet
             double zoomX = imageX / (x2 - x1);
             double zoomY = imageY / (y2 - y1);
 
-            Pixel[,] resultat = new Pixel[imageX, imageY];
-
-            for (int a = 0; a < resultat.GetLength(0); a++) //remplir la matrice de pixel noir
-            {
-                for (int b = 0; b < resultat.GetLength(1); b++)
-                {
-                    resultat[a, b] = new Pixel(255, 255, 255);
-                }
-            }
+            Pixel[,] mat0 = new Pixel[imageX, imageY];
+            Pixel[,] resultat = MatriceNOIRouBLANCHE(mat0, 'N'); //mettre la fonction en noir
 
             for (int x = 0; x < imageX; x++)
             {
@@ -1021,14 +1018,8 @@ namespace Manon_Aubry_Manon_Goffinet
                 }
             }
         }
-        His = new Pixel[max, 768];
-        for (int i = 0; i < His.GetLength(0); i++)
-        {
-            for (int j = 0; j < His.GetLength(1); j++)
-            {
-                His[i, j] = new Pixel(0, 0, 0); // image noire
-            }
-        }
+        Pixel[,] mat0 = new Pixel[max, 768];
+        His = MatriceNOIRouBLANCHE(mat0, 'N'); //mettre la fonction en noir
 
         for (int i = 0; i < His.GetLength(0); i++)
         {
@@ -1059,6 +1050,35 @@ namespace Manon_Aubry_Manon_Goffinet
     }*/
         #endregion
 
+        #region NOIR et BLANC
+        public MyImage NoirETBlanc()
+        {
+            try
+            {
+                Pixel[,] resul1 = new Pixel[image.GetLength(0), image.GetLength(1)]; 
+
+                for (int i = 0; i < image.GetLength(0); i++) //met l'image en noir et blanc (pas de gris)
+                {
+                    for (int u = 0; u < image.GetLength(1); u++)
+                    {
+                        double valeur = image[i, u].Red + image[i, u].Blue + image[i, u].Green;
+
+                        if ((valeur / 3) <= 127) resul1[i, u] = new Pixel(0, 0, 0);
+                        else resul1[i, u] = new Pixel(255, 255, 255);
+                    }
+                }
+                MyImage res = new MyImage(resul1, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return res;
+                }
+            catch (Exception e)
+            {
+                MyImage image2 = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                Console.WriteLine(e.Message);
+                return image2;
+            }
+        }
+        #endregion
+
         #region Coder une image
         public MyImage CoderImage()
         {
@@ -1072,20 +1092,20 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         double valeur = image[i, u].Red + image[i, u].Blue + image[i, u].Green;
 
-                        if ((valeur / 3) < 127.5) resul1[i, u] = new Pixel(0, 0, 0);
+                        if ((valeur / 3) <= 127) resul1[i, u] = new Pixel(0, 0, 0);
                         else resul1[i, u] = new Pixel(255, 255, 255);
                     }
                 }
 
                 //création d'un tableau aléatoire de 0 et 1
                 //il a la même taille que l'image à chiffrer : chaque case = un bit (0 ou 1)
-                int[] tabAléatoire = new int[image.GetLength(0) * image.GetLength(1)];
+                tabAléatoire = new int[image.GetLength(0) * image.GetLength(1)];
                 int[,] resul2 = new int[image.GetLength(0), image.GetLength(1)]; // matrice résultat n°2
                 Random aleatoire = new Random();
-                for (int i = 0; i < tabAléatoire.Length; i++)
+                for (int i = 0; i < TabAléatoire.Length; i++)
                 {
                     int entier = aleatoire.Next(2); //Génère un entier aléatoire positif : 0 ou 1
-                    tabAléatoire[i] = entier;
+                    TabAléatoire[i] = entier;
                 }
 
                 //chiffrage entre le tableau aléatoire et l'image source avec XOR (OU EXCLUSIF) 
@@ -1094,10 +1114,10 @@ namespace Manon_Aubry_Manon_Goffinet
                 {
                     for (int u = 0; u < resul1.GetLength(1); u++)
                     {
-                        if (tabAléatoire[a] == 0 && resul1[i, u].Red == 0) resul2[i, u] = 0;
-                        if (tabAléatoire[a] == 1 && resul1[i, u].Red == 0) resul2[i, u] = 1;
-                        if (tabAléatoire[a] == 0 && resul1[i, u].Red == 1) resul2[i, u] = 1;
-                        if (tabAléatoire[a] == 1 && resul1[i, u].Red == 1) resul2[i, u] = 0;
+                        if (TabAléatoire[a] == 0 && resul1[i, u].Red == 0) resul2[i, u] = 0;
+                        if (TabAléatoire[a] == 1 && resul1[i, u].Red == 0) resul2[i, u] = 1;
+                        if (TabAléatoire[a] == 0 && resul1[i, u].Red == 1) resul2[i, u] = 1;
+                        if (TabAléatoire[a] == 1 && resul1[i, u].Red == 1) resul2[i, u] = 0;
                         a++;
                     }
                 }
@@ -1129,6 +1149,57 @@ namespace Manon_Aubry_Manon_Goffinet
                 
                 MyImage res = new MyImage(resul3, typeImage, resul3.GetLength(1) * resul3.GetLength(0)*3+ tailleOffset, tailleOffset, resul3.GetLength(1), resul3.GetLength(0), nombreDeBitsCouleurs);
                 return res;
+            }
+            catch (Exception e)
+            {
+                MyImage image2 = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                Console.WriteLine(e.Message);
+                return image2;
+            }
+        }
+        #endregion
+
+        #region Décoder une image
+        public MyImage DECoderImage()
+        {
+            try
+            {
+                Pixel NOIR = new Pixel(0, 0, 0);              //création d'un pixel noir pour pouvoir comparer facilement dans le for suivant
+                Pixel BLANC = new Pixel(255, 255, 255);         //création d'un pixel blanc pour pouvoir comparer facilement dans le for suivant
+
+                Pixel[,] mat0 = new Pixel[image.GetLength(0), image.GetLength(1)];//matrice résultat n°1
+                Pixel[,] resul1 = MatriceNOIRouBLANCHE(mat0, 'N');
+                
+                int j = 0;
+                for (int i = 0; i < resul1.GetLength(0); i++)        //transformer l'image codé grace à la clé, en une image qui est le résultat du XOR
+                {
+                    for (int u = 0; u < resul1.GetLength(1); u++)
+                    {
+                        if (CoderImage().Image[i, j] == NOIR && CoderImage().Image[i, j + 1] == BLANC) resul1[i, u] = NOIR;
+                        if (CoderImage().Image[i, j] == BLANC && CoderImage().Image[i, j + 1] == NOIR) resul1[i, u] = BLANC;
+                        j += 2;
+                    }
+                    j = 0;
+                }
+
+                //déchiffrage entre le tableau aléatoire et l'image codé passer à la clé, avec XOR (OU EXCLUSIF) 
+
+                Pixel[,] resul2 = new Pixel[image.GetLength(0), image.GetLength(1)]; //matrice résultat n°2
+                int a = 0;
+                for (int i = 0; i < resul2.GetLength(0); i++)
+                {
+                    for (int u = 0; u < resul2.GetLength(1); u++)
+                    {
+                        if (TabAléatoire[a] == 0 && resul1[i, u] == NOIR) resul2[i, u] = NOIR;
+                        if (TabAléatoire[a] == 1 && resul1[i, u] == NOIR) resul2[i, u] = BLANC;
+                        if (TabAléatoire[a] == 0 && resul1[i, u] == BLANC) resul2[i, u] = BLANC;
+                        if (TabAléatoire[a] == 1 && resul1[i, u] == BLANC) resul2[i, u] = NOIR;
+                        a++;
+                    }
+                }
+
+                MyImage image2 = new MyImage(resul2, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return image2;
             }
             catch (Exception e)
             {
