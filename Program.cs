@@ -11,7 +11,7 @@ namespace Manon_Aubry_Manon_Goffinet
     {
         static void Main(string[] args)
         {            
-            string fileN = "Test001.bmp";
+            string fileN = "coco.bmp";
             MyImage image = new MyImage(fileN);
             //image1.From_Image_To_File("sortie.bmp");
 
@@ -27,8 +27,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
             //MyImage imageAgrandir = image1.Agrandir();
             //imageAgrandir.From_Image_To_File("sortie6.bmp");
-            MyImage ImageRotation = image.Rotation(100);
-            ImageRotation.From_Image_To_File("sortieRotation.bmp");
+
 
             //MyImage imageReduire = image.Réduire();
             //imageReduire.From_Image_To_File("sortie7.bmp");
@@ -58,9 +57,11 @@ namespace Manon_Aubry_Manon_Goffinet
             imageFractaleCOULEUR.From_Image_To_File("sortie-FractaleCOULEURS.bmp");
             Console.WriteLine("fin");*/
 
-            MyImage ImageCoder  = image.CoderImage();
-            Console.WriteLine("fin");
-            ImageCoder.From_Image_To_File("sortieImageCoder.bmp");
+            //MyImage ImageCoder  = image.CoderImage();
+            //ImageCoder.From_Image_To_File("sortieImageCoder.bmp");
+
+            MyImage ImageRotation = image.Rotation(10);
+            ImageRotation.From_Image_To_File("sortieRotation.bmp");
             Console.WriteLine("fin");
             
             
