@@ -211,7 +211,7 @@ namespace Manon_Aubry_Manon_Goffinet
             }
 
         }
-
+            
         #region public byte[] Convertir_Int_To_Endian(int val …)
         //public byte[] Convertir_Int_To_Endian(int val …) convertit un entier en séquence d’octets au format little endian 
         /// <summary>
