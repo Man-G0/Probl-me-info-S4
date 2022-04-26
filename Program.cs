@@ -60,7 +60,7 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage ImageCoder  = image.CoderImage();
             //ImageCoder.From_Image_To_File("sortieImageCoder.bmp");
 
-            MyImage ImageRotation = image.Rotation(10);
+            MyImage ImageRotation = image.Rotation(30);
             ImageRotation.From_Image_To_File("sortieRotation.bmp");
             Console.WriteLine("fin");
             

@@ -505,9 +505,16 @@ namespace Manon_Aubry_Manon_Goffinet
 
         #region Rotation
         
+        /// <summary>
+        /// calcule la hauteur et la largeur après des rotations successives de 90°
+        /// </summary>
+        /// <param name="hauteurImageRes">hauteur image</param>
+        /// <param name="largeurImageRes">largeur image</param>
+        /// <param name="angleDegré">angle multiple de 90 dont /90 donne le nombre rotations par 90 à réaliser</param>
+        /// <returns>un tableau de dim 2 de la forme {newHauteur,newLargeur}</returns>
         public int [] LongueuretHauteur90(int hauteurImageRes, int largeurImageRes, int angleDegré)
         {
-            for (int i = 1; i < angleDegré / 90; i++)
+            for (int i = 0; i < (angleDegré / 90); i++)
             {
 
                 int a = largeurImageRes;
@@ -517,10 +524,16 @@ namespace Manon_Aubry_Manon_Goffinet
             }
             return new int[] { hauteurImageRes, largeurImageRes };
         }
+        /// <summary>
+        /// applique a la matrice de pixel les rotations multiples de 90 correspondant à angleDegré
+        /// </summary>
+        /// <param name="imag">matrice de pixel à modifier</param>
+        /// <param name="hauteurImageRes">hauteur de l'image finale après rotation</param>
+        /// <param name="largeurImageRes">largeur de l'image finale après rotation</param>
+        /// <param name="angleDegré">angle en degré multiple de 90 dont il faut tourner l'image</param>
+        /// <returns>matrice de pixels avec la rotation demandée appliquée</returns>
         public Pixel[,] Rotation90(Pixel[,] imag, int hauteurImageRes, int largeurImageRes, int angleDegré)
         {
-            
-            Console.WriteLine(hauteurImageRes + " " + largeurImageRes);
 
             Pixel[,] im = new Pixel[hauteurImageRes, largeurImageRes];
 
@@ -542,7 +555,7 @@ namespace Manon_Aubry_Manon_Goffinet
                     else if (angleDegré == 90)
                     {
                         im[i, j] = imag[j, i];
-                        //Console.WriteLine("f");
+
                     }
                     else if(angleDegré == 180)
                     {
@@ -560,13 +573,12 @@ namespace Manon_Aubry_Manon_Goffinet
                     
                 }
             }
-            //Console.WriteLine("fini");
             return im;
         }
         public MyImage Rotation(int angleDegré)
 
         {
-            try
+            //try
             {
                 while (angleDegré > 360) angleDegré = angleDegré - 360;                
                 Pixel[,] im = new Pixel [hauteurImage,largeurImage];
@@ -684,12 +696,12 @@ namespace Manon_Aubry_Manon_Goffinet
                 
                 return resul;
             }
-            catch (Exception e)
+            /*catch (Exception e)
             {
                 Console.WriteLine("Problème dans la méthode Rotation : "+e.Message);
                 MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 return Im;
-            }
+            }*/
 
         }
         #endregion
