@@ -11,7 +11,7 @@ namespace Manon_Aubry_Manon_Goffinet
     {
         static void Main(string[] args)
         {            
-            string fileN = "coco.bmp";
+            string fileN = "lena.bmp";
             MyImage image = new MyImage(fileN);
             //image1.From_Image_To_File("sortie.bmp");
 
@@ -63,15 +63,21 @@ namespace Manon_Aubry_Manon_Goffinet
             NOIRetBLANC.From_Image_To_File("sortieImageEnNoirEtBlanc.bmp");
             Console.WriteLine("fin");*/
 
-            MyImage ImageCoder  = image.CoderImage();
+            /*MyImage ImageCoder  = image.CoderImage();
             Console.WriteLine("fin");
             ImageCoder.From_Image_To_File("sortieImageCoder.bmp");
             Console.WriteLine("fin");
 
-            MyImage ImageDECoder = image.DECoderImage();
+            MyImage ImageDECoder = image.DECoderImage(ImageCoder);
             Console.WriteLine("fin");
-            ImageDECoder.From_Image_To_File("sortieImageDECoder.bmp");
+            ImageDECoder.From_Image_To_File("sortieImageDEcoder.bmp");
+            Console.WriteLine("fin");*/
+
+            MyImage QRcode = image.QRCodeV1();
             Console.WriteLine("fin");
+            QRcode.From_Image_To_File("sortieQRCodeV1.bmp");
+            Console.WriteLine("fin");
+
 
             Console.ReadKey();
         }
