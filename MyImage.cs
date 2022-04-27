@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Manon_Aubry_Manon_Goffinet
 {
-    class MyImage
+    public class MyImage
     {
         Pixel[,] image;
         string typeImage;
@@ -603,6 +603,8 @@ namespace Manon_Aubry_Manon_Goffinet
             //try
             {
                 while (angleDegré > 360) angleDegré = angleDegré - 360; // permet d'avoir l'angle correspondant en degré inférieur à 360
+                if (angleDegré < 0) angleDegré = 360 + angleDegré;
+                Console.WriteLine(angleDegré);
                 Pixel[,] im = new Pixel [hauteurImage,largeurImage];
                 int tailleFichierRes = tailleFichier;
                 int largeurImageRes = largeurImage;

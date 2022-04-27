@@ -76,8 +76,11 @@ namespace Manon_Aubry_Manon_Goffinet
            // MyImage QRcode = image.QRCodeV1();
 
             //QRcode.From_Image_To_File("sortieQRCodeV1.bmp");
-            MyImage ImageRotation = image.Rotation(25);
+            MyImage ImageRotation = image.Rotation(270);
             ImageRotation.From_Image_To_File("sortieRotation.bmp");
+
+            MyImage ImageRotation2 = image.Rotation(-90);
+            ImageRotation2.From_Image_To_File("sortieRotation2.bmp");
             Console.WriteLine("fin");
 
 
