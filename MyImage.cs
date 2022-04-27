@@ -1270,7 +1270,7 @@ namespace Manon_Aubry_Manon_Goffinet
                     for (int u = 0; u < QRc.GetLength(1); u++)
                     {
                         //if(i<=7 && u<=7) QRc[i, u] = NOIR;
-                        QRc[i, u] = BLANC; // new Pixel(120, 120, 120);
+                        QRc[i, u] = new Pixel(200, 200, 200); // new Pixel(120, 120, 120);
                     }
                 }
                 /*QRc[0, 0] = NOIR;
@@ -1283,12 +1283,11 @@ namespace Manon_Aubry_Manon_Goffinet
                 int a = 0;
                 for(int i = 0; i < 7; i++)
                 {
-                    if (i == 1 || i==5) a++;
+                    if (i == 2 || i==4) a++;
                     for(int u = 0; u < 7; u++)
                     {
                         QRc[i, u + a] = NOIR;   //en bas à gauche
-
-                        //QRc[QRc.GetLength(0) - 1 - i, u] = NOIR;  //en bas à gauche
+                        QRc[QRc.GetLength(0) - 1 - i, QRc.GetLength(1)-1 - u] = NOIR;  //en haut à gauche
                         //QRc[i, QRc.GetLength(1) - 1 - u] = NOIR;  //en haut à droite
                     }
                 }
