@@ -7,13 +7,13 @@ using System.IO;
 
 namespace Manon_Aubry_Manon_Goffinet
 {
-    class Pixel
+    public class Pixel
     {
         byte blue;
         byte red;
         byte green;
 
-        public Pixel (byte blue, byte red, byte green)
+        public Pixel (byte red, byte green, byte blue)
         {
             this.blue = blue;
             this.red = red;
@@ -41,7 +41,7 @@ namespace Manon_Aubry_Manon_Goffinet
         
         public string toString()
         {
-            string a = blue + " " + red + " " + green;
+            string a = red + " " + green + " " + blue;
             return a;
         }
     }

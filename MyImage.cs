@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Manon_Aubry_Manon_Goffinet
 {
-    class MyImage
+    public class MyImage
     {
         Pixel[,] image;
         string typeImage;
@@ -214,7 +214,7 @@ namespace Manon_Aubry_Manon_Goffinet
             }
 
         }
-
+            
         #region public byte[] Convertir_Int_To_Endian(int val …)
         //public byte[] Convertir_Int_To_Endian(int val …) convertit un entier en séquence d’octets au format little endian 
         /// <summary>
@@ -526,9 +526,16 @@ namespace Manon_Aubry_Manon_Goffinet
 
         #region Rotation
         
+        /// <summary>
+        /// calcule la hauteur et la largeur après des rotations successives de 90°
+        /// </summary>
+        /// <param name="hauteurImageRes">hauteur image</param>
+        /// <param name="largeurImageRes">largeur image</param>
+        /// <param name="angleDegré">angle multiple de 90 dont /90 donne le nombre rotations par 90 à réaliser</param>
+        /// <returns>un tableau de dim 2 de la forme {newHauteur,newLargeur}</returns>
         public int [] LongueuretHauteur90(int hauteurImageRes, int largeurImageRes, int angleDegré)
         {
-            for (int i = 1; i < angleDegré / 90; i++)
+            for (int i = 0; i < (angleDegré / 90); i++)
             {
 
                 int a = largeurImageRes;
@@ -538,42 +545,49 @@ namespace Manon_Aubry_Manon_Goffinet
             }
             return new int[] { hauteurImageRes, largeurImageRes };
         }
-        public Pixel[,] Rotation90(Pixel[,] imag, int hauteurImageRes, int largeurImageRes, int angleDegré)
+        /// <summary>
+        /// applique a la matrice de pixel les rotations multiples de 90 correspondant à angleDegré
+        /// </summary>
+        /// <param name="imag">matrice de pixel à modifier</param>
+        /// <param name="hauteurImageRes">hauteur de l'image finale après rotation</param>
+        /// <param name="largeurImageRes">largeur de l'image finale après rotation</param>
+        /// <param name="angleDegré">angle en degré multiple de 90 dont il faut tourner l'image</param>
+        /// <returns>matrice de pixels avec la rotation demandée appliquée</returns>
+        public Pixel[,] Rotation90(Pixel[,] imag, int hauteurImage, int largeurImage, int angle)
         {
-            
-            Console.WriteLine(hauteurImageRes + " " + largeurImageRes);
 
-            Pixel[,] im = new Pixel[hauteurImageRes, largeurImageRes];
+            Pixel[,] im = new Pixel[hauteurImage, largeurImage];
 
-            for (int i = 0; i < hauteurImageRes; i++)
+            for (int i = 0; i < hauteurImage; i++)
             {
-                for (int j = 0; j < largeurImageRes; j++)
+                for (int j = 0; j < largeurImage; j++)
                 {
                     im[i, j] = new Pixel(0, 0, 0);
                 }
             }
-            for (int i = 0; i < hauteurImageRes; i++)
+            for (int i = 0; i < hauteurImage; i++)
             {
-                for (int j = 0; j < largeurImageRes; j++)
+                for (int j = 0; j < largeurImage; j++)
                 {
-                    if (angleDegré == 0)
+                    if (angle == 0)
                     {
                         im[i, j] = imag[i, j];
                     }
-                    else if (angleDegré == 90)
+                    else if (angle == 90)
+                    {
+                        im[i, j] = imag[largeurImage - 1 - j, hauteurImage - 1 - i];
+
+                    }
+                    else if(angle == 180)
+                    {
+                        im[i, j] = imag[hauteurImage - 1 - i, largeurImage - 1 - j];
+                    }
+                    else if (angle == 270)
                     {
                         im[i, j] = imag[j, i];
-                        //Console.WriteLine("f");
+                        
                     }
-                    else if(angleDegré == 180)
-                    {
-                        im[i, j] = imag[hauteurImageRes - 1 - i, largeurImageRes - 1 - j];
-                    }
-                    else if (angleDegré == 270)
-                    {
-                        im[i, j] = imag[largeurImageRes - 1 - j, hauteurImageRes - 1 - i];
-                    }
-                    else if (angleDegré == 360)
+                    else if (angle== 360)
                     {
                         im[i, j] = imag[i, j];
                     }
@@ -581,15 +595,16 @@ namespace Manon_Aubry_Manon_Goffinet
                     
                 }
             }
-            //Console.WriteLine("fini");
             return im;
         }
         public MyImage Rotation(int angleDegré)
 
         {
-            try
+            //try
             {
-                while (angleDegré > 360) angleDegré = angleDegré - 360;                
+                while (angleDegré > 360) angleDegré = angleDegré - 360; // permet d'avoir l'angle correspondant en degré inférieur à 360
+                if (angleDegré < 0) angleDegré = 360 + angleDegré;
+                Console.WriteLine(angleDegré);
                 Pixel[,] im = new Pixel [hauteurImage,largeurImage];
                 int tailleFichierRes = tailleFichier;
                 int largeurImageRes = largeurImage;
@@ -602,9 +617,9 @@ namespace Manon_Aubry_Manon_Goffinet
                         im[i, j] = image[i, j];
                     }
                 }
-
-
-                if (angleDegré % 90 == 0)
+                
+                
+               if (angleDegré % 90 == 0)
                 {
                     //Console.WriteLine("a");
                     Pixel[,] imag=new Pixel [im.GetLength(0),im.GetLength(1)];
@@ -626,15 +641,20 @@ namespace Manon_Aubry_Manon_Goffinet
                 {
                     
                     int angleRestant = angleDegré % 90; // si on a 184 récupère 4 
+                    
                     int angle90 = angleDegré-angleRestant;// avec l'ex d'au dessus récupère 180
                     
                     Pixel[,] Rot90;// Image tournée de 90 degré le nombre de fois nécessaire pour ne plus qu'avoir un angle < 90° a tourner
 
+                    if (angle90 !=0)
+                    {
+                        int[] hauteurLargeur = LongueuretHauteur90(hauteurImage, largeurImage, angle90);
+                        hauteurImageRes = hauteurLargeur[0];
+                        largeurImageRes = hauteurLargeur[1];
+                    }
                     
-                    int[] hauteurLargeur = LongueuretHauteur90(hauteurImageRes, largeurImageRes, angle90);
-                    hauteurImageRes = hauteurLargeur[0];
-                    largeurImageRes = hauteurLargeur[1];
-                    Rot90 = Rotation90(im, hauteurLargeur[0], hauteurLargeur[1], angle90);
+                    Rot90 = Rotation90(im, hauteurImageRes, largeurImageRes, angle90);
+
                     im = new Pixel[Rot90.GetLength(0), Rot90.GetLength(1)];
                     for (int i = 0; i < im.GetLength(0); i++)
                     {
@@ -643,74 +663,101 @@ namespace Manon_Aubry_Manon_Goffinet
                             im[i, j] = Rot90[i, j];
                         }
                     }
+                    
 
                     double angle = Math.PI * angleRestant / 180; //passage en radiant de l'angle restant
                     double sin = Math.Sin(angle);
                     double cos = Math.Cos(angle);
 
 
-                    hauteurImageRes = (int)Math.Round(cos * Rot90.GetLength(0) + sin * Rot90.GetLength(1)); // a partir de la hauteur et largeur de l'image résultat des rotations de 90 on recalcule la hauteur et la largeu rde l'image
-                    largeurImageRes = (int)Math.Round(cos * Rot90.GetLength(1) + sin * Rot90.GetLength(0));
+                    largeurImageRes = Convert.ToInt32(Math.Abs(cos * Rot90.GetLength(1) + sin * Rot90.GetLength(0))); // a partir de la hauteur et largeur de l'image résultat des rotations de 90 on recalcule la hauteur et la largeu rde l'image
+                    hauteurImageRes = Convert.ToInt32(Math.Abs(cos * Rot90.GetLength(0) + sin * Rot90.GetLength(1)));
+
+                    int centreImageL = Rot90.GetLength(1) / 2;
+                    int centreImageH = Rot90.GetLength(0) / 2;
+
+                    int centreImageResL = largeurImageRes / 2;
+                    int centreImageResH = hauteurImageRes / 2;
 
 
-                    int ajout = 0;
-                    int complementTailleIm = 0;
-                    if ((largeurImageRes * (nombreDeBitsCouleurs / 8)) % 4 != 0)
-                    {
-                        ajout = 4 - (largeurImageRes * (nombreDeBitsCouleurs / 8) % 4);
-                    }
+                    int centreImageIntermédiaireL = Convert.ToInt32(centreImageL * cos - centreImageH * sin);
+                    int centreImageIntermédiaireH = Convert.ToInt32(centreImageL * sin + centreImageH * cos);
+
+
                    
-                    complementTailleIm = hauteurImageRes * ((nombreDeBitsCouleurs / 8 * largeurImageRes) + ajout);
-
-                    
-
-                    if (complementTailleIm != 0)
-                    {
-                        tailleFichierRes = tailleOffset + complementTailleIm;
-                       
-                    }
-                    else
-                    {
-                        tailleFichierRes = tailleOffset + 3 * largeurImageRes * hauteurImageRes;
-                    }
 
 
                     im = new Pixel[hauteurImageRes, largeurImageRes];
 
+                    
 
-
-                    for (double i = 0; i < Rot90.GetLength(0) - 0.5; i+=0.5)
+                    for (double i = 0; i < Rot90.GetLength(0); i+=0.5)
                     {
-                        for (double j = 0; j < Rot90.GetLength(1) - 0.5; j+=0.5)
+                        for (double j = 0; j < Rot90.GetLength(1); j+=0.5)
                         {
-                            //im[(int)Math.Floor(sin * (Rot90.GetLength(1)- 1)+cos*(Rot90.GetLength(1)-1) - sin * j + cos * i), (int)Math.Floor(cos * j + sin * i+ sin * (Rot90.GetLength(0) - 1))] = Rot90[(int)Math.Floor(i), (int)Math.Floor(j)];
-                            //im[(int)Math.Floor(sin* (Rot90.GetLength(1) - 1)+sin*j+i*cos), (int)Math.Floor(cos*j+i*sin)] = Rot90[(int)Math.Floor(i), (int)Math.Floor(j)];
-                            im[(int)Math.Floor(sin * (Rot90.GetLength(1) - 1) - sin * j + cos * i), (int)Math.Floor(cos * j + sin * i)]= Rot90[(int)Math.Floor(i), (int)Math.Floor(j)];
+                            int x = (int)(sin * j + cos * i + centreImageResH - centreImageIntermédiaireH);
+                            int y = (int)(cos * j - sin * i + centreImageResL - centreImageIntermédiaireL);
+                            if (x>=0&&x<hauteurImageRes&& y >= 0 && y < hauteurImageRes)
+                            {
+                                im[x,y]= Rot90[(int)i, (int)j];
+                            }
+                            
                         }
                     }
                     for (int i = 0; i < hauteurImageRes; i++)
                     {
                         for (int j = 0; j < largeurImageRes; j++)
                         {
-                            if(im[i, j] == null)
+                            if (im[i, j] == null)
                             {
                                 im[i, j] = new Pixel(0, 0, 0); //remplissage de la matrice en noir pour que toute les pixels de l'image soient remplies
+                                /*if (j == 0 || i == 0)
+                                {
+                                    im[i, j] = new Pixel(255, 255, 255);
+                                }
+                                if (j == 0 && i == 0)
+                                {
+                                    im[i, j] = new Pixel(255, 0, 0);
+                                }*/
                             }
-                            
+
                         }
                     }
 
                 }
+                    
+                int ajout = 0;
+                int complementTailleIm = 0;
+                if ((largeurImageRes * (nombreDeBitsCouleurs / 8)) % 4 != 0)
+                {
+                    ajout = 4 - (largeurImageRes * (nombreDeBitsCouleurs / 8) % 4);
+                }
+
+                complementTailleIm = hauteurImageRes * ((nombreDeBitsCouleurs / 8 * largeurImageRes) + ajout);
+
+
+
+                if (complementTailleIm != 0)
+                {
+                    tailleFichierRes = tailleOffset + complementTailleIm;
+
+                }
+                else
+                {
+                    tailleFichierRes = tailleOffset + 3 * largeurImageRes * hauteurImageRes;
+                }
+                
+                
                 MyImage resul = new MyImage(im, typeImage, tailleFichierRes, tailleOffset, largeurImageRes, hauteurImageRes, nombreDeBitsCouleurs);
                 
                 return resul;
             }
-            catch (Exception e)
+            /*catch (Exception e)
             {
                 Console.WriteLine("Problème dans la méthode Rotation : "+e.Message);
                 MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 return Im;
-            }
+            }*/
 
         }
         #endregion
