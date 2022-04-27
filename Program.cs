@@ -11,7 +11,7 @@ namespace Manon_Aubry_Manon_Goffinet
     {
         static void Main(string[] args)
         {            
-            string fileN = "lena.bmp";
+            string fileN = "coco.bmp";
             MyImage image = new MyImage(fileN);
             //image1.From_Image_To_File("sortie.bmp");
 
@@ -73,10 +73,10 @@ namespace Manon_Aubry_Manon_Goffinet
             ImageDECoder.From_Image_To_File("sortieImageDEcoder.bmp");
             Console.WriteLine("fin");*/
 
-            MyImage QRcode = image.QRCodeV1();
-            Console.WriteLine("fin");
-            QRcode.From_Image_To_File("sortieQRCodeV1.bmp");
-            MyImage ImageRotation = image.Rotation(30);
+           // MyImage QRcode = image.QRCodeV1();
+
+            //QRcode.From_Image_To_File("sortieQRCodeV1.bmp");
+            MyImage ImageRotation = image.Rotation(25);
             ImageRotation.From_Image_To_File("sortieRotation.bmp");
             Console.WriteLine("fin");
 
