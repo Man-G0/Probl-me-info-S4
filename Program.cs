@@ -32,11 +32,15 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage imageReduire = image.Réduire();
             //imageReduire.From_Image_To_File("sortieRéduit.bmp");
 
-            //MyImage imageFlou = image.Flou();
-            //imageFlou.From_Image_To_File("sortie-Flou.bmp");
+            /*MyImage imageFlou = image.Flou();
+            Console.WriteLine("fin");
+            imageFlou.From_Image_To_File("sortie-Flou.bmp");
+            Console.WriteLine("fin");*/
 
-            MyImage imageRepoussage = image.Repoussage();
-            imageRepoussage.From_Image_To_File("sortie-Repoussage.bmp");
+            ///////////////////////
+            //MyImage imageRepoussage = image.Repoussage();
+            //imageRepoussage.From_Image_To_File("sortie-Repoussage.bmp");
+            /////////////////////////
 
             //MyImage imagedétectionDesBords = image.DétectionDesBords();
             //imagedétectionDesBords.From_Image_To_File("sortie-DétectionDesBords.bmp");
@@ -44,8 +48,8 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage imageRenforcementDesBords = image.RenforcementDesBords();
             //imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");
 
-            MyImage Histogramme  = image.Histogramme();
-            Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
+            //MyImage Histogramme  = image.Histogramme();
+            //Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
 
             /*MyImage imageFractaleNOIR = image.FractaleNOIR();
             Console.WriteLine("fin");
@@ -87,7 +91,6 @@ namespace Manon_Aubry_Manon_Goffinet
             MyImage ImageRotation2 = image.Rotation(-90);
             ImageRotation2.From_Image_To_File("sortieRotation2.bmp");
             Console.WriteLine("fin");*/
-
 
             Console.ReadKey();
         }

@@ -399,15 +399,13 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <returns></returns>
         public Pixel[,] MatriceNOIRouBLANCHE(Pixel[,]mat, char C)
         {
-            Pixel NOIR = new Pixel(0, 0, 0);          //création d'un pixel noir pour pouvoir comparer facilement dans le for suivant
-            Pixel BLANC = new Pixel(255, 255, 255);
 
             for (int i = 0; i < mat.GetLength(0); i++) //met l'image en noir et blanc (pas de gris)
             {
                 for (int u = 0; u < mat.GetLength(1); u++)
                 {
-                    if (C == 'N') mat[i, u] = NOIR; // new Pixel(0, 0, 0);
-                    if (C == 'B') mat[i, u] = BLANC; // new Pixel(255, 255, 255);
+                    if (C == 'N') mat[i, u] = new Pixel(0, 0, 0);
+                    if (C == 'B') mat[i, u] = new Pixel(255, 255, 255);
                 }
             }
             return mat;
@@ -879,21 +877,18 @@ namespace Manon_Aubry_Manon_Goffinet
                 //resultat = resultat.ConvertToGrey();
 
 
-                //Pixel[,] mat0 = new Pixel[image.GetLength(0), image.GetLength(1)];
-                //Pixel[,] imagecalcul = MatriceNOIRouBLANCHE(mat0, 'N');
+                Pixel[,] mat0 = new Pixel[image.GetLength(0), image.GetLength(1)];
+                Pixel[,] imagecalcul = MatriceNOIRouBLANCHE(mat0, 'N');
 
-                Pixel[,] imagecalcul = new Pixel[image.GetLength(0), image.GetLength(1)];
+                /*Pixel[,] imagecalcul = new Pixel[image.GetLength(0), image.GetLength(1)];
                
-                Pixel NOIR = new Pixel(0, 0, 0);          //création d'un pixel noir pour pouvoir comparer facilement dans le for suivant
-                Pixel BLANC = new Pixel(255, 255, 255);
-
                 for (int i = 0; i < imagecalcul.GetLength(0); i++) //met l'image en noir et blanc (pas de gris)
                 {
                     for (int u = 0; u < imagecalcul.GetLength(1); u++)
                     {
-                        imagecalcul[i, u] = NOIR; // new Pixel(0, 0, 0);
+                        imagecalcul[i, u] = new Pixel(0, 0, 0);
                     }
-                }
+                }*/
                     //int[,] mat1 = { { -1, 0, 1 }, { -1, 0, 1 }, { -1, 0, 1 } }; //matrice double
                     //int[,] mat2 = { { -1, -1, -1 }, { 0, 0, 0 }, { 1, 1, 1 } };//matrice double
                     //int[,] noyau = { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };  //matrice détection des bords  /docgimps.org
@@ -939,7 +934,7 @@ namespace Manon_Aubry_Manon_Goffinet
             {
                 Pixel[,] mat0 = new Pixel[image.GetLength(0), image.GetLength(1)];
                 Pixel[,] imagecalcul = MatriceNOIRouBLANCHE(mat0, 'N');
-               
+                                
                 int[,] mat = { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } };
                 for (int i = 1; i < image.GetLength(0) - 1; i++)
                 {
@@ -1052,7 +1047,7 @@ namespace Manon_Aubry_Manon_Goffinet
                 int imageY = (int)((y2 - y1) * zoom + 1);
 
                 Pixel[,] mat0 = new Pixel[imageX, imageY];
-                Pixel[,] resultat = MatriceNOIRouBLANCHE(mat0, 'N'); //mettre la fonction en noir
+                Pixel[,] resultat = MatriceNOIRouBLANCHE(mat0, 'B'); //mettre la fonction en noir
 
 
                 for (int x = 0; x < imageX; x++)
@@ -1080,7 +1075,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         }
                         else
                         {
-                            resultat[x, y] = new Pixel(0, 0, (byte)(i * 255 / iteration_Max)); //(byte)((10 * i) % 256), (byte)((3 * i) % 256), (byte)((1 * i) % 256));  
+                            resultat[x, y] = new Pixel((byte)(i * 255 / iteration_Max), 0, 0 ); //(byte)((10 * i) % 256), (byte)((3 * i) % 256), (byte)((1 * i) % 256));  
                                                                                                //Console.Write(resultat[x, y] + " ");
                         }
                         //Console.Write(zR+" "+zI+"  "+i+" "+iteration_Max);
@@ -1122,7 +1117,7 @@ namespace Manon_Aubry_Manon_Goffinet
                 double zoomY = imageY / (y2 - y1);
 
                 Pixel[,] mat0 = new Pixel[imageX, imageY];
-                Pixel[,] resultat = MatriceNOIRouBLANCHE(mat0, 'N'); //mettre la fonction en noir
+                Pixel[,] resultat = MatriceNOIRouBLANCHE(mat0, 'B'); //mettre la fonction en noir
 
                 for (int x = 0; x < imageX; x++)
                 {
