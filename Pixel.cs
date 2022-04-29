@@ -19,7 +19,7 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <param name="red">valeur du rouge du pixel</param>
         /// <param name="green">valeur du vert du pixel</param>
         /// <param name="blue">valeur du bleu du pixel</param>
-        public Pixel (byte red, byte green, byte blue)
+        public Pixel (byte blue , byte red, byte green)
         {
             this.blue = blue;
             this.red = red;

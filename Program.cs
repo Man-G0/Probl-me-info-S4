@@ -44,8 +44,8 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage imageRenforcementDesBords = image.RenforcementDesBords();
             //imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");
 
-            //MyImage Histogramme  = image.Histogramme();
-            //Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
+            MyImage Histogramme  = image.Histogramme();
+            Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
 
             /*MyImage imageFractaleNOIR = image.FractaleNOIR();
             Console.WriteLine("fin");
@@ -77,6 +77,9 @@ namespace Manon_Aubry_Manon_Goffinet
 
             /*ASCII a=new ASCII("HELLO WORLD");
             Console.Write(a.toString());*/
+
+            //QRcode.From_Image_To_File("sortieQRCodeV1.bmp");
+
 
             /*MyImage ImageRotation = image.Rotation(270);
             ImageRotation.From_Image_To_File("sortieRotation.bmp");
