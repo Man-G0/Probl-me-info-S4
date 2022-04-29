@@ -13,6 +13,12 @@ namespace Manon_Aubry_Manon_Goffinet
         byte red;
         byte green;
 
+        /// <summary>
+        /// constructeur de la classe Pixel qui prend en paramètres des valeurs pour le rouge, vert et bleu 
+        /// </summary>
+        /// <param name="red">valeur du rouge du pixel</param>
+        /// <param name="green">valeur du vert du pixel</param>
+        /// <param name="blue">valeur du bleu du pixel</param>
         public Pixel (byte red, byte green, byte blue)
         {
             this.blue = blue;
@@ -20,17 +26,28 @@ namespace Manon_Aubry_Manon_Goffinet
             this.green = green;
         }
         #region GetSet
+
+        /// <summary>
+        /// Méthode get et set de la valeur blue du pixel
+        /// </summary>
         public byte Blue
         {
             get { return blue; }
             set { blue = value; }
         }
+
+        /// <summary>
+        /// Méthode get et set de la valeur red du pixel
+        /// </summary>
         public byte Red
         {
             get { return red; }
             set { red = value; }
         }
 
+        /// <summary>
+        /// Méthode get et set de la valeur green du pixel
+        /// </summary>
         public byte Green
         {
             get { return green; }
@@ -38,7 +55,10 @@ namespace Manon_Aubry_Manon_Goffinet
         }
         #endregion
 
-        
+        /// <summary>
+        /// Méthode de description du pixel donnant la valeur rgb de ce dernier
+        /// </summary>
+        /// <returns>un string de la forme "valuered valuegreen valueblue"</returns>
         public string toString()
         {
             string a = red + " " + green + " " + blue;
