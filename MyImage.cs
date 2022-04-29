@@ -22,13 +22,13 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <summary>
         /// Constructeur créant une instance de MyImage a partir de tous les attributs de la classe.
         /// </summary>
-        /// <param name="image"></param>
-        /// <param name="typeImage"></param>
-        /// <param name="tailleFichier"></param>
-        /// <param name="tailleOffset"></param>
-        /// <param name="largeurImage"></param>
-        /// <param name="hauteurImage"></param>
-        /// <param name="nombreDeBitsCouleurs"></param>
+        /// <param name="image">matrice de pixels correspondant à l'image</param>
+        /// <param name="typeImage">format de l'image : BM pour bitmap par exemple</param>
+        /// <param name="tailleFichier">taille en nombre d'octets du fichier global de l'image</param>
+        /// <param name="tailleOffset">taille de l'offset en nombre d'octets</param>
+        /// <param name="largeurImage">largeur de l'image en pixels</param>
+        /// <param name="hauteurImage">hauteur de l'image en pixels</param>
+        /// <param name="nombreDeBitsCouleurs">nombre de bits par couleur</param>
         public MyImage(Pixel[,] image, string typeImage, int tailleFichier, int tailleOffset, int largeurImage, int hauteurImage, int nombreDeBitsCouleurs)
         {
             this.image = image;
@@ -158,35 +158,64 @@ namespace Manon_Aubry_Manon_Goffinet
         }
 
         #region Get&Set
-
+        /// <summary>
+        /// Méthode get de la matrice de pixel correspondant a l'image
+        /// </summary>
         public Pixel[,] Image
         {
             get { return image; }
         }
+
+        /// <summary>
+        /// Méthode get du type Image = BM par exemple
+        /// </summary>
         public string TypeImage
         {
             get { return typeImage; }
         }
+        /// <summary>
+        /// Méthode get de la taille fichier en octets
+        /// </summary>
         public int TailleFichier
         {
             get { return tailleFichier; }
         }
+
+        /// <summary>
+        /// Méthode get de la taille offset en octets
+        /// </summary>
         public int TailleOffset
         {
             get { return tailleOffset; }
         }
+
+        /// <summary>
+        /// Méthode get de la largeur image en pixel
+        /// </summary>
         public int LargeurImage
         {
             get { return largeurImage; }
         }
+
+        /// <summary>
+        /// Méthode get de la hauteur image en pixel
+        /// </summary>
         public int HauteurImage
         {
             get { return hauteurImage; }
         }
+
+        /// <summary>
+        /// Méthode get du nombre de bits couleurs
+        /// </summary>
         public int NombreDeBitsCouleurs
         {
             get { return nombreDeBitsCouleurs; }
         }
+
+        /// <summary>
+        /// Get et set de tab Aléatoire
+        /// </summary>
         public int[] TabAléatoire
         {
             get { return tabAléatoire; }
@@ -195,6 +224,11 @@ namespace Manon_Aubry_Manon_Goffinet
 
 
         #endregion
+
+        /// <summary>
+        /// Matrice permettant l'affichage d'une matrice de pixel
+        /// </summary>
+        /// <param name="tabPix">matrice de pixels a afficher</param>
         public void AfficherimPixel(Pixel[,] tabPix)
         {
             try
@@ -356,6 +390,13 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region matrice noir ou blanche
+
+        /// <summary>
+        /// Méthode renvoyant une matrice de pixels remplie de noir ou de blanc en fonction de C
+        /// </summary>
+        /// <param name="mat">matrice de pixels a mettre en noir ou blanc</param>
+        /// <param name="C">C = N ou B</param>
+        /// <returns></returns>
         public Pixel[,] MatriceNOIRouBLANCHE(Pixel[,]mat, char C)
         {
             Pixel NOIR = new Pixel(0, 0, 0);          //création d'un pixel noir pour pouvoir comparer facilement dans le for suivant
@@ -375,7 +416,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
         #region Effet miroir
         /// <summary>
-        /// recevoir une image et la transformée pour qu'elle devienne sont reflet dans un miroir
+        /// recevoir une image et la transformer pour qu'elle devienne son reflet dans un miroir
         /// </summary>
         public MyImage EffetMiroir()
         {
@@ -409,6 +450,10 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region Grey
+        /// <summary>
+        /// Transforme une image couleur en image en nuances de gris.
+        /// </summary>
+        /// <returns>image en nuances de nuit</returns>
         public MyImage ConvertToGrey()
         {
             try
@@ -436,6 +481,11 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region Agrandir et Réduire
+
+        /// <summary>
+        /// Crée une nouvelle instance de MyImage qui sera agrandi de n pixels
+        /// </summary>
+        /// <returns>une instance d'image agrandie</returns>
         public MyImage Agrandir()
         {
             try
@@ -597,6 +647,12 @@ namespace Manon_Aubry_Manon_Goffinet
             }
             return im;
         }
+
+        /// <summary>
+        /// Prend l'instance de MyImage et lui fait exécuter une rotation d'un angle quelconque en degré 
+        /// </summary>
+        /// <param name="angleDegré">angle en degré duquel l'image doit tourner</param>
+        /// <returns>une nouvelle instance d'image tournée de l'angle en entrée</returns>
         public MyImage Rotation(int angleDegré)
 
         {
@@ -763,32 +819,58 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region  Convolution
+
+        /// <summary>
+        /// Pour la convolution, calcule la valeur d'une couleur d'un pixel a placer dans la case de coordonnées (ligne, colonne) du résultat a partir du noyau et de la matrice de départ
+        /// </summary>
+        /// <param name="noyau">noyau de convolution (matrice 3*3 ou 9*9)</param>
+        /// <param name="resul">matrice de pixels dans laquelle on souhaite appliquer la convolution</param>
+        /// <param name="ligne">coordonnées de la ligne de la case dont on cherche à calculer la valeur après convolution</param>
+        /// <param name="colonne">coordonnées de la colonne de la case dont on cherche à calculer la valeur après convolution</param>
+        /// <param name="lettre">R, B ou G : correspond a quel couleur du pixel final on cherche à calculer</param>
+        /// <returns></returns>
         public int Somme(int[,] noyau, Pixel[,] resul, int ligne, int colonne,char lettre)
         {
-            int somme = 0;
-            int ligneNoyau = noyau.GetLength(0);
-            int colonneNoyau = noyau.GetLength(1);
-
-            for (int i = 0; i < ligneNoyau; i++)
+            try
             {
-                for (int u = 0; u < colonneNoyau; u++)
+                int somme = 0;
+                int ligneNoyau = noyau.GetLength(0);
+                int colonneNoyau = noyau.GetLength(1);
+
+                for (int i = 0; i < ligneNoyau; i++)
                 {
-                    /*int x = i + (ligne - ligneNoyau / 2);
-                    if (x < 0) x = resul.GetLength(0) - 1;
-                    if (x >= resul.GetLength(0)) x = 0;
-                    int y = u + (colonne - colonneNoyau / 2);
-                    if (y < 0) y = resul.GetLength(1) - 1;
-                    if (y >= resul.GetLength(1)) y = 0;
-                    somme += resul[x, y].Red * noyau[i, u];*/
-                    if (lettre == 'R') somme += resul[ligne - 1 + i, colonne - 1 + u].Red * noyau[i, u];
-                    if (lettre == 'B') somme += resul[ligne - 1 + i, colonne - 1 + u].Blue * noyau[i, u];
-                    if (lettre == 'G') somme += resul[ligne - 1 + i, colonne - 1 + u].Green * noyau[i, u];
+                    for (int u = 0; u < colonneNoyau; u++)
+                    {
+                        /*int x = i + (ligne - ligneNoyau / 2);
+                        if (x < 0) x = resul.GetLength(0) - 1;
+                        if (x >= resul.GetLength(0)) x = 0;
+                        int y = u + (colonne - colonneNoyau / 2);
+                        if (y < 0) y = resul.GetLength(1) - 1;
+                        if (y >= resul.GetLength(1)) y = 0;
+                        somme += resul[x, y].Red * noyau[i, u];*/
+                        if (lettre == 'R') somme += resul[ligne - 1 + i, colonne - 1 + u].Red * noyau[i, u];
+                        if (lettre == 'B') somme += resul[ligne - 1 + i, colonne - 1 + u].Blue * noyau[i, u];
+                        if (lettre == 'G') somme += resul[ligne - 1 + i, colonne - 1 + u].Green * noyau[i, u];
+                    }
                 }
+                if (somme < 0) somme = 0;
+                if (somme > 255) somme = 255;
+                return somme;
+
             }
-            if (somme < 0) somme = 0;
-            if (somme > 255) somme = 255;
-            return somme;
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return 0;
+            }
+            
         }
+
+        /// <summary>
+        /// Applique la convolution a partir du noyau souhaité
+        /// </summary>
+        /// <param name="noyau">noyau de convolution</param>
+        /// <returns></returns>
       
         public MyImage Convolution(int[,]noyau)
         {
@@ -834,6 +916,11 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region Flou
+
+        /// <summary>
+        /// Prend une instance de MyImage et la floute
+        /// </summary>
+        /// <returns>une nouvelle instance d'image floutée</returns>
         public MyImage Flou()
         {
             try
@@ -865,33 +952,80 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region  Repoussage
+
+        /// <summary>
+        /// Prend une instance de MyImage et repousse les bords
+        /// </summary>
+        /// <returns>une nouvelle instance avec les bords repoussés</returns>
         public MyImage Repoussage()
         {
-            int[,] noyau = { { 0, 1, 2 }, { -1, 1, 1 }, { -2, -1, 0 } };
-            MyImage res = Convolution(noyau);
-            return res;
+            try
+            {
+                int[,] noyau = { { 0, 1, 2 }, { -1, 1, 1 }, { -2, -1, 0 } };
+                MyImage res = Convolution(noyau);
+                return res;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
         }
         #endregion
 
         #region Détection des bords
+        /// <summary>
+        /// Prend une instance de MyImage et lui applique un filtre de détection des bords
+        /// </summary>
+        /// <returns></returns>
         public MyImage DétectionDesBords()
         {
-            int[,] noyau = { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };
-            MyImage res = Convolution(noyau);
-            return res;
+            try
+            {   
+                int[,] noyau = { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };
+                MyImage res = Convolution(noyau);
+                return res;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
+
         }
         #endregion
 
         #region Renforcement des bords
+
+        /// <summary>
+        /// Prend une instance de MyImage et lui applique un filtre de renforcement des bords
+        /// </summary>
+        /// <returns>Une nouvelle instance de MyImage avec le filtre renforcement des bords</returns>
         public MyImage RenforcementDesBords()
         {
-            int[,] noyau = { { 0, 0, 0 }, { -1, 1, 0 }, { 0, 0, 0 } };
-            MyImage res = Convolution(noyau);
-            return res;
+            try
+            {
+                int[,] noyau = { { 0, 0, 0 }, { -1, 1, 0 }, { 0, 0, 0 } };
+                MyImage res = Convolution(noyau);
+                return res;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
         }
         #endregion
 
         #region Fractale
+
+        /// <summary>
+        /// Prend une instance de MyImage et créé sa fractale associée en couleur
+        /// </summary>
+        /// <returns>une nouvelle instance de MyImage de fractale en couleur</returns>
         public MyImage FractaleCOULEURS()
         {
             try
@@ -952,89 +1086,106 @@ namespace Manon_Aubry_Manon_Goffinet
                 MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 return Im;
             }
-            
-        }
 
+        }
+       
+        ///<summary>
+        /// Prend une instance de MyImage et créé sa fractale associée en noir et blanc
+        /// </summary>
+        /// <returns>une nouvelle instance de MyImage de fractale en noir et blanc</returns>
         public MyImage FractaleNOIR()
         {
-            double x1 = -2.1;
-            double x2 = 0.6;
-            double y1 = -1.2;
-            double y2 = 1.2;
-            double iteration_Max = 50*image.GetLength(1)/240;
-
-            int imageX = image.GetLength(0);
-            int imageY = image.GetLength(1);
-
-            double zoomX = imageX / (x2 - x1);
-            double zoomY = imageY / (y2 - y1);
-
-            Pixel[,] mat0 = new Pixel[imageX, imageY];
-            Pixel[,] resultat = MatriceNOIRouBLANCHE(mat0, 'N'); //mettre la fonction en noir
-
-            for (int x = 0; x < imageX; x++)
+            try
             {
-                for (int y = 0; y < imageY; y++)
+                double x1 = -2.1;
+                double x2 = 0.6;
+                double y1 = -1.2;
+                double y2 = 1.2;
+                double iteration_Max = 50 * image.GetLength(1) / 240;
+
+                int imageX = image.GetLength(0);
+                int imageY = image.GetLength(1);
+
+                double zoomX = imageX / (x2 - x1);
+                double zoomY = imageY / (y2 - y1);
+
+                Pixel[,] mat0 = new Pixel[imageX, imageY];
+                Pixel[,] resultat = MatriceNOIRouBLANCHE(mat0, 'N'); //mettre la fonction en noir
+
+                for (int x = 0; x < imageX; x++)
                 {
-                    double cR = x / zoomX + x1;
-                    double cI = y / zoomY + y1;
-                    double zR = 0;
-                    double zI = 0;
-                    int i = 0;
-
-                    do
+                    for (int y = 0; y < imageY; y++)
                     {
-                        double tmp = zR;
-                        zR = Math.Pow(zR, 2) - Math.Pow(zI, 2) + cR;
-                        zI = 2 * zI * tmp + cI;
-                        i++;
-                    } while (zR * zR + zI * zI < 4 && i < iteration_Max);
+                        double cR = x / zoomX + x1;
+                        double cI = y / zoomY + y1;
+                        double zR = 0;
+                        double zI = 0;
+                        int i = 0;
 
-                    if (i == iteration_Max)
-                    {
-                        resultat[x, y] = new Pixel(0, 0, 0);
-                        //Console.Write(resultat[x, y] + " ");
+                        do
+                        {
+                            double tmp = zR;
+                            zR = Math.Pow(zR, 2) - Math.Pow(zI, 2) + cR;
+                            zI = 2 * zI * tmp + cI;
+                            i++;
+                        } while (zR * zR + zI * zI < 4 && i < iteration_Max);
+
+                        if (i == iteration_Max)
+                        {
+                            resultat[x, y] = new Pixel(0, 0, 0);
+                            //Console.Write(resultat[x, y] + " ");
+                        }
                     }
                 }
-            }
-            MyImage res = new MyImage(resultat, typeImage, tailleOffset + (resultat.GetLength(1) * resultat.GetLength(0) * 3), tailleOffset, resultat.GetLength(1), resultat.GetLength(0), nombreDeBitsCouleurs);
+                MyImage res = new MyImage(resultat, typeImage, tailleOffset + (resultat.GetLength(1) * resultat.GetLength(0) * 3), tailleOffset, resultat.GetLength(1), resultat.GetLength(0), nombreDeBitsCouleurs);
 
-            return res;
+                return res;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
         }
         #endregion
 
         #region Histogramme
 
+        /// <summary>
+        /// Permet d'afficher les valeurs successives de l'histogramme pour chaque pixel
+        /// </summary>
+        /// <param name="tab">tableau de valeurs de l'histogramme ass</param>
         public void AffichageHistogramme(int[] tab)
-    {
-        Console.WriteLine("Histogramme de l'image : \n");
-        for(int i =0; i < tab.Length; i++)
         {
-            if(i < 10)
+            Console.WriteLine("Histogramme de l'image : \n");
+            for(int i =0; i < tab.Length; i++)
             {
-                Console.Write(" ." + i + "   ");
-            }
-            else if (i<100)
-            {
-                Console.Write(" ." + i + "  ");
-            }
-            else
-            {
-                Console.Write(" ." + i + " ");
-            }
+                if(i < 10)
+                {
+                    Console.Write(" ." + i + "   ");
+                }
+                else if (i<100)
+                {
+                    Console.Write(" ." + i + "  ");
+                }
+                else
+                {
+                    Console.Write(" ." + i + " ");
+                }
 
-        }
-        Console.WriteLine();
-        for (int i = 0; i < tab.Length; i++)
-        {
+            }
+            Console.WriteLine();
+            for (int i = 0; i < tab.Length; i++)
+            {
             //if (tab[i] < 10)
-            {
+                {
                 Console.Write(" |" + tab[i] + "   ");
+                }
+
+
             }
-
-
-        }
-    }
+    }   
     public MyImage Histogramme()
     {
         int[] Rouge = new int[256];
@@ -1072,8 +1223,18 @@ namespace Manon_Aubry_Manon_Goffinet
                 }
             }
         }
-        Pixel[,] mat0 = new Pixel[max, 768];
-        His = MatriceNOIRouBLANCHE(mat0, 'N'); //mettre la fonction en noir
+        His = new Pixel[max, 768];
+
+         for (int i = 0; i < His.GetLength(0); i++)
+         {
+              for (int j = 0; j < His.GetLength(1); j++)
+              {
+                  if (His[i, j] == null)
+                  {
+                    His[i, j] = new Pixel(0, 0, 0);
+                  }
+              }
+         }
 
         for (int i = 0; i < His.GetLength(0); i++)
         {

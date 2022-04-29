@@ -45,8 +45,8 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage imageRenforcementDesBords = image.RenforcementDesBords();
             //imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");
 
-            //MyImage Histogramme  = image.Histogramme();
-            //Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
+            MyImage Histogramme  = image.Histogramme();
+            Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
 
             /*MyImage imageFractaleNOIR = image.FractaleNOIR();
             Console.WriteLine("fin");
@@ -76,12 +76,14 @@ namespace Manon_Aubry_Manon_Goffinet
            // MyImage QRcode = image.QRCodeV1();
 
             //QRcode.From_Image_To_File("sortieQRCodeV1.bmp");
-            MyImage ImageRotation = image.Rotation(270);
+
+
+            /*MyImage ImageRotation = image.Rotation(270);
             ImageRotation.From_Image_To_File("sortieRotation.bmp");
 
             MyImage ImageRotation2 = image.Rotation(-90);
             ImageRotation2.From_Image_To_File("sortieRotation2.bmp");
-            Console.WriteLine("fin");
+            Console.WriteLine("fin");*/
 
 
             Console.ReadKey();
