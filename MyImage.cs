@@ -390,9 +390,9 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         a[i, u] = image[i, j];
                         j--;
-                        Console.Write(a[i, u].toString() + "   ");
+                        //Console.Write(a[i, u].toString() + "   ");
                     }
-                    Console.WriteLine();
+                    //Console.WriteLine();
                 }
                 MyImage image2 = new MyImage(a, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
 
@@ -796,23 +796,35 @@ namespace Manon_Aubry_Manon_Goffinet
             {
                 //resultat = resultat.ConvertToGrey();
 
-                
-                Pixel[,] mat0 = new Pixel[image.GetLength(0), image.GetLength(1)];
-                Pixel[,] imagecalcul = MatriceNOIRouBLANCHE(mat0, 'N');
 
-                //int[,] mat1 = { { -1, 0, 1 }, { -1, 0, 1 }, { -1, 0, 1 } }; //matrice double
-                //int[,] mat2 = { { -1, -1, -1 }, { 0, 0, 0 }, { 1, 1, 1 } };//matrice double
-                //int[,] noyau = { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };  //matrice détection des bords  /docgimps.org
-                //int[,] noyau = { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };  //matrice détection des bords  /docgimps.org
-                //int[,] noyau = { { 0, 0, 0 }, { -1, 1, 0 }, { 0, 0, 0 } }; //matrice renforcement des bords /docgimps.org
-                //int[,] noyau = { { 0, 1, 2 }, { -1, 1, 1 }, { -2, -1, 0 } }; //matrice REPOUSSAGE /docgimps.org//
-                //int[,] noyau = { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } }; //matrice détection des bords  /wiki
-                //int[,] noyau = { { -1, 0, 1 }, { 0, 0, 0 }, { 1, 0, -1 } };  //matrice détection des bords  /wiki
-                //int[,] noyau = { { 1, 0, -1 }, { 0, 1, 0 }, { -1, 0, 1 } };  //test
-                //int[,] noyau = { { 1, 0, -1 }, { 1, 0, -1 }, { -1, 0, 1 } };  //test
-                //int[,] noyau = { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } };  //matrice test  /wiki
+                //Pixel[,] mat0 = new Pixel[image.GetLength(0), image.GetLength(1)];
+                //Pixel[,] imagecalcul = MatriceNOIRouBLANCHE(mat0, 'N');
 
-                for (int i = 1; i < image.GetLength(0) - 1; i++)
+                Pixel[,] imagecalcul = new Pixel[image.GetLength(0), image.GetLength(1)];
+               
+                Pixel NOIR = new Pixel(0, 0, 0);          //création d'un pixel noir pour pouvoir comparer facilement dans le for suivant
+                Pixel BLANC = new Pixel(255, 255, 255);
+
+                for (int i = 0; i < imagecalcul.GetLength(0); i++) //met l'image en noir et blanc (pas de gris)
+                {
+                    for (int u = 0; u < imagecalcul.GetLength(1); u++)
+                    {
+                        imagecalcul[i, u] = NOIR; // new Pixel(0, 0, 0);
+                    }
+                }
+                    //int[,] mat1 = { { -1, 0, 1 }, { -1, 0, 1 }, { -1, 0, 1 } }; //matrice double
+                    //int[,] mat2 = { { -1, -1, -1 }, { 0, 0, 0 }, { 1, 1, 1 } };//matrice double
+                    //int[,] noyau = { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };  //matrice détection des bords  /docgimps.org
+                    //int[,] noyau = { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };  //matrice détection des bords  /docgimps.org
+                    //int[,] noyau = { { 0, 0, 0 }, { -1, 1, 0 }, { 0, 0, 0 } }; //matrice renforcement des bords /docgimps.org
+                    //int[,] noyau = { { 0, 1, 2 }, { -1, 1, 1 }, { -2, -1, 0 } }; //matrice REPOUSSAGE /docgimps.org//
+                    //int[,] noyau = { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } }; //matrice détection des bords  /wiki
+                    //int[,] noyau = { { -1, 0, 1 }, { 0, 0, 0 }, { 1, 0, -1 } };  //matrice détection des bords  /wiki
+                    //int[,] noyau = { { 1, 0, -1 }, { 0, 1, 0 }, { -1, 0, 1 } };  //test
+                    //int[,] noyau = { { 1, 0, -1 }, { 1, 0, -1 }, { -1, 0, 1 } };  //test
+                    //int[,] noyau = { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } };  //matrice test  /wiki
+
+                    for (int i = 1; i < image.GetLength(0) - 1; i++)
                 {
                     for (int u = 1; u < image.GetLength(1) - 1; u++)
                     {
@@ -1358,6 +1370,8 @@ namespace Manon_Aubry_Manon_Goffinet
                 return image4;
             }
         }
+
+
         #endregion
     }
 }

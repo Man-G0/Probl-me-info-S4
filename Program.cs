@@ -15,29 +15,28 @@ namespace Manon_Aubry_Manon_Goffinet
             MyImage image = new MyImage(fileN);
             //image1.From_Image_To_File("sortie.bmp");
 
-            //MyImage image2 = image1.EffetMiroir();
-            //image2.From_Image_To_File("sortie3.bmp");
-            //image1.From_Image_To_File("sortie4.bmp");
+            //byte[] tableauLargeur = image.Convertir_Int_To_Endian(68,image.LargeurImage);
 
-            //byte[] tableauLargeur = image1.Convertir_Int_To_Endian(image1.LargeurImage);
-            //byte[] tableauLargeur2 = image1.Convertir_Int_To_Endian2(image1.LargeurImage);
+            //MyImage image2 = image.EffetMiroir();
+            //image2.From_Image_To_File("sortieEffetMiroir.bmp");
 
             //MyImage imageGrey = image.ConvertToGrey();
             //imageGrey.From_Image_To_File("sortieGrey.bmp");
 
-            //MyImage imageAgrandir = image1.Agrandir();
-            //imageAgrandir.From_Image_To_File("sortie6.bmp");
+            //MyImage imageAgrandir = image.Agrandir();
+            //imageAgrandir.From_Image_To_File("sortieAgrandir.bmp");
+
             //MyImage ImageRotation = image.Rotation(100);
             //ImageRotation.From_Image_To_File("sortieRotation.bmp");
 
             //MyImage imageReduire = image.Réduire();
-            //imageReduire.From_Image_To_File("sortie7.bmp");
+            //imageReduire.From_Image_To_File("sortieRéduit.bmp");
 
             //MyImage imageFlou = image.Flou();
             //imageFlou.From_Image_To_File("sortie-Flou.bmp");
 
-            //MyImage imageRepoussage = image.Repoussage();
-            //imageRepoussage.From_Image_To_File("sortie-Repoussage.bmp");
+            MyImage imageRepoussage = image.Repoussage();
+            imageRepoussage.From_Image_To_File("sortie-Repoussage.bmp");
 
             //MyImage imagedétectionDesBords = image.DétectionDesBords();
             //imagedétectionDesBords.From_Image_To_File("sortie-DétectionDesBords.bmp");
@@ -73,15 +72,18 @@ namespace Manon_Aubry_Manon_Goffinet
             ImageDECoder.From_Image_To_File("sortieImageDEcoder.bmp");
             Console.WriteLine("fin");*/
 
-           // MyImage QRcode = image.QRCodeV1();
-
+            //MyImage QRcode = image.QRCodeV1();
             //QRcode.From_Image_To_File("sortieQRCodeV1.bmp");
-            MyImage ImageRotation = image.Rotation(270);
+
+            /*ASCII a=new ASCII("HELLO WORLD");
+            Console.Write(a.toString());*/
+
+            /*MyImage ImageRotation = image.Rotation(270);
             ImageRotation.From_Image_To_File("sortieRotation.bmp");
 
             MyImage ImageRotation2 = image.Rotation(-90);
             ImageRotation2.From_Image_To_File("sortieRotation2.bmp");
-            Console.WriteLine("fin");
+            Console.WriteLine("fin");*/
 
 
             Console.ReadKey();
