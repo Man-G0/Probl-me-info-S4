@@ -76,11 +76,39 @@ namespace Manon_Aubry_Manon_Goffinet
             ImageDECoder.From_Image_To_File("sortieImageDEcoder.bmp");
             Console.WriteLine("fin");*/
 
-            //MyImage QRcode = image.QRCodeV1();
+            //int QRcode = QRCodeV1("HELLO WORLD");
+            //Console.WriteLine(QRcode);
+
+            string phrase = "HELLO WORLD";
+            List<byte> chaineASCII = new List<byte>();
+
+            chaineASCII.Add(0010);  // le type d'information est alphanumérique
+
+            int nbDeCaractère = 0;
+            int reste = 0;
+            int nbr = 0;
+            for (int i = 0; i < phrase.Length; i++)
+            {
+                ASCII valeurLettre = new ASCII(phrase[i]);
+                nbr = valeurLettre.Valeur;
+
+                while (nbr >= 0)
+                {
+                    reste = valeurLettre.Valeur % 2;
+                    nbr = nbr / 2;
+                    if (reste == 0) chaineASCII.Add(0);
+                    else chaineASCII.Add(1);
+                }
+
+                nbDeCaractère++;
+            }
+            byte nbDeCaractèreEnByte = (byte)nbDeCaractère;
+            Console.WriteLine(nbDeCaractèreEnByte);
+            Console.WriteLine(chaineASCII);
+
+
             //QRcode.From_Image_To_File("sortieQRCodeV1.bmp");
 
-            /*ASCII a=new ASCII("HELLO WORLD");
-            Console.Write(a.toString());*/
 
             //QRcode.From_Image_To_File("sortieQRCodeV1.bmp");
 

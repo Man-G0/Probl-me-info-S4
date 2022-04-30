@@ -1470,15 +1470,12 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region QR Code
-        public MyImage QRCodeV1()
+        public int QRCodeV1(string phrase)
         {
             try
             {
-                Pixel NOIR = new Pixel(0, 0, 0);          //création d'un pixel noir pour pouvoir comparer facilement dans le for suivant
-                Pixel BLANC = new Pixel(255, 255, 255);
-                
-                Pixel[,] QRc = new Pixel[21, 21];
-                QRc[0,0] = NOIR;
+                /*Pixel[,] QRc = new Pixel[21, 21];
+                QRc[0, 0] = new Pixel(0, 0, 0); ;
 
                 for (int i = 0; i < QRc.GetLength(0); i++) //mettre en bleu
                 {
@@ -1488,12 +1485,12 @@ namespace Manon_Aubry_Manon_Goffinet
                         QRc[i, u] = new Pixel(200, 200, 200); // new Pixel(120, 120, 120);
                     }
                 }
-                /*QRc[0, 0] = NOIR;
+                QRc[0, 0] = NOIR;
                 QRc[0, 1] = NOIR;
                 QRc[0, 6] = NOIR;
                 QRc[6, 6] = NOIR;
                 QRc[6, 1] = NOIR;
-                QRc[6, 8] = NOIR;*/
+                QRc[6, 8] = NOIR;
 
                 int a = 0;
                 for(int i = 0; i < 7; i++)
@@ -1501,18 +1498,31 @@ namespace Manon_Aubry_Manon_Goffinet
                     if (i == 2 || i==4) a++;
                     for(int u = 0; u < 7; u++)
                     {
-                        QRc[i, u + a] = NOIR;   //en bas à gauche
-                        QRc[QRc.GetLength(0) - 1 - i, QRc.GetLength(1)-1 - u] = NOIR;  //en haut à gauche
+                        QRc[i, u + a] = new Pixel(0, 0, 0); ;   //en bas à gauche
+                        QRc[QRc.GetLength(0) - 1 - i, QRc.GetLength(1)-1 - u] = new Pixel(0, 0, 0); ;  //en haut à gauche
                         //QRc[i, QRc.GetLength(1) - 1 - u] = NOIR;  //en haut à droite
                     }
                 }
 
                 MyImage resultat = new MyImage(QRc, typeImage, tailleOffset + QRc.GetLength(0) * QRc.GetLength(1) * 3, tailleOffset, QRc.GetLength(1), QRc.GetLength(0), nombreDeBitsCouleurs);
-                return resultat;
+                return resultat;*/
+
+                List<byte> chaineASCII = new List<byte>();
+                chaineASCII.Add(0010);  // le type d'information est alphanumérique
+
+                int nbDeCaractère = 0;
+                for(int i=0;i<phrase.Length;i++)
+                {
+                    nbDeCaractère++;
+                }
+                byte nbDeCaractèreEnByte = (byte)nbDeCaractère;
+                //chaineASCII.Add(000001011); //le nombre de caractère
+
+                return nbDeCaractèreEnByte;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Pixel[,] resul1 = new Pixel[image.GetLength(0), image.GetLength(1)];
+                /*Pixel[,] resul1 = new Pixel[image.GetLength(0), image.GetLength(1)];
 
                 for (int i = 0; i < resul1.GetLength(0); i++) //met l'image dans une couleurs différente de noir et blanc pour tester si ça crache
                 {
@@ -1522,8 +1532,10 @@ namespace Manon_Aubry_Manon_Goffinet
                     }
                 }
                 MyImage image4 = new MyImage(resul1, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                Console.WriteLine(e.Message);*/
+
                 Console.WriteLine(e.Message);
-                return image4;
+                return 65;
             }
         }
 
