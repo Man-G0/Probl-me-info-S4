@@ -26,7 +26,7 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage imageAgrandir = image.Agrandir();
             //imageAgrandir.From_Image_To_File("sortieAgrandir.bmp");
 
-            //MyImage ImageRotation = image.Rotation(100);
+            //MyImage ImageRotation = image.Rotation(25);
             //ImageRotation.From_Image_To_File("sortieRotation.bmp");
 
             //MyImage imageReduire = image.Réduire();
@@ -76,15 +76,16 @@ namespace Manon_Aubry_Manon_Goffinet
             ImageDECoder.From_Image_To_File("sortieImageDEcoder.bmp");
             Console.WriteLine("fin");*/
 
-            //int QRcode = QRCodeV1("HELLO WORLD");
-            //Console.WriteLine(QRcode);
+            QRcode a = new QRcode("HELLO WORLD");
+            a.EncodageQRCode();
+            
 
             string phrase = "HELLO WORLD";
             List<byte> chaineASCII = new List<byte>();
 
             chaineASCII.Add(0010);  // le type d'information est alphanumérique
 
-            int nbDeCaractère = 0;
+            /*int nbDeCaractère = 0;
             int reste = 0;
             int nbr = 0;
             for (int i = 0; i < phrase.Length; i++)
@@ -104,7 +105,7 @@ namespace Manon_Aubry_Manon_Goffinet
             }
             byte nbDeCaractèreEnByte = (byte)nbDeCaractère;
             Console.WriteLine(nbDeCaractèreEnByte);
-            Console.WriteLine(chaineASCII);
+            Console.WriteLine(chaineASCII);*/
 
 
             //QRcode.From_Image_To_File("sortieQRCodeV1.bmp");
@@ -122,5 +123,11 @@ namespace Manon_Aubry_Manon_Goffinet
 
             Console.ReadKey();
         }
+
+        public void AffichageConsole()
+        {
+            
+        }
     }
+
 }

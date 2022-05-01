@@ -248,13 +248,14 @@ namespace Manon_Aubry_Manon_Goffinet
             }
 
         }
-            
+
         #region public byte[] Convertir_Int_To_Endian(int val …)
         //public byte[] Convertir_Int_To_Endian(int val …) convertit un entier en séquence d’octets au format little endian 
         /// <summary>
-        /// Récupère la valeur binaire d'un int, la converti en bytes (groupe de 8 chiffre binaires), et la met dans un tableau de bytes
+        /// Récupère la valeur d'un int, la converti en bytes (groupe de 8 chiffres binaires), et la met dans un tableau de bytes
         /// </summary>
         /// <param name="v">chiffre a convertir en bytes</param>
+        /// <param name="taille">nombre de bytes sur lequel va être codé la valeur</param>
         /// <returns></returns>
         public byte[] Convertir_Int_To_Endian(int v, int taille)
         {
@@ -276,7 +277,7 @@ namespace Manon_Aubry_Manon_Goffinet
         #region public int Convertir_Endian_To_Int(byte[] tab …)
         //public int Convertir_Endian_To_Int(byte[] tab …) convertit une séquence d’octets au format little endian en entier 
         /// <summary>
-        /// récupère un tableau de byte et le convertit en int
+        /// récupère un tableau de bytes et le convertit en int
         /// </summary>
         /// <param name="v"> tableau de byte à convertir en int </param>
         /// <returns>nombre entier correspondant au tableau de byte</returns>
@@ -673,7 +674,7 @@ namespace Manon_Aubry_Manon_Goffinet
                 }
                 
                 
-               if (angleDegré % 90 == 0)
+                if (angleDegré % 90 == 0)
                 {
                     //Console.WriteLine("a");
                     Pixel[,] imag=new Pixel [im.GetLength(0),im.GetLength(1)];
@@ -749,12 +750,12 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         for (double j = 0; j < Rot90.GetLength(1); j+=0.5)
                         {
-                            int x = (int)(sin * j + cos * i + centreImageResH - centreImageIntermédiaireH);
+                            /*int x = (int)(sin * j + cos * i + centreImageResH - centreImageIntermédiaireH);
                             int y = (int)(cos * j - sin * i + centreImageResL - centreImageIntermédiaireL);
                             if (x>=0&&x<hauteurImageRes&& y >= 0 && y < hauteurImageRes)
                             {
                                 im[x,y]= Rot90[(int)i, (int)j];
-                            }
+                            }*/
                             
                         }
                     }
@@ -762,17 +763,17 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         for (int j = 0; j < largeurImageRes; j++)
                         {
-                            if (im[i, j] == null)
+                            //if (im[i, j] == null)
                             {
                                 im[i, j] = new Pixel(0, 0, 0); //remplissage de la matrice en noir pour que toute les pixels de l'image soient remplies
-                                /*if (j == 0 || i == 0)
+                                if (j == 0 || i == 0)
                                 {
                                     im[i, j] = new Pixel(255, 255, 255);
                                 }
                                 if (j == 0 && i == 0)
                                 {
                                     im[i, j] = new Pixel(255, 0, 0);
-                                }*/
+                                }
                             }
 
                         }
@@ -1469,77 +1470,6 @@ namespace Manon_Aubry_Manon_Goffinet
         }
         #endregion
 
-        #region QR Code
-        public int QRCodeV1(string phrase)
-        {
-            try
-            {
-                /*Pixel[,] QRc = new Pixel[21, 21];
-                QRc[0, 0] = new Pixel(0, 0, 0); ;
-
-                for (int i = 0; i < QRc.GetLength(0); i++) //mettre en bleu
-                {
-                    for (int u = 0; u < QRc.GetLength(1); u++)
-                    {
-                        //if(i<=7 && u<=7) QRc[i, u] = NOIR;
-                        QRc[i, u] = new Pixel(200, 200, 200); // new Pixel(120, 120, 120);
-                    }
-                }
-                QRc[0, 0] = NOIR;
-                QRc[0, 1] = NOIR;
-                QRc[0, 6] = NOIR;
-                QRc[6, 6] = NOIR;
-                QRc[6, 1] = NOIR;
-                QRc[6, 8] = NOIR;
-
-                int a = 0;
-                for(int i = 0; i < 7; i++)
-                {
-                    if (i == 2 || i==4) a++;
-                    for(int u = 0; u < 7; u++)
-                    {
-                        QRc[i, u + a] = new Pixel(0, 0, 0); ;   //en bas à gauche
-                        QRc[QRc.GetLength(0) - 1 - i, QRc.GetLength(1)-1 - u] = new Pixel(0, 0, 0); ;  //en haut à gauche
-                        //QRc[i, QRc.GetLength(1) - 1 - u] = NOIR;  //en haut à droite
-                    }
-                }
-
-                MyImage resultat = new MyImage(QRc, typeImage, tailleOffset + QRc.GetLength(0) * QRc.GetLength(1) * 3, tailleOffset, QRc.GetLength(1), QRc.GetLength(0), nombreDeBitsCouleurs);
-                return resultat;*/
-
-                List<byte> chaineASCII = new List<byte>();
-                chaineASCII.Add(0010);  // le type d'information est alphanumérique
-
-                int nbDeCaractère = 0;
-                for(int i=0;i<phrase.Length;i++)
-                {
-                    nbDeCaractère++;
-                }
-                byte nbDeCaractèreEnByte = (byte)nbDeCaractère;
-                //chaineASCII.Add(000001011); //le nombre de caractère
-
-                return nbDeCaractèreEnByte;
-            }
-            catch (Exception e)
-            {
-                /*Pixel[,] resul1 = new Pixel[image.GetLength(0), image.GetLength(1)];
-
-                for (int i = 0; i < resul1.GetLength(0); i++) //met l'image dans une couleurs différente de noir et blanc pour tester si ça crache
-                {
-                    for (int u = 0; u < resul1.GetLength(1); u++)
-                    {
-                        resul1[i, u] = new Pixel(0, 225, 255); //met en jaune
-                    }
-                }
-                MyImage image4 = new MyImage(resul1, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
-                Console.WriteLine(e.Message);*/
-
-                Console.WriteLine(e.Message);
-                return 65;
-            }
-        }
-
-
-        #endregion
+       
     }
 }
