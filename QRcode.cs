@@ -90,7 +90,7 @@ namespace Manon_Aubry_Manon_Goffinet
         {
             for(int i = 0;i<listeBytes.Count; i++)
             {
-                Console.Write(listeBytes[i]);
+                Console.Write(listeBytes[i] + " ");
             }
         }
         #endregion
