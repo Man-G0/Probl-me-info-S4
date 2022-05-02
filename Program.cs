@@ -16,186 +16,189 @@ namespace Manon_Aubry_Manon_Goffinet
             Console.WindowWidth = 100;
             do
             {
-                Console.Clear();
-                Console.WriteLine("Menu photo:\n\n"
-                                 + "Photo 1 : Coco\n"
-                                 + "Photo 2 : Lena\n"
-                                 + "Photo 3 : Test001 noir et blanc\n"
-                                 + "Photo 4 : Lac et montagne\n"
-                                 + "\n"
-                                 + "Sélectionnez la photo désirée ");
-                
-                int nbphoto = Convert.ToInt32(Console.ReadLine());
-                string fileN = " ";
-
-                switch (nbphoto)
+                try
                 {
-                    case 1:
-                        fileN = "coco.bmp";
-                        break;
-                    case 2:
-                        fileN = "lena.bmp";
-                        break;
-                    case 3:
-                        fileN = "Test001.bmp";
-                        break;
-
-                    case 4:
-                        fileN = "lac.bmp";
-                        break;
-                }
-                MyImage image = new MyImage(fileN);
 
 
-                Console.WriteLine("\nMenu fonction:\n"
-                                 + "Fonction 1  : Fonction Grey\n"
-                                 + "Fonction 2  : Effet miroir\n"
-                                 + "Fonction 3  : Image en noir et blanc\n"
-                                 + "Fonction 4  : Agrandir l'image\n"
-                                 + "Fonction 5  : Réduire l'image\n"
-                                 + "Fonction 6  : Rotationner l'image\n"
-                                 + "Fonction 7  : Image Flou\n"
-                                 + "Fonction 8  : Repoussage des bords\n"
-                                 + "Fonction 9  : Détection des bords\n"
-                                 + "Fonction 10 : Renforcement des bords\n"
-                                 + "Fonction 11 : Fractale\n"
-                                 + "Fonction 12 : Histogramme\n"
-                                 + "Fonction 13 : Coder une image\n"
-                                 + "Fonction 14 : Décoder une image\n"
-                                 + "Fonction 15 : QR Code\n"
-                                 + "Fonction 16 : Innovation\n"
-                                 + "\n"
-                                 + "Sélectionnez l'exercice désiré ");
+                    Console.Clear();
+                    Console.WriteLine("Menu photo:\n\n"
+                                     + "Photo 1 : Coco\n"
+                                     + "Photo 2 : Lena\n"
+                                     + "Photo 3 : Test001 noir et blanc\n"
+                                     + "Photo 4 : Lac et montagne\n"
+                                     + "\n"
+                                     + "Sélectionnez la photo désirée");
 
-                int exo = Convert.ToInt32(Console.ReadLine());
-                switch (exo)
-                {
-                    case 1:
-                        Console.WriteLine("Fonction 1 : Fonction Grey\n");
-                        MyImage imageGrey = image.ConvertToGrey();
-                        imageGrey.From_Image_To_File("sortieGrey.bmp");
-                        Console.ReadKey();
-                        break;
+                    int nbphoto = Convert.ToInt32(Console.ReadLine());
+                    string fileN = " ";
 
-                    case 2:
-                        Console.WriteLine("Fonction 2 : Effet miroir\n");
-                        MyImage image2 = image.EffetMiroir();
-                        image2.From_Image_To_File("sortieEffetMiroir.bmp");
-                        Console.ReadKey();
-                        break;
+                    switch (nbphoto)
+                    {
+                        case 1:
+                            fileN = "coco.bmp";
+                            break;
+                        case 2:
+                            fileN = "lena.bmp";
+                            break;
+                        case 3:
+                            fileN = "Test001.bmp";
+                            break;
 
-                    case 3:
-                        Console.WriteLine("Fonction 3 : Image en noir et blanc\n");
-                        MyImage NOIRetBLANC = image.NoirETBlanc();
-                        NOIRetBLANC.From_Image_To_File("sortieImageEnNoirEtBlanc.bmp");
-                        Console.ReadKey();
-                        break;
+                        case 4:
+                            fileN = "lac.bmp";
+                            break;
+                    }
+                    MyImage image = new MyImage(fileN);
 
-                    case 4:
-                        Console.WriteLine("Fonction 4 : Agrandir l'image\n");
-                        MyImage imageAgrandir = image.Agrandir();
-                        imageAgrandir.From_Image_To_File("sortieAgrandir.bmp");
-                        Console.ReadKey();
-                        break;
 
-                    case 5:
-                        Console.WriteLine("Fonction 5  : Réduire l'image\n");
-                        MyImage imageReduire = image.Réduire();
-                        imageReduire.From_Image_To_File("sortieRéduit.bmp");
-                        Console.ReadKey();
-                        break;
+                    Console.WriteLine("\nMenu fonction:\n"
+                                     + "Fonction 1  : Fonction Grey\n"
+                                     + "Fonction 2  : Effet miroir\n"
+                                     + "Fonction 3  : Image en noir et blanc\n"
+                                     + "Fonction 4  : Agrandir l'image\n"
+                                     + "Fonction 5  : Réduire l'image\n"
+                                     + "Fonction 6  : Rotationner l'image\n"
+                                     + "Fonction 7  : Image Flou\n"
+                                     + "Fonction 8  : Repoussage des bords\n"
+                                     + "Fonction 9  : Détection des bords\n"
+                                     + "Fonction 10 : Renforcement des bords\n"
+                                     + "Fonction 11 : Fractale\n"
+                                     + "Fonction 12 : Histogramme\n"
+                                     + "Fonction 13 : Coder une image\n"
+                                     + "Fonction 14 : Décoder une image\n"
+                                     + "Fonction 15 : QR Code\n"
+                                     + "Fonction 16 : Innovation\n"
+                                     + "\n"
+                                     + "Sélectionnez l'exercice désiré ");
 
-                    case 6:
-                        Console.WriteLine("Fonction 6  : Rotationner l'image\n");
-                        Console.WriteLine("Donner un angle en degré : \n");
-                        int angle = Convert.ToInt32(Console.ReadLine());
-                        MyImage ImageRotation = image.Rotation(angle);
-                        ImageRotation.From_Image_To_File("sortieRotation.bmp");
-                        Console.ReadKey();
-                        break;
-                    case 7:
-                        Console.WriteLine("Fonction 7  : Image Flou\n");
-                        MyImage imageFlou = image.Flou();
-                        imageFlou.From_Image_To_File("sortie-Flou.bmp");
-                        Console.ReadKey();
-                        break;
-                    case 8:
-                        Console.WriteLine("Fonction 8  : Repoussage des bords\n");
-                        MyImage imageRepoussage = image.Repoussage();
-                        imageRepoussage.From_Image_To_File("sortie-Repoussage.bmp");
-                        Console.ReadKey();
-                        break;
-                    case 9:
-                        Console.WriteLine("Fonction 9  : Détection des bords\n");
-                        MyImage imagedétectionDesBords = image.DétectionDesBords();
-                        imagedétectionDesBords.From_Image_To_File("sortie-DétectionDesBords.bmp");
-                        Console.ReadKey();
-                        break;
-                    case 10:
-                        Console.WriteLine("Fonction 10 : Renforcement des bords\n");
-                        MyImage imageRenforcementDesBords = image.RenforcementDesBords();
-                        imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");
-                        Console.ReadKey();
-                        break;
-                    case 11:
-                        Console.WriteLine("Fonction 11 : Fractale\n");
-                        MyImage imageFractaleNOIR = image.FractaleNOIR();
-                        imageFractaleNOIR.From_Image_To_File("sortie-FractaleNOIR.bmp");
-                        Console.ReadKey();
-                        break;
-                    case 12:
-                        Console.WriteLine("Fonction 12 : Histogramme\n");
-                        MyImage Histogramme = image.Histogramme();
-                        Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
-                        Console.ReadKey();
-                        break;
-                    case 13:
-                        Console.WriteLine("Fonction 13 : Coder une image\n");
-                        MyImage ImageCoder = image.CoderImage();
-                        ImageCoder.From_Image_To_File("sortieImageCoder.bmp");
-                        Console.ReadKey();
-                        break;
-                    case 14:
-                        Console.WriteLine("Fonction 14 : Décoder une image\n");
-                        MyImage ImageCoderR = image.CoderImage();
-                        MyImage ImageDECoder = image.DECoderImage(ImageCoderR);
-                        ImageDECoder.From_Image_To_File("sortieImageDEcoder.bmp");
-                        Console.ReadKey();
-                        break;
-                    case 15:
-                        string phraseTest1 = "HELLO WORLD";
-                        string phraseTest2 = "HELLO POLE LEONARD DE VINCI";
-                        Console.WriteLine("Fonction 15 : QR Code\n"+"Phrase test 1: "+ phraseTest1);
-                        QRcode QR_Code = new QRcode(phraseTest1);
-                        QR_Code.EncodageQRCode();
-                        MyImage im = QR_Code.ImageQRcode();
-                        im.From_Image_To_File("sortieQRcode1.bmp");
-                        Console.WriteLine("Fonction 15 : QR Code\n" + "Phrase test 2: " + phraseTest2);
-                        QRcode QR_Code2 = new QRcode(phraseTest2);
-                        QR_Code2.EncodageQRCode();
-                        MyImage im2 = QR_Code2.ImageQRcode();
-                        im2.From_Image_To_File("sortieQRcode2.bmp");
-                        Console.ReadKey();
-                        break;
-                    case 16:
-                        Console.WriteLine("Fonction 16 : Innovation1\n");
-                        MyImage ImageIn = image.Innovation1();
-                        ImageIn.From_Image_To_File("sortieInnovation.bmp");
-                        Console.WriteLine("Fonction 16 : Innovation2\n");
-                        MyImage ImageIn2 = image.Innovation2();
-                        ImageIn2.From_Image_To_File("sortieInnovation2.bmp");
-                        Console.ReadKey();
-                        break;
-                        /*case 15:
-                            string phrase = new string"HELLO WORLD".
-                            Console.WriteLine("Fonction 15 : QR Code\n"+"Phrase : "+phrase);
-                            QRcode QR_Code = new QRcode(phrase);
-                            QR_Code.From_Image_To_File("sortieQRcode.bmp");
+                    int exo = Convert.ToInt32(Console.ReadLine());
+                    switch (exo)
+                    {
+                        case 1:
+                            Console.WriteLine("Fonction 1 : Fonction Grey\n");
+                            MyImage imageGrey = image.ConvertToGrey();
+                            imageGrey.From_Image_To_File("sortieGrey.bmp");
                             Console.ReadKey();
-                            break;*/
-                }
-                Console.WriteLine("Tapez Escape pour refaire une fonction");
+                            break;
 
+                        case 2:
+                            Console.WriteLine("Fonction 2 : Effet miroir\n");
+                            MyImage image2 = image.EffetMiroir();
+                            image2.From_Image_To_File("sortieEffetMiroir.bmp");
+                            Console.ReadKey();
+                            break;
+
+                        case 3:
+                            Console.WriteLine("Fonction 3 : Image en noir et blanc\n");
+                            MyImage NOIRetBLANC = image.NoirETBlanc();
+                            NOIRetBLANC.From_Image_To_File("sortieImageEnNoirEtBlanc.bmp");
+                            Console.ReadKey();
+                            break;
+
+                        case 4:
+                            Console.WriteLine("Fonction 4 : Agrandir l'image\n");
+                            MyImage imageAgrandir = image.Agrandir();
+                            imageAgrandir.From_Image_To_File("sortieAgrandir.bmp");
+                            Console.ReadKey();
+                            break;
+
+                        case 5:
+                            Console.WriteLine("Fonction 5  : Réduire l'image\n");
+                            MyImage imageReduire = image.Réduire();
+                            imageReduire.From_Image_To_File("sortieRéduit.bmp");
+                            Console.ReadKey();
+                            break;
+
+                        case 6:
+                            Console.WriteLine("Fonction 6  : Rotationner l'image\n");
+                            Console.WriteLine("Donner un angle en degré : \n");
+                            int angle = Convert.ToInt32(Console.ReadLine());
+                            MyImage ImageRotation = image.Rotation(angle);
+                            ImageRotation.From_Image_To_File("sortieRotation.bmp");
+                            Console.ReadKey();
+                            break;
+                        case 7:
+                            Console.WriteLine("Fonction 7  : Image Flou\n");
+                            MyImage imageFlou = image.Flou();
+                            imageFlou.From_Image_To_File("sortie-Flou.bmp");
+                            Console.ReadKey();
+                            break;
+                        case 8:
+                            Console.WriteLine("Fonction 8  : Repoussage des bords\n");
+                            MyImage imageRepoussage = image.Repoussage();
+                            imageRepoussage.From_Image_To_File("sortie-Repoussage.bmp");
+                            Console.ReadKey();
+                            break;
+                        case 9:
+                            Console.WriteLine("Fonction 9  : Détection des bords\n");
+                            MyImage imagedétectionDesBords = image.DétectionDesBords();
+                            imagedétectionDesBords.From_Image_To_File("sortie-DétectionDesBords.bmp");
+                            Console.ReadKey();
+                            break;
+                        case 10:
+                            Console.WriteLine("Fonction 10 : Renforcement des bords\n");
+                            MyImage imageRenforcementDesBords = image.RenforcementDesBords();
+                            imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");
+                            Console.ReadKey();
+                            break;
+                        case 11:
+                            Console.WriteLine("Fonction 11 : Fractale\n");
+                            MyImage imageFractaleNOIR = image.FractaleNOIR();
+                            imageFractaleNOIR.From_Image_To_File("sortie-FractaleNOIR.bmp");
+                            Console.ReadKey();
+                            break;
+                        case 12:
+                            Console.WriteLine("Fonction 12 : Histogramme\n");
+                            MyImage Histogramme = image.Histogramme();
+                            Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
+                            Console.ReadKey();
+                            break;
+                        case 13:
+                            Console.WriteLine("Fonction 13 : Coder une image\n");
+                            MyImage ImageCoder = image.CoderImage();
+                            ImageCoder.From_Image_To_File("sortieImageCoder.bmp");
+                            Console.ReadKey();
+                            break;
+                        case 14:
+                            Console.WriteLine("Fonction 14 : Décoder une image\n");
+                            MyImage ImageCoderR = image.CoderImage();
+                            MyImage ImageDECoder = image.DECoderImage(ImageCoderR);
+                            ImageDECoder.From_Image_To_File("sortieImageDEcoder.bmp");
+                            Console.ReadKey();
+                            break;
+                        case 15:
+                            string phraseTest1 = "HELLO WORLD";
+                            string phraseTest2 = "HELLO POLE LEONARD DE VINCI";
+                            Console.WriteLine("Fonction 15 : QR Code\n" + "Phrase test 1: " + phraseTest1);
+                            QRcode QR_Code = new QRcode(phraseTest1);
+                            QR_Code.EncodageQRCode();
+                            MyImage im = QR_Code.ImageQRcode();
+                            im.From_Image_To_File("sortieQRcode1.bmp");
+                            Console.WriteLine("Fonction 15 : QR Code\n" + "Phrase test 2: " + phraseTest2);
+                            QRcode QR_Code2 = new QRcode(phraseTest2);
+                            QR_Code2.EncodageQRCode();
+                            MyImage im2 = QR_Code2.ImageQRcode();
+                            im2.From_Image_To_File("sortieQRcode2.bmp");
+                            Console.ReadKey();
+                            break;
+                        case 16:
+                            Console.WriteLine("Fonction 16 : Innovation1\n");
+                            MyImage ImageIn = image.Innovation1();
+                            ImageIn.From_Image_To_File("sortieInnovation.bmp");
+                            Console.WriteLine("Fonction 16 : Innovation2\n");
+                            MyImage ImageIn2 = image.Innovation2();
+                            ImageIn2.From_Image_To_File("sortieInnovation2.bmp");
+                            Console.ReadKey();
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Main : " + e.Message);
+
+
+                }
+                
 
                 cki = Console.ReadKey();
             } while (cki.Key != ConsoleKey.Escape);

@@ -468,7 +468,7 @@ namespace Manon_Aubry_Manon_Goffinet
         
         #region MyImage QRcode
 
-        public Pixel[,] BlocsRecherches(int Version)
+        public Pixel[,] BlocsRecherches()
         {
             Pixel[,] bloc = new Pixel[7, 7];
             for(int a = 0; a< 7; a++)
@@ -488,9 +488,11 @@ namespace Manon_Aubry_Manon_Goffinet
                     }
                 }
             }
-            if (version == 2)
+            //if (version == 2)
             {
+
                 Pixel[,] temp = new Pixel[8, 8];
+
                 for (int a = 0; a < 8; a++)
                 {
                     for (int b = 0; b < 8; b++)
@@ -538,18 +540,33 @@ namespace Manon_Aubry_Manon_Goffinet
             {
                 for (int b = 0; b < resul.GetLength(1); b++)
                 {
-                    resul[a, b] = new Pixel(50, 50, 50);
+                    resul[a, b] = new Pixel(150, 150, 150);
                 }
             }
             if (version == 2)
             {
+                resul[7, 8] = new Pixel(0, 0, 0);
                 for (int a = 0; a < resul.GetLength(0); a++)
                 {
                     for (int b = 0; b < resul.GetLength(1); b++)
                     {
-
-                        if (b == 7)
+                        if (a == resul.GetLength(1) - 9 && b > resul.GetLength(1) - 9)
                         {
+                            resul[a, b] = new Pixel(255, 0, 0);
+                        }
+                        if (a < 7 && b == 8)
+                        {
+                            resul[a, b] = new Pixel(255, 0, 0);
+                        }
+                        if (a < resul.GetLength(0) && a > resul.GetLength(1) - 10 && b < 9)
+                        {
+                            resul[a, b] = new Pixel(255, 0, 0);
+                        }
+
+                        if (b == 6)
+                        {
+                            
+                            
                             if (a % 2 == 0)
                             {
                                 resul[a, b] = new Pixel(0, 0, 0);
@@ -560,7 +577,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
                             }
                         }
-                        if (a == resul.GetLength(0) - 8)
+                        if (a == resul.GetLength(0) - 7)
                         {
                             if (b % 2 == 0)
                             {
@@ -574,10 +591,12 @@ namespace Manon_Aubry_Manon_Goffinet
                         }
                     }
                 }
+                
                 for (int a = 0; a < 5; a++)
                 {
                     for (int b = 0; b < 5; b++)
                     {
+
                         resul[a + 4, resul.GetLength(1) - 10 + b] = new Pixel(0, 0, 0);
                         if (a == 1 || b == 1 || a == 3 || b == 3)
                         {
@@ -591,11 +610,15 @@ namespace Manon_Aubry_Manon_Goffinet
                         }
                     }
                 }
-            }
-                
-                
 
-            Pixel[,] bloc = BlocsRecherches(version);
+            }// if version 2
+           
+            
+            
+
+
+
+            Pixel[,] bloc = BlocsRecherches();
             for (int a = 0; a < bloc.GetLength(0); a++)
             {
                 for (int b = 0; b < bloc.GetLength(1); b++)

@@ -1117,7 +1117,7 @@ namespace Manon_Aubry_Manon_Goffinet
                 double zoomY = imageY / (y2 - y1);
 
                 Pixel[,] mat0 = new Pixel[imageX, imageY];
-                Pixel[,] resultat = MatriceNOIRouBLANCHE(mat0, 'B'); //mettre la fonction en noir
+                Pixel[,] resultat = MatriceNOIRouBLANCHE(mat0, 'B'); //mettre la fonction en blanc
 
                 for (int x = 0; x < imageX; x++)
                 {
@@ -1125,8 +1125,8 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         double cR = x / zoomX + x1;
                         double cI = y / zoomY + y1;
-                        double zR = 0;
-                        double zI = 0;
+                        double zR = 0;//partie réelle de z
+                        double zI = 0;//partie imaginaire de z
                         int i = 0;
 
                         do
