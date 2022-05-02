@@ -47,28 +47,37 @@ namespace Manon_Aubry_Manon_Goffinet
         {
             try
             {
+                
                 int reste;
                 List<byte> b = new List<byte> { };
                 List<byte> binaire = new List<byte> { };
-                while (v > 0)
+                //Console.WriteLine();
+                while (v >=1)
                 {
+                    
                     reste = v % 2;
                     v /= 2;
-                    b.Add((byte)reste);
+                    if (reste >= 1)
+                    {
+                        b.Add(1);
+                    }
+                    else
+                    {
+                        b.Add(0);
+                    }
+                    
+                    
                 }
                 if (b.Count < taille)
                 {
                     int a = taille - b.Count;
                     for(int i = 0; i<a; i++)
                     {
-                        binaire.Add(0);
-                    }
-                    for (int i = 0; i < b.Count; i++)
-                    {
-                        binaire.Add(b[i]);
-                    }                       
+                        b.Add(0);
+                    }                                          
                 }
-                return binaire;
+                //AffichageListeBytes(b);
+                return b;
             }
             catch(Exception e)
             {
@@ -81,6 +90,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
         #endregion
 
+       
         #region AffichageListeBytes(List <byte>listeBytes)
         /// <summary>
         /// Affiche une liste de bytes
@@ -90,8 +100,9 @@ namespace Manon_Aubry_Manon_Goffinet
         {
             for(int i = 0;i<listeBytes.Count; i++)
             {
-                Console.Write(listeBytes[i] + " ");
+                Console.Write(listeBytes[i] + "");
             }
+            Console.WriteLine("\n");
         }
         #endregion
 
@@ -171,25 +182,130 @@ namespace Manon_Aubry_Manon_Goffinet
         }
         #endregion
 
+        #region CodeAsciiCaractères
+        /// <summary>
+        /// récupère un caractère et calcule sa valeur en code ASCII
+        /// </summary>
+        /// <param name="a">caractère à traduire en code ascii</param>
+        /// <returns></returns>
+        public int CodeAsciiCaractères(char a)
+        {
+            try
+            {
+                int codeAscii = 0;
+                if ((int)a > 47 && (int)a < 58)
+                {
+                    codeAscii = (int)a - 47;
+                }
+                else if ((int)a > 10 + 55 && (int)a < 36 + 55) ///lettres 
+                {
+                    codeAscii = (int)a - 55;
+                }
+                else if (a == ' ')
+                {
+                    codeAscii = 36;
+                }
+                return codeAscii;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("CodeAsciiCaractères : " + e.Message);
+                return 0;
+            }
+           
+        }
+        #endregion
         #region QR Code
         public void EncodageQRCode()
         {
             int nbCaractères = NbCaractères(phrase);
             //Console.WriteLine(nbCaractères);
             listeBytes = new List<byte>();
-            listeBytes.Add(0);
-            listeBytes.Add(0);
-            listeBytes.Add(10);
+            List<byte> liste = new List<byte>();
+            liste.Add(0);
+            liste.Add(0);
+            liste.Add(1);
+            liste.Add(0);
             // le type d'information est alphanumérique et doit débuter la liste (avec 0010)
             if (nbCaractères <= 25) // dans ce cas on utilise la première version de QRcode
             {
                 List<byte> nbCaractèresEnBytes = Convertir_Int_To_Binaire(nbCaractères, 9);
-                for(int i = 0; i<nbCaractèresEnBytes.Count; i++)
+                
+                for (int i = 0; i<nbCaractèresEnBytes.Count; i++)
                 {
-                    listeBytes.Add(nbCaractèresEnBytes[i]);
-
+                    liste.Add(nbCaractèresEnBytes[nbCaractèresEnBytes.Count - 1 - i]);
                 }
-                AffichageListeBytes(listeBytes);
+                int a = 0;
+                //AffichageListeBytes(liste);
+                while (a < phrase.Length)
+                {
+                    if (a + 1 < phrase.Length-1)
+                    {
+                        
+                        char char1 = phrase[a];
+                        char char2 = phrase[a + 1];
+                        
+                        //Console.WriteLine(char1 + " " + char2);
+                        int codeASCIILettres = 45 * CodeAsciiCaractères(char1) + CodeAsciiCaractères(char2);
+                        //Console.WriteLine(codeASCIILettres);
+                        List<byte> LettresBinaires = Convertir_Int_To_Binaire(codeASCIILettres, 11);
+                        for (int i = 0; i < LettresBinaires.Count; i++)
+                        {
+                            liste.Add(LettresBinaires[LettresBinaires.Count - 1 - i]);
+                           //Console.WriteLine(LettresBinaires[i]);
+                            
+                        }
+                        //Console.WriteLine();
+                        a += 2;
+                    }
+                    else
+                    {
+                        char char1 = phrase[a];
+                        //Console.WriteLine(char1);
+                        int codeASCIILettres = CodeAsciiCaractères(char1);
+                        //Console.WriteLine(codeASCIILettres);
+                        List<byte> LettresBinaires = Convertir_Int_To_Binaire(codeASCIILettres, 6);
+                        
+                        for (int i = 0; i < LettresBinaires.Count; i++)
+                        {
+                            liste.Add(LettresBinaires[LettresBinaires.Count-1-i]);
+
+                        }
+                        Console.WriteLine();
+                        a++;
+                    }
+                    
+                }
+                AffichageListeBytes(liste);
+                int b = 0;
+                while(b<liste.Count)
+                {
+                    if (b + 7 < liste.Count)
+                    {
+                        string t = Convert.ToString(liste[b]) + Convert.ToString(liste[b + 1]) + Convert.ToString(liste[b + 2]) + Convert.ToString(liste[b + 3]) + Convert.ToString(liste[b + 4]) + Convert.ToString(liste[b + 5]) + Convert.ToString(liste[b + 6]) + Convert.ToString(liste[b + 7]);
+                        
+                        Console.WriteLine("t : " + t);
+                        int h = Convert.ToInt32(t, 2);// permet de récupérer la valeur de chaque byte en int 
+                        Console.WriteLine("h : "+ h);
+                        byte e = (byte) h;
+                        Console.WriteLine("e : " + e);
+                        b += 8;
+                    }
+                    else
+                    {
+                        string t = "";
+                        while (b < liste.Count)
+                        {
+                            t += Convert.ToString(liste[b]);
+                            b++;
+                        }
+                        for(int i = t.Length; i<8; i++)
+                        {
+                            t += "0";
+                        }
+                        Console.WriteLine("t : " + t);
+                    }
+                }
             }
             else if (nbCaractères <= 47) // deuxième version
             {
@@ -199,11 +315,9 @@ namespace Manon_Aubry_Manon_Goffinet
             {
                 Console.WriteLine("le message est trop long");
             }
-
-
-            
-
-        }
+            // 00100000 01011011 00001011 01111000 11010001 01110010 11011100 01001101 01000011 01000000 11101100 00010001 11101100 00010001 11101100 00010001 11101100 00010001 11101100
+            // 00100000 01011011 00001011 01111000 11010001 01110010 11011100 01001101 01000011 01000000 11101100 00010001 11101100
+        }  //  00100000 01011011 00001011 01111000 11010001 01110010 11011100 01001101 01000011 01
 
         #endregion
     }
