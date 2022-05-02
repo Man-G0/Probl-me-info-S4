@@ -22,12 +22,12 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <summary>
         /// Constructeur créant une instance de MyImage a partir de tous les attributs de la classe.
         /// </summary>
-        /// <param name="image">matrice de pixels correspondant à l'image</param>
+        /// <param name="image">matrice de Pixel correspondant à l'image</param>
         /// <param name="typeImage">format de l'image : BM pour bitmap par exemple</param>
         /// <param name="tailleFichier">taille en nombre d'octets du fichier global de l'image</param>
         /// <param name="tailleOffset">taille de l'offset en nombre d'octets</param>
-        /// <param name="largeurImage">largeur de l'image en pixels</param>
-        /// <param name="hauteurImage">hauteur de l'image en pixels</param>
+        /// <param name="largeurImage">largeur de l'image en Pixel</param>
+        /// <param name="hauteurImage">hauteur de l'image en Pixel</param>
         /// <param name="nombreDeBitsCouleurs">nombre de bits par couleur</param>
         public MyImage(Pixel[,] image, string typeImage, int tailleFichier, int tailleOffset, int largeurImage, int hauteurImage, int nombreDeBitsCouleurs)
         {
@@ -55,82 +55,90 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <param name="fileName">Emplacement de l'image à convertir en instance MyImage</param>
         public MyImage(string fileName)
         {
-            byte[] Im = File.ReadAllBytes(fileName);
+            try
+            {
+                byte[] Im = File.ReadAllBytes(fileName);
 
-            #region TypeImage
-            //Console.WriteLine(Im[0] + "et" + Im[1]);
-            char t = (char)Im[0];
-            char f = (char)Im[1];
-            typeImage = Convert.ToString(t) + f;
-            #endregion
+                #region TypeImage
+                //Console.WriteLine(Im[0] + "et" + Im[1]);
+                char t = (char)Im[0];
+                char f = (char)Im[1];
+                typeImage = Convert.ToString(t) + f;
+                #endregion
 
-            #region tailleFichier
-            byte[] tailleEnBytes = new byte[] { Im[2], Im[3], Im[4], Im[5] }; // récupère les bytes 2,3,4,5 correspondant a la taille de l'image
-            //Console.WriteLine(Im[2] + " " + Im[3] + " " + Im[4]+" "+Im[5]);
-            tailleFichier = Convert_Endian_To_Int(tailleEnBytes);
-            //Console.WriteLine(tailleFichier);
-            #endregion
+                #region tailleFichier
+                byte[] tailleEnBytes = new byte[] { Im[2], Im[3], Im[4], Im[5] }; // récupère les bytes 2,3,4,5 correspondant a la taille de l'image
+                //Console.WriteLine(Im[2] + " " + Im[3] + " " + Im[4]+" "+Im[5]);
+                tailleFichier = Convert_Endian_To_Int(tailleEnBytes);
+                //Console.WriteLine(tailleFichier);
+                #endregion
 
-            #region tailleOffset
+                #region tailleOffset
             byte[] tailleHeaderEnBytes = new byte[] { Im[14], Im[15], Im[16], Im[17] }; // récupère les bytes 14,15,16,17 correspondant a la taille du header
             //Console.WriteLine(Im[14] + " " + Im[15] + " " + Im[16] + " " + Im[17]);
             int tailleHeader = Convert_Endian_To_Int(tailleHeaderEnBytes);
             tailleOffset = tailleHeader + 14; //additionne la taille header plus la taille du header info qui est de 14
-            Console.WriteLine(tailleOffset);
+            //Console.WriteLine(tailleOffset);
             //Console.WriteLine(tailleOffset);
             #endregion
 
-            #region HauteurImage
+                #region HauteurImage
             byte[] hauteurEnBytes = new byte[] { Im[22], Im[23], Im[24], Im[25] }; //récupère les bytes 23,24,25,26
             //Console.WriteLine(Im[22] + " " + Im[23] + " " + Im[24] + " " + Im[25]);
             hauteurImage = Convert_Endian_To_Int(hauteurEnBytes);
             //Console.WriteLine(hauteurImage);
             #endregion
 
-            #region LargeurImage
+                #region LargeurImage
             byte[] largeurEnBytes = new byte[] { Im[18], Im[19], Im[20], Im[21] }; //récupère les bytes 19,20,21,22
             //Console.WriteLine(Im[18] + " " + Im[19] + " " + Im[20] + " " + Im[21]);
             largeurImage = Convert_Endian_To_Int(largeurEnBytes);
             //Console.WriteLine(largeurImage);
             #endregion
 
-            #region NombreDeBitsCouleurs
+                #region NombreDeBitsCouleurs
             byte[] nombreDeBitsCouleursEnBytes = new byte[] { Im[28], Im[29] }; //récupère les bytes 29,30
             //Console.WriteLine(Im[28] + " " + Im[29]);
             nombreDeBitsCouleurs = Convert_Endian_To_Int(nombreDeBitsCouleursEnBytes);
             //Console.WriteLine(nombreDeBitsCouleurs);
             #endregion
 
-            #region AffichageHeader
+                #region AffichageHeader
 
-            Console.WriteLine("Header\n");
-            for (int i = 0; i < 14; i++)
-            {
+                /*Console.WriteLine("Header\n");
+                for (int i = 0; i < 14; i++)
+                {
                 Console.Write(Im[i] + "   ");
-            }
-            Console.WriteLine("\n\nHeader Infos\n");
-            for (int i = 14; i < tailleOffset; i++)
-            {
+                }
+                Console.WriteLine("\n\nHeader Infos\n");
+                for (int i = 14; i < tailleOffset; i++)
+                {
                 Console.Write(Im[i] + "   ");
-            }
-            #endregion
+                }*/
+                #endregion
 
-            #region AffichageImageBytes
-            Console.WriteLine("\n\nAFFICHER IMAGE\n");
+                #region MatricePixels
+                //Console.WriteLine("\n\nAFFICHER IMAGE\n");
+                int ajout = 0;
+                if (largeurImage % 4 != 0)  ///les lignes doivent être de taille modulo 4
+                {
+                    ajout = 4 - (largeurImage % 4);
+                }
 
-            image = new Pixel[hauteurImage, largeurImage];
-            int k = 0;
-            int j = 0;
-            try
-            {
-                for (int i = tailleOffset; i < tailleFichier; i += 3) // taille offset = 54
+                    image = new Pixel[hauteurImage, largeurImage+ajout];
+                int k = 0;
+                int j = 0;
+           
+               
+                
+                for (int i = tailleOffset; i < tailleFichier-2; i += 3) // taille offset = 54
                 {
                     byte blue = Im[i];
                     byte red = Im[i + 1];
                     byte green = Im[i + 2];
                     Pixel a = new Pixel(blue, red, green);
-
-                    if (j >= largeurImage)
+                    
+                    if (j >= largeurImage+ajout)
                     {
                         j = 0;
                         k++;
@@ -138,23 +146,29 @@ namespace Manon_Aubry_Manon_Goffinet
 
                         j++;
                     }
-
+                    else if(j >= largeurImage)
+                    {
+                        image[k, j] = new Pixel(0, 0, 0);
+                        j++;
+                    }
                     else
                     {
                         image[k, j] = a;
                         j++;
                     }
                 }
+                //largeurImage += ajout;
                 //AfficherimPixel(image);
                 //Console.WriteLine("\n\n");
+                #endregion
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Constructeur MyImage(string fileName) : "+e.Message);
             }
 
 
-            #endregion
+           
         }
 
         #region Get&Set
@@ -228,7 +242,7 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <summary>
         /// Matrice permettant l'affichage d'une matrice de pixel
         /// </summary>
-        /// <param name="tabPix">matrice de pixels a afficher</param>
+        /// <param name="tabPix">matrice de Pixel a afficher</param>
         public void AfficherimPixel(Pixel[,] tabPix)
         {
             try
@@ -301,101 +315,124 @@ namespace Manon_Aubry_Manon_Goffinet
         /// <param name="file">emplacement et nom du document.bmp à créer</param>
         public void From_Image_To_File(string myfile)
         {
-            int ajout = 0;
-            if ((largeurImage * (nombreDeBitsCouleurs / 8)) % 4 != 0)
+            try
             {
-                ajout = 4 - (largeurImage * (nombreDeBitsCouleurs / 8) % 4);
+                int ajout = 0;
+                if ((largeurImage * (nombreDeBitsCouleurs / 8)) % 4 != 0)   /// le nombre d'octets de la largeur de l'image doit être un multiple de 4
+                {
+                    ajout = 4 - ((largeurImage * (nombreDeBitsCouleurs / 8)) % 4);
+                }
+                int complementTailleIm = 0;
+                complementTailleIm = hauteurImage * ((nombreDeBitsCouleurs / 8 * largeurImage) + ajout);
+
+                if (complementTailleIm != 0)
+                {
+                    tailleFichier = tailleOffset + complementTailleIm;
+
+                }
+                else
+                {
+                    tailleFichier = tailleOffset + 3 * largeurImage * hauteurImage;
+                }
+
+                byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage, 4);
+                byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset, 4);
+                byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs, 2);
+                byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier, 4);
+                byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage, 4);
+                byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
+
+
+                byte[] tab = new byte[tailleFichier + ajout];
+
+                for (int i = 0; i < 54; i++)
+                {
+                    switch (i)
+                    {
+                        case int j when j < 2:
+                            tab[i] = tableauType[i];
+                            break;
+
+                        case int j when j >= 2 && j < 6:
+                            tab[i] = tableauTailleFichier[i - 2];
+                            break;
+
+                        case int j when j >= 10 && j < 14:
+                            tab[i] = tableauOffset[i - 10];
+                            break;
+
+                        case int j when j >= 14 && j < 18:
+                            tab[i] = Convertir_Int_To_Endian(tailleOffset - 14, 4)[i - 14];
+                            break;
+
+                        case int j when j >= 18 && j < 22:
+                            tab[i] = tableauLargeur[i - 18];
+                            break;
+
+                        case int j when j >= 22 && j < 26:
+                            tab[i] = tableauHauteur[i - 22];
+                            break;
+
+                        case 26:
+                            tab[i] = (byte)1;
+                            break;
+
+                        case int j when j >= 28 && j < 30:
+                            tab[i] = tabNombreDeBitsCouleurs[i - 28];
+                            break;
+
+                        case int j when j >= 34 && j < 38:
+                            tab[i] = Convertir_Int_To_Endian(tailleFichier - tailleOffset, 4)[i - 34]; // Taille image codée entre les bytes 34 et 38
+                            break;
+
+                        case int j when j >= 38 && j < 42:
+                            tab[i] = Convertir_Int_To_Endian(2835, 4)[i - 38];
+                            break;
+                        case int j when j >= 42 && j < 46:
+                            tab[i] = Convertir_Int_To_Endian(2835, 4)[i - 42];
+                            break;
+                        default:
+                            tab[i] = (byte)0;
+                            break;
+                    }
+                }
+
+                int k = tailleOffset; // 54 normalement
+                for (int i = 0; i < image.GetLength(0); i++)
+                {
+                    for (int u = 0; u < image.GetLength(1) + ajout; u++)
+                    {
+                        if (u < largeurImage)
+                        {
+                            tab[k] = image[i, u].Blue;
+                            tab[k + 1] = image[i, u].Red;
+                            tab[k + 2] = image[i, u].Green;
+                            k += 3;
+                        }
+                        else
+                        {
+                            tab[k] = 0;
+                            k++;
+                        }
+
+                    }
+                }
+                File.WriteAllBytes(myfile, tab);
             }
-            int complementTailleIm = hauteurImage * ((nombreDeBitsCouleurs / 8 * largeurImage) + ajout);
-            if (complementTailleIm != 0)
+            catch(Exception e)
             {
-                tailleFichier = tailleOffset + complementTailleIm;
+                Console.WriteLine("From image to file : " + e.Message);
             }
             
-
-            byte[] tableauLargeur = Convertir_Int_To_Endian(largeurImage, 4);
-            byte[] tableauOffset = Convertir_Int_To_Endian(tailleOffset, 4);
-            byte[] tabNombreDeBitsCouleurs = Convertir_Int_To_Endian(nombreDeBitsCouleurs, 2);
-            byte[] tableauTailleFichier = Convertir_Int_To_Endian(tailleFichier, 4);
-            byte[] tableauHauteur = Convertir_Int_To_Endian(hauteurImage, 4);
-            byte[] tableauType = new byte[] { (byte)typeImage[0], (byte)typeImage[1] };  //transforme le type de fichier (string) en un tableau de bytes
-
-
-            byte[] tab = new byte[tailleFichier];
-
-            for (int i = 0; i < 54; i++)
-            {
-                switch (i)
-                {
-                    case int j when j < 2:
-                        tab[i] = tableauType[i];
-                        break;
-
-                    case int j when j >= 2 && j < 6:
-                        tab[i] = tableauTailleFichier[i - 2];
-                        break;
-
-                    case int j when j >= 10 && j < 14:
-                        tab[i] = tableauOffset[i - 10];
-                        break;
-
-                    case int j when j >= 14 && j < 18:
-                        tab[i] = Convertir_Int_To_Endian(tailleOffset - 14, 4)[i - 14];
-                        break;
-
-                    case int j when j >= 18 && j < 22:
-                        tab[i] = tableauLargeur[i - 18];
-                        break;
-
-                    case int j when j >= 22 && j < 26:
-                        tab[i] = tableauHauteur[i - 22];
-                        break;
-
-                    case 26:
-                        tab[i] = (byte)1;
-                        break;
-
-                    case int j when j >= 28 && j < 30:
-                        tab[i] = tabNombreDeBitsCouleurs[i - 28];
-                        break;
-
-                    case int j when j >= 34 && j < 38:
-                        tab[i] = Convertir_Int_To_Endian(tailleFichier - tailleOffset, 4)[i - 34]; // Taille image codée entre les bytes 34 et 38
-                        break;
-
-                    case int j when j >= 38 && j < 42:
-                        tab[i] = Convertir_Int_To_Endian(2835, 4)[i - 38];
-                        break;
-                    case int j when j >= 42 && j < 46:
-                        tab[i] = Convertir_Int_To_Endian(2835, 4)[i - 42];
-                        break;
-                    default:
-                        tab[i] = (byte)0;
-                        break;
-                }
-            }
-
-            int k = tailleOffset; // 54 normalement
-            for (int i = 0; i < image.GetLength(0); i++)
-            {
-                for (int u = 0; u < image.GetLength(1); u++)
-                {
-                    tab[k] = image[i, u].Blue;
-                    tab[k + 1] = image[i, u].Red;
-                    tab[k + 2] = image[i, u].Green;
-                    k += 3;
-                }
-            }
-            File.WriteAllBytes(myfile, tab);
         }
         #endregion
 
         #region matrice noir ou blanche
 
         /// <summary>
-        /// Méthode renvoyant une matrice de pixels remplie de noir ou de blanc en fonction de C
+        /// Méthode renvoyant une matrice de Pixel remplie de noir ou de blanc en fonction de C
         /// </summary>
-        /// <param name="mat">matrice de pixels a mettre en noir ou blanc</param>
+        /// <param name="mat">matrice de Pixel a mettre en noir ou blanc</param>
         /// <param name="C">C = N ou B</param>
         /// <returns></returns>
         public Pixel[,] MatriceNOIRouBLANCHE(Pixel[,]mat, char C)
@@ -482,14 +519,14 @@ namespace Manon_Aubry_Manon_Goffinet
         #region Agrandir et Réduire
 
         /// <summary>
-        /// Crée une nouvelle instance de MyImage qui sera agrandi de n pixels
+        /// Crée une nouvelle instance de MyImage qui sera agrandi de n Pixel
         /// </summary>
         /// <returns>une instance d'image agrandie</returns>
         public MyImage Agrandir()
         {
             try
             {
-                Console.WriteLine("De combien de pixels voulez-vous agrandir l'image ? ");
+                Console.WriteLine("De combien de Pixel voulez-vous agrandir l'image ? ");
                 int nbPixel = Convert.ToInt32(Console.ReadLine());
 
                 Pixel[,] mat = new Pixel[image.GetLength(0) * (nbPixel + 1), image.GetLength(1) * (nbPixel + 1)];
@@ -574,100 +611,52 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
         #region Rotation
+        /// <summary>
+        /// applique a une matrice de pixels les rotations de 90 degrés
+        /// </summary>
+        /// <param name="imag">matrice de pixels à tourner de 90 degrés</param>
+        /// <returns>la matrice de pixels avec une rotation de 90</returns>
+        public Pixel[,] Rotation90(Pixel[,] imag)//Rotations de 90 degrés
+        {
+            try
+            {
+                Pixel[,] ImageRes = new Pixel[imag.GetLength(1), imag.GetLength(0)];
+                for (int i = 0; i < imag.GetLength(0); i++)
+                {
+                    for (int j = 0; j < imag.GetLength(1); j++)
+                    {
+                        ImageRes[j, i] = imag[imag.GetLength(0) - 1 - i, j];/// les imag.GetLength(0) permettent d'effectuer la rotation dans le même sens que les formules trigonométriques 
+                    }
+                }
+                return ImageRes;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("problème dans Rotation90 : " + e.Message);
+                return imag;
+            }
+        }
         
-        /// <summary>
-        /// calcule la hauteur et la largeur après des rotations successives de 90°
-        /// </summary>
-        /// <param name="hauteurImageRes">hauteur image</param>
-        /// <param name="largeurImageRes">largeur image</param>
-        /// <param name="angleDegré">angle multiple de 90 dont /90 donne le nombre rotations par 90 à réaliser</param>
-        /// <returns>un tableau de dim 2 de la forme {newHauteur,newLargeur}</returns>
-        public int [] LongueuretHauteur90(int hauteurImageRes, int largeurImageRes, int angleDegré)
-        {
-            for (int i = 0; i < (angleDegré / 90); i++)
-            {
-
-                int a = largeurImageRes;
-                largeurImageRes = hauteurImageRes;
-                hauteurImageRes = a;
-
-            }
-            return new int[] { hauteurImageRes, largeurImageRes };
-        }
-        /// <summary>
-        /// applique a la matrice de pixel les rotations multiples de 90 correspondant à angleDegré
-        /// </summary>
-        /// <param name="imag">matrice de pixel à modifier</param>
-        /// <param name="hauteurImageRes">hauteur de l'image finale après rotation</param>
-        /// <param name="largeurImageRes">largeur de l'image finale après rotation</param>
-        /// <param name="angleDegré">angle en degré multiple de 90 dont il faut tourner l'image</param>
-        /// <returns>matrice de pixels avec la rotation demandée appliquée</returns>
-        public Pixel[,] Rotation90(Pixel[,] imag, int hauteurImage, int largeurImage, int angle)
-        {
-
-            Pixel[,] im = new Pixel[hauteurImage, largeurImage];
-
-            for (int i = 0; i < hauteurImage; i++)
-            {
-                for (int j = 0; j < largeurImage; j++)
-                {
-                    im[i, j] = new Pixel(0, 0, 0);
-                }
-            }
-            for (int i = 0; i < hauteurImage; i++)
-            {
-                for (int j = 0; j < largeurImage; j++)
-                {
-                    if (angle == 0)
-                    {
-                        im[i, j] = imag[i, j];
-                    }
-                    else if (angle == 90)
-                    {
-                        im[i, j] = imag[largeurImage - 1 - j, hauteurImage - 1 - i];
-
-                    }
-                    else if(angle == 180)
-                    {
-                        im[i, j] = imag[hauteurImage - 1 - i, largeurImage - 1 - j];
-                    }
-                    else if (angle == 270)
-                    {
-                        im[i, j] = imag[j, i];
-                        
-                    }
-                    else if (angle== 360)
-                    {
-                        im[i, j] = imag[i, j];
-                    }
-
-                    
-                }
-            }
-            return im;
-        }
-
         /// <summary>
         /// Prend l'instance de MyImage et lui fait exécuter une rotation d'un angle quelconque en degré 
         /// </summary>
         /// <param name="angleDegré">angle en degré duquel l'image doit tourner</param>
         /// <returns>une nouvelle instance d'image tournée de l'angle en entrée</returns>
         public MyImage Rotation(int angleDegré)
-
         {
-            //try
+            try
             {
                 while (angleDegré > 360) angleDegré = angleDegré - 360; // permet d'avoir l'angle correspondant en degré inférieur à 360
                 if (angleDegré < 0) angleDegré = 360 + angleDegré;
-                Console.WriteLine(angleDegré);
+                //Console.WriteLine(angleDegré);
                 Pixel[,] im = new Pixel [hauteurImage,largeurImage];
                 int tailleFichierRes = tailleFichier;
                 int largeurImageRes = largeurImage;
                 int hauteurImageRes = hauteurImage;
                 
-                for (int i = 0; i < hauteurImageRes; i++)
+                for (int i = 0; i < image.GetLength(0); i++)
                 {
-                    for (int j = 0; j < largeurImageRes; j++)
+                    for (int j = 0; j < image.GetLength(1); j++)
                     {
                         im[i, j] = image[i, j];
                     }
@@ -676,21 +665,16 @@ namespace Manon_Aubry_Manon_Goffinet
                 
                 if (angleDegré % 90 == 0)
                 {
-                    //Console.WriteLine("a");
-                    Pixel[,] imag=new Pixel [im.GetLength(0),im.GetLength(1)];
-                    for(int i = 0; i<hauteurImageRes; i++)
-                    {
-                        for(int j =0; j<largeurImageRes; j++)
-                        {
-                            imag[i, j] = im[i, j];
-                        }
-                    }
-
-                    int[] hauteurLargeur = LongueuretHauteur90(hauteurImageRes, largeurImageRes, angleDegré);
-                    hauteurImageRes = hauteurLargeur[0];
-                    largeurImageRes = hauteurLargeur[1];
-                    im = Rotation90(imag, hauteurLargeur[0], hauteurLargeur[1], angleDegré);
                     
+                    
+                    for(int i =0; i < angleDegré / 90; i++)
+                    {
+                        im = Rotation90(im);
+                    }    
+
+                    hauteurImageRes = im.GetLength(0);
+                    largeurImageRes = im.GetLength(1);
+
                 }
                 else 
                 {
@@ -699,31 +683,25 @@ namespace Manon_Aubry_Manon_Goffinet
                     
                     int angle90 = angleDegré-angleRestant;// avec l'ex d'au dessus récupère 180
                     
-                    Pixel[,] Rot90;// Image tournée de 90 degré le nombre de fois nécessaire pour ne plus qu'avoir un angle < 90° a tourner
-
-                    if (angle90 !=0)
-                    {
-                        int[] hauteurLargeur = LongueuretHauteur90(hauteurImage, largeurImage, angle90);
-                        hauteurImageRes = hauteurLargeur[0];
-                        largeurImageRes = hauteurLargeur[1];
-                    }
-                    
-                    Rot90 = Rotation90(im, hauteurImageRes, largeurImageRes, angle90);
-
-                    im = new Pixel[Rot90.GetLength(0), Rot90.GetLength(1)];
+                    Pixel[,] Rot90=new Pixel[im.GetLength(0), im.GetLength(1)];// Image tournée de 90 degré le nombre de fois nécessaire pour ne plus qu'avoir un angle < 90° a tourner
                     for (int i = 0; i < im.GetLength(0); i++)
                     {
                         for (int j = 0; j < im.GetLength(1); j++)
                         {
-                            im[i, j] = Rot90[i, j];
+                            Rot90[i, j] = im[i, j];
                         }
                     }
                     
+                    for (int i = 0; i < angle90 / 90; i++)
+                    {
+                        Rot90 = Rotation90(Rot90);
+                    }
+                    hauteurImageRes = Rot90.GetLength(0);
+                    largeurImageRes = Rot90.GetLength(1);
 
                     double angle = Math.PI * angleRestant / 180; //passage en radiant de l'angle restant
                     double sin = Math.Sin(angle);
                     double cos = Math.Cos(angle);
-
 
                     largeurImageRes = Convert.ToInt32(Math.Abs(cos * Rot90.GetLength(1) + sin * Rot90.GetLength(0))); // a partir de la hauteur et largeur de l'image résultat des rotations de 90 on recalcule la hauteur et la largeu rde l'image
                     hauteurImageRes = Convert.ToInt32(Math.Abs(cos * Rot90.GetLength(0) + sin * Rot90.GetLength(1)));
@@ -734,13 +712,8 @@ namespace Manon_Aubry_Manon_Goffinet
                     int centreImageResL = largeurImageRes / 2;
                     int centreImageResH = hauteurImageRes / 2;
 
-
                     int centreImageIntermédiaireL = Convert.ToInt32(centreImageL * cos - centreImageH * sin);
                     int centreImageIntermédiaireH = Convert.ToInt32(centreImageL * sin + centreImageH * cos);
-
-
-                   
-
 
                     im = new Pixel[hauteurImageRes, largeurImageRes];
 
@@ -750,69 +723,52 @@ namespace Manon_Aubry_Manon_Goffinet
                     {
                         for (double j = 0; j < Rot90.GetLength(1); j+=0.5)
                         {
-                            /*int x = (int)(sin * j + cos * i + centreImageResH - centreImageIntermédiaireH);
+                            int x = (int)(sin * j + cos * i + centreImageResH - centreImageIntermédiaireH);
                             int y = (int)(cos * j - sin * i + centreImageResL - centreImageIntermédiaireL);
-                            if (x>=0&&x<hauteurImageRes&& y >= 0 && y < hauteurImageRes)
+
+                            if (x >= 0 && y >= 0&&x< im.GetLength(0)&& y < im.GetLength(1))
                             {
-                                im[x,y]= Rot90[(int)i, (int)j];
-                            }*/
+                                im[x, y] = Rot90[(int)i, (int) j];
+                            }
                             
+
                         }
                     }
                     for (int i = 0; i < hauteurImageRes; i++)
                     {
                         for (int j = 0; j < largeurImageRes; j++)
                         {
-                            //if (im[i, j] == null)
+                            if (im[i, j] == null)
                             {
-                                im[i, j] = new Pixel(0, 0, 0); //remplissage de la matrice en noir pour que toute les pixels de l'image soient remplies
-                                if (j == 0 || i == 0)
+                                im[i, j] = new Pixel(0, 0, 0); //remplissage de la matrice en noir pour que toute les Pixel de l'image soient remplies
+                                /*if (j == 0 || i == 0)
                                 {
                                     im[i, j] = new Pixel(255, 255, 255);
                                 }
                                 if (j == 0 && i == 0)
                                 {
                                     im[i, j] = new Pixel(255, 0, 0);
-                                }
+                                }*/
                             }
 
                         }
                     }
-
-                }
                     
-                int ajout = 0;
-                int complementTailleIm = 0;
-                if ((largeurImageRes * (nombreDeBitsCouleurs / 8)) % 4 != 0)
-                {
-                    ajout = 4 - (largeurImageRes * (nombreDeBitsCouleurs / 8) % 4);
-                }
-
-                complementTailleIm = hauteurImageRes * ((nombreDeBitsCouleurs / 8 * largeurImageRes) + ajout);
-
-
-
-                if (complementTailleIm != 0)
-                {
-                    tailleFichierRes = tailleOffset + complementTailleIm;
+                   
 
                 }
-                else
-                {
-                    tailleFichierRes = tailleOffset + 3 * largeurImageRes * hauteurImageRes;
-                }
-                
+
                 
                 MyImage resul = new MyImage(im, typeImage, tailleFichierRes, tailleOffset, largeurImageRes, hauteurImageRes, nombreDeBitsCouleurs);
                 
                 return resul;
             }
-            /*catch (Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Problème dans la méthode Rotation : "+e.Message);
                 MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
                 return Im;
-            }*/
+            }
 
         }
         #endregion
@@ -823,7 +779,7 @@ namespace Manon_Aubry_Manon_Goffinet
         /// Pour la convolution, calcule la valeur d'une couleur d'un pixel a placer dans la case de coordonnées (ligne, colonne) du résultat a partir du noyau et de la matrice de départ
         /// </summary>
         /// <param name="noyau">noyau de convolution (matrice 3*3 ou 9*9)</param>
-        /// <param name="resul">matrice de pixels dans laquelle on souhaite appliquer la convolution</param>
+        /// <param name="resul">matrice de Pixel dans laquelle on souhaite appliquer la convolution</param>
         /// <param name="ligne">coordonnées de la ligne de la case dont on cherche à calculer la valeur après convolution</param>
         /// <param name="colonne">coordonnées de la colonne de la case dont on cherche à calculer la valeur après convolution</param>
         /// <param name="lettre">R, B ou G : correspond a quel couleur du pixel final on cherche à calculer</param>
@@ -1042,7 +998,7 @@ namespace Manon_Aubry_Manon_Goffinet
                 double x2 = 0.6;
                 double y1 = -1.2;
                 double y2 = 1.2;
-                int zoom = 100; //pour une distance de 1 sur le plan, on a 100 pixels sur l'image
+                int zoom = 100; //pour une distance de 1 sur le plan, on a 100 Pixel sur l'image
                 double iteration_Max = 50 * image.GetLength(1) / 240;
                 int imageX = (int)((x2 - x1) * zoom + 1);
                 int imageY = (int)((y2 - y1) * zoom + 1);

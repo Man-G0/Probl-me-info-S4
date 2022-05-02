@@ -10,6 +10,8 @@ namespace Manon_Aubry_Manon_Goffinet
     class Program
     {
         static void Main(string[] args)
+        {            
+            
         {
             ConsoleKeyInfo cki;
             Console.WindowHeight = 49;
@@ -184,8 +186,9 @@ namespace Manon_Aubry_Manon_Goffinet
         {            
             string fileN = "coco.bmp";
             MyImage image = new MyImage(fileN);
-            //image1.From_Image_To_File("sortie.bmp");
-
+            
+            //image.From_Image_To_File("sortie.bmp");
+            //Console.WriteLine("fait");
             //byte[] tableauLargeur = image.Convertir_Int_To_Endian(68,image.LargeurImage);
 
             //MyImage image2 = image.EffetMiroir();
@@ -196,10 +199,25 @@ namespace Manon_Aubry_Manon_Goffinet
 
             //MyImage imageAgrandir = image.Agrandir();
             //imageAgrandir.From_Image_To_File("sortieAgrandir.bmp");
+            /*MyImage ImageRotation = image.Rotation(90);
+             ImageRotation.From_Image_To_File("sortieRotation.bmp");
+             MyImage ImageRotation2 = image.Rotation(89);
+             ImageRotation2.From_Image_To_File("sortieRotation2.bmp");
 
-            //MyImage ImageRotation = image.Rotation(25);
-            //ImageRotation.From_Image_To_File("sortieRotation.bmp");
+             MyImage ImageRotation3 = image.Rotation(180);
+             ImageRotation3.From_Image_To_File("sortieRotation3.bmp");
+             MyImage ImageRotation4 = image.Rotation(179);
+             ImageRotation4.From_Image_To_File("sortieRotation4.bmp");
 
+             MyImage ImageRotation5 = image.Rotation(270);
+             ImageRotation5.From_Image_To_File("sortieRotation5.bmp");
+             MyImage ImageRotation6 = image.Rotation(269);
+             ImageRotation6.From_Image_To_File("sortieRotation6.bmp");
+
+             MyImage ImageRotation7 = image.Rotation(360);
+             ImageRotation7.From_Image_To_File("sortieRotation7.bmp");
+             MyImage ImageRotation8 = image.Rotation(359);
+             ImageRotation8.From_Image_To_File("sortieRotation8.bmp");*/
             //MyImage imageReduire = image.Réduire();
             //imageReduire.From_Image_To_File("sortieRéduit.bmp");
 
@@ -219,8 +237,8 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage imageRenforcementDesBords = image.RenforcementDesBords();
             //imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");
 
-            //MyImage Histogramme  = image.Histogramme();
-            //Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
+            /* MyImage Histogramme  = image.Histogramme();
+             Histogramme.From_Image_To_File("sortieHistogramme1.bmp");*/
 
             MyImage imageFractaleNOIR = image.FractaleNOIR();
             Console.WriteLine("fin");
@@ -247,14 +265,14 @@ namespace Manon_Aubry_Manon_Goffinet
             ImageDECoder.From_Image_To_File("sortieImageDEcoder.bmp");
             Console.WriteLine("fin");
 
-            QRcode a = new QRcode("HELLO WORLD");
+            string phrase = "HELLO WORLD AND FRIENDS AND CO";
+            QRcode a = new QRcode(phrase);
             a.EncodageQRCode();
-            
+            MyImage Qr = a.ImageQRcode();
+            Qr.From_Image_To_File("Qr.bmp");
 
-            string phrase = "HELLO WORLD";
-            List<byte> chaineASCII = new List<byte>();
 
-            chaineASCII.Add(0010);  // le type d'information est alphanumérique
+
 
             int nbDeCaractère = 0;
             int reste = 0;
