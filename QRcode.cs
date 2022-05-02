@@ -91,7 +91,7 @@ namespace Manon_Aubry_Manon_Goffinet
         #endregion
 
        
-        #region AffichageListeBytes(List <byte>listeBytes)
+        #region Affichage Listes
         /// <summary>
         /// Affiche une liste de bytes
         /// </summary>
@@ -101,6 +101,14 @@ namespace Manon_Aubry_Manon_Goffinet
             for(int i = 0;i<listeBytes.Count; i++)
             {
                 Console.Write(listeBytes[i] + "");
+            }
+            Console.WriteLine("\n");
+        }
+        public void AffichageListeStrings(List<string> Bytes)
+        {
+            for (int i = 0; i < listeBytes.Count; i++)
+            {
+                Console.Write(listeBytes[i] + " ");
             }
             Console.WriteLine("\n");
         }
@@ -222,6 +230,7 @@ namespace Manon_Aubry_Manon_Goffinet
             //Console.WriteLine(nbCaractères);
             listeBytes = new List<byte>();
             List<byte> liste = new List<byte>();
+            List<string> Bytes = new List<string> { };
             liste.Add(0);
             liste.Add(0);
             liste.Add(1);
@@ -231,6 +240,8 @@ namespace Manon_Aubry_Manon_Goffinet
             {
                 List<byte> nbCaractèresEnBytes = Convertir_Int_To_Binaire(nbCaractères, 9);
                 
+
+
                 for (int i = 0; i<nbCaractèresEnBytes.Count; i++)
                 {
                     liste.Add(nbCaractèresEnBytes[nbCaractèresEnBytes.Count - 1 - i]);
@@ -277,35 +288,64 @@ namespace Manon_Aubry_Manon_Goffinet
                     
                 }
                 AffichageListeBytes(liste);
+                if (liste.Count % 8 != 0)
+                {
+                    for (int i = 0; i < liste.Count % 8; i++)
+                    {
+                        liste.Add(0);
+                    }
+                }
+                Console.WriteLine(liste.Count+" "+ (152 - liste.Count) / 8);
+                int temp = liste.Count;
+
+                for (int i = 0; i < (152 - temp) / 8; i++)
+                {
+
+                    if (i % 2 == 0)//11101100
+                    {
+                        liste.Add(1);
+                        liste.Add(1);
+                        liste.Add(1);
+                        liste.Add(0);
+                        liste.Add(1);
+                        liste.Add(1);
+                        liste.Add(0);
+                        liste.Add(0);
+                    }
+                    else //00010001
+                    {
+                        liste.Add(0);
+                        liste.Add(0);
+                        liste.Add(0);
+                        liste.Add(1);
+                        liste.Add(0);
+                        liste.Add(0);
+                        liste.Add(0);
+                        liste.Add(1);
+                    }
+                }
+
+
+
+                AffichageListeBytes(liste);
                 int b = 0;
                 while(b<liste.Count)
                 {
-                    if (b + 7 < liste.Count)
-                    {
-                        string t = Convert.ToString(liste[b]) + Convert.ToString(liste[b + 1]) + Convert.ToString(liste[b + 2]) + Convert.ToString(liste[b + 3]) + Convert.ToString(liste[b + 4]) + Convert.ToString(liste[b + 5]) + Convert.ToString(liste[b + 6]) + Convert.ToString(liste[b + 7]);
-                        
-                        Console.WriteLine("t : " + t);
-                        int h = Convert.ToInt32(t, 2);// permet de récupérer la valeur de chaque byte en int 
-                        Console.WriteLine("h : "+ h);
-                        byte e = (byte) h;
-                        Console.WriteLine("e : " + e);
-                        b += 8;
-                    }
-                    else
-                    {
-                        string t = "";
-                        while (b < liste.Count)
-                        {
-                            t += Convert.ToString(liste[b]);
-                            b++;
-                        }
-                        for(int i = t.Length; i<8; i++)
-                        {
-                            t += "0";
-                        }
-                        Console.WriteLine("t : " + t);
-                    }
+                    string t = Convert.ToString(liste[b]) + Convert.ToString(liste[b + 1]) + Convert.ToString(liste[b + 2]) + Convert.ToString(liste[b + 3]) + Convert.ToString(liste[b + 4]) + Convert.ToString(liste[b + 5]) + Convert.ToString(liste[b + 6]) + Convert.ToString(liste[b + 7]);
+
+                    //Console.WriteLine("t : " + t);
+                    int h = Convert.ToInt32(t, 2);// permet de récupérer la valeur de chaque byte en int 
+                    int s = 0b010 + 0b010;
+                    //Console.WriteLine(s);
+                    //Console.WriteLine("h : "+ h);
+                    byte e = Convert.ToByte(h);
+                    //Console.WriteLine("e : " + e);
+                    listeBytes.Add(e);
+                    Bytes.Add(t);
+                    b += 8;
                 }
+                AffichageListeBytes(listeBytes);
+                AffichageListeStrings(Bytes);
             }
             else if (nbCaractères <= 47) // deuxième version
             {
@@ -315,9 +355,8 @@ namespace Manon_Aubry_Manon_Goffinet
             {
                 Console.WriteLine("le message est trop long");
             }
-            // 00100000 01011011 00001011 01111000 11010001 01110010 11011100 01001101 01000011 01000000 11101100 00010001 11101100 00010001 11101100 00010001 11101100 00010001 11101100
-            // 00100000 01011011 00001011 01111000 11010001 01110010 11011100 01001101 01000011 01000000 11101100 00010001 11101100
-        }  //  00100000 01011011 00001011 01111000 11010001 01110010 11011100 01001101 01000011 01
+            
+        }  
 
         #endregion
     }

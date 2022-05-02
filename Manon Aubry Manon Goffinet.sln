@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manon Aubry Manon Goffinet", "Manon Aubry Manon Goffinet.csproj", "{A842C165-3907-4DF1-8186-5EFDEE900454}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "..\TestProject1\TestProject1.csproj", "{092000C9-6B89-47B8-BEE6-86F6129F6FFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject1", "..\TestProject1\TestProject1.csproj", "{092000C9-6B89-47B8-BEE6-86F6129F6FFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "UtilisationReedSolomon\UtilisationReedSolomon\ConsoleApp2\ConsoleApp2.csproj", "{F771F2E7-E324-4349-9BFC-7ED19FAE116E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{092000C9-6B89-47B8-BEE6-86F6129F6FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{092000C9-6B89-47B8-BEE6-86F6129F6FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{092000C9-6B89-47B8-BEE6-86F6129F6FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F771F2E7-E324-4349-9BFC-7ED19FAE116E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F771F2E7-E324-4349-9BFC-7ED19FAE116E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F771F2E7-E324-4349-9BFC-7ED19FAE116E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F771F2E7-E324-4349-9BFC-7ED19FAE116E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
