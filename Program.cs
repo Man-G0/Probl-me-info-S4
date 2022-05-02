@@ -10,9 +10,7 @@ namespace Manon_Aubry_Manon_Goffinet
     class Program
     {
         static void Main(string[] args)
-        {            
-            
-        
+        {                    
             ConsoleKeyInfo cki;
             Console.WindowHeight = 49;
             Console.WindowWidth = 100;
@@ -27,7 +25,7 @@ namespace Manon_Aubry_Manon_Goffinet
                                  + "Photo 5 : Test couleur\n"
                                  + "Photo 6 : Lac et montagne\n"
                                  + "\n"
-                                 + "Sélectionnez l'exercice désiré ");
+                                 + "Sélectionnez la photo désirée ");
                 
                 int nbphoto = Convert.ToInt32(Console.ReadLine());
                 string fileN = " ";
@@ -71,6 +69,7 @@ namespace Manon_Aubry_Manon_Goffinet
                                  + "Fonction 12 : Histogramme\n"
                                  + "Fonction 13 : Coder une image\n"
                                  + "Fonction 14 : Décoder une image\n"
+                                 + "Fonction 15 : QR Code\n"
                                  + "Fonction 15 : Innovation\n"
                                  + "\n"
                                  + "Sélectionnez l'exercice désiré ");
@@ -171,6 +170,20 @@ namespace Manon_Aubry_Manon_Goffinet
                         Console.ReadKey();
                         break;
                     case 15:
+                        string phraseTest1 = "HELLO WORLD";
+                        string phraseTest2 = "HELLO POLE LEONARD DE VINCI";
+                        Console.WriteLine("Fonction 15 : QR Code\n"+"Phrase test 1: "+ phraseTest1);
+                        QRcode QR_Code = new QRcode(phraseTest1);
+                        QR_Code.EncodageQRCode();
+                        MyImage im = QR_Code.ImageQRcode();
+                        im.From_Image_To_File("sortieQRcode1.bmp");
+                        QRcode QR_Code2 = new QRcode(phraseTest2);
+                        QR_Code2.EncodageQRCode();
+                        MyImage im2 = QR_Code2.ImageQRcode();
+                        im2.From_Image_To_File("sortieQRcode2.bmp");
+                        Console.ReadKey();
+                        break;
+                    case 15:
                         Console.WriteLine("Fonction 15 : Innovation\n");
                         MyImage ImageIn = image.Innovation();
                         ImageIn.From_Image_To_File("sortieInnovation.bmp");
@@ -185,6 +198,8 @@ namespace Manon_Aubry_Manon_Goffinet
                             break;*/
                 }
                 Console.WriteLine("Tapez Escape pour refaire une fonction");
+
+
                 cki = Console.ReadKey();
             } while (cki.Key != ConsoleKey.Escape);
             Console.Read();
@@ -207,7 +222,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
             //MyImage imageAgrandir = image.Agrandir();
             //imageAgrandir.From_Image_To_File("sortieAgrandir.bmp");
-            /*MyImage ImageRotation = image.Rotation(90);
+            MyImage ImageRotation = image.Rotation(90);
              ImageRotation.From_Image_To_File("sortieRotation.bmp");
              MyImage ImageRotation2 = image.Rotation(89);
              ImageRotation2.From_Image_To_File("sortieRotation2.bmp");
@@ -225,7 +240,7 @@ namespace Manon_Aubry_Manon_Goffinet
              MyImage ImageRotation7 = image.Rotation(360);
              ImageRotation7.From_Image_To_File("sortieRotation7.bmp");
              MyImage ImageRotation8 = image.Rotation(359);
-             ImageRotation8.From_Image_To_File("sortieRotation8.bmp");*/
+             ImageRotation8.From_Image_To_File("sortieRotation8.bmp");
             //MyImage imageReduire = image.Réduire();
             //imageReduire.From_Image_To_File("sortieRéduit.bmp");
 
@@ -245,8 +260,8 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage imageRenforcementDesBords = image.RenforcementDesBords();
             //imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");
 
-            /* MyImage Histogramme  = image.Histogramme();
-             Histogramme.From_Image_To_File("sortieHistogramme1.bmp");*/
+            MyImage Histogramme  = image.Histogramme();
+            Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
 
             /*MyImage imageFractaleNOIR = image.FractaleNOIR();
             Console.WriteLine("fin");
@@ -278,10 +293,6 @@ namespace Manon_Aubry_Manon_Goffinet
             a.EncodageQRCode();
             MyImage Qr = a.ImageQRcode();
             Qr.From_Image_To_File("Qr.bmp");
-
-
-
-
             int nbDeCaractère = 0;
             int reste = 0;
             int nbr = 0;
