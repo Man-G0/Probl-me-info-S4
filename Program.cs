@@ -113,6 +113,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
                     case 6:
                         Console.WriteLine("Fonction 6  : Rotationnez l'image\n");
+                        
                         MyImage ImageRotation = image.Rotation(25);
                         ImageRotation.From_Image_To_File("sortieRotation.bmp");
                         Console.ReadKey();
@@ -173,17 +174,17 @@ namespace Manon_Aubry_Manon_Goffinet
                         QRcode QR_Code = new QRcode(phraseTest1);
                         QR_Code.EncodageQRCode();
                         MyImage im = QR_Code.ImageQRcode();
-                            im.From_Image_To_File("sortieQRcode1.bmp");
-
-
-                            QRcode QR_Code2 = new QRcode(phraseTest2);
-                            QR_Code2.EncodageQRCode();
-                            MyImage im2 = QR_Code2.ImageQRcode();
-                            im2.From_Image_To_File("sortieQRcode2.bmp");
-                            Console.ReadKey();
+                        im.From_Image_To_File("sortieQRcode1.bmp");
+                        QRcode QR_Code2 = new QRcode(phraseTest2);
+                        QR_Code2.EncodageQRCode();
+                        MyImage im2 = QR_Code2.ImageQRcode();
+                        im2.From_Image_To_File("sortieQRcode2.bmp");
+                        Console.ReadKey();
                         break;
                 }
                 Console.WriteLine("Tapez Escape pour refaire une fonction");
+
+
                 cki = Console.ReadKey();
             } while (cki.Key != ConsoleKey.Escape);
             Console.Read();
