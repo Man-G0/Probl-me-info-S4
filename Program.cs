@@ -21,9 +21,7 @@ namespace Manon_Aubry_Manon_Goffinet
                                  + "Photo 1 : Coco\n"
                                  + "Photo 2 : Lena\n"
                                  + "Photo 3 : Test001 noir et blanc\n"
-                                 + "Photo 4 : Test002 noir et blanc\n"
-                                 + "Photo 5 : Test couleur\n"
-                                 + "Photo 6 : Lac et montagne\n"
+                                 + "Photo 4 : Lac et montagne\n"
                                  + "\n"
                                  + "Sélectionnez la photo désirée ");
                 
@@ -41,26 +39,21 @@ namespace Manon_Aubry_Manon_Goffinet
                     case 3:
                         fileN = "Test001.bmp";
                         break;
+
                     case 4:
-                        fileN = "Test002.bmp";
-                        break;
-                    case 5:
-                        fileN = "Test.bmp";
-                        break;
-                    case 6:
-                        fileN = "Test3.bmp";
+                        fileN = "lac.bmp";
                         break;
                 }
                 MyImage image = new MyImage(fileN);
 
 
-                Console.WriteLine("Menu fonction:\n"
+                Console.WriteLine("\nMenu fonction:\n"
                                  + "Fonction 1  : Fonction Grey\n"
                                  + "Fonction 2  : Effet miroir\n"
                                  + "Fonction 3  : Image en noir et blanc\n"
                                  + "Fonction 4  : Agrandir l'image\n"
                                  + "Fonction 5  : Réduire l'image\n"
-                                 + "Fonction 6  : Rotationnez l'image\n"
+                                 + "Fonction 6  : Rotationner l'image\n"
                                  + "Fonction 7  : Image Flou\n"
                                  + "Fonction 8  : Repoussage des bords\n"
                                  + "Fonction 9  : Détection des bords\n"
@@ -70,7 +63,7 @@ namespace Manon_Aubry_Manon_Goffinet
                                  + "Fonction 13 : Coder une image\n"
                                  + "Fonction 14 : Décoder une image\n"
                                  + "Fonction 15 : QR Code\n"
-                                 + "Fonction 15 : Innovation\n"
+                                 + "Fonction 16 : Innovation\n"
                                  + "\n"
                                  + "Sélectionnez l'exercice désiré ");
 
@@ -113,7 +106,7 @@ namespace Manon_Aubry_Manon_Goffinet
                         break;
 
                     case 6:
-                        Console.WriteLine("Fonction 6  : Rotationnez l'image\n");
+                        Console.WriteLine("Fonction 6  : Rotationner l'image\n");
                         Console.WriteLine("Donner un angle en degré : \n");
                         int angle = Convert.ToInt32(Console.ReadLine());
                         MyImage ImageRotation = image.Rotation(angle);
@@ -177,16 +170,20 @@ namespace Manon_Aubry_Manon_Goffinet
                         QR_Code.EncodageQRCode();
                         MyImage im = QR_Code.ImageQRcode();
                         im.From_Image_To_File("sortieQRcode1.bmp");
+                        Console.WriteLine("Fonction 15 : QR Code\n" + "Phrase test 2: " + phraseTest2);
                         QRcode QR_Code2 = new QRcode(phraseTest2);
                         QR_Code2.EncodageQRCode();
                         MyImage im2 = QR_Code2.ImageQRcode();
                         im2.From_Image_To_File("sortieQRcode2.bmp");
                         Console.ReadKey();
                         break;
-                    case 15:
-                        Console.WriteLine("Fonction 15 : Innovation\n");
-                        MyImage ImageIn = image.Innovation();
+                    case 16:
+                        Console.WriteLine("Fonction 16 : Innovation1\n");
+                        MyImage ImageIn = image.Innovation1();
                         ImageIn.From_Image_To_File("sortieInnovation.bmp");
+                        Console.WriteLine("Fonction 16 : Innovation2\n");
+                        MyImage ImageIn2 = image.Innovation2();
+                        ImageIn2.From_Image_To_File("sortieInnovation2.bmp");
                         Console.ReadKey();
                         break;
                         /*case 15:
@@ -260,8 +257,8 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage imageRenforcementDesBords = image.RenforcementDesBords();
             //imageRenforcementDesBords.From_Image_To_File("sortie-RenforcementDesBords.bmp");
 
-            MyImage Histogramme  = image.Histogramme();
-            Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
+            //MyImage Histogramme  = image.Histogramme();
+            //Histogramme.From_Image_To_File("sortieHistogramme1.bmp");
 
             /*MyImage imageFractaleNOIR = image.FractaleNOIR();
             Console.WriteLine("fin");

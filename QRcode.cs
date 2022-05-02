@@ -419,9 +419,10 @@ namespace Manon_Aubry_Manon_Goffinet
                 an += st + " ";
             }
 
-            AffichageStrings(an);
-            Console.WriteLine("--");
+            //AffichageStrings(an);
+            
             AffichageStrings(bytes);
+            Console.WriteLine("--");
 
         }
 
@@ -546,7 +547,8 @@ namespace Manon_Aubry_Manon_Goffinet
                 {
                     for (int b = 0; b < resul.GetLength(1); b++)
                     {
-                        if (b == 7 )
+
+                        if (b == 7)
                         {
                             if (a % 2 == 0)
                             {
@@ -555,10 +557,10 @@ namespace Manon_Aubry_Manon_Goffinet
                             else
                             {
                                 resul[a, b] = new Pixel(255, 255, 255);
-                                
+
                             }
                         }
-                        if (a == resul.GetLength(0) - 7)
+                        if (a == resul.GetLength(0) - 8)
                         {
                             if (b % 2 == 0)
                             {
@@ -567,12 +569,31 @@ namespace Manon_Aubry_Manon_Goffinet
                             else
                             {
                                 resul[a, b] = new Pixel(255, 255, 255);
-                                
+
                             }
                         }
                     }
                 }
+                for (int a = 0; a < 5; a++)
+                {
+                    for (int b = 0; b < 5; b++)
+                    {
+                        resul[a + 4, resul.GetLength(1) - 10 + b] = new Pixel(0, 0, 0);
+                        if (a == 1 || b == 1 || a == 3 || b == 3)
+                        {
+
+                            resul[a + 4, resul.GetLength(1) - 10 + b] = new Pixel(255, 255, 255);
+
+                        }
+                        if (a == 0 || b == 0 || a == 4 || b == 4)
+                        {
+                            resul[a + 4, resul.GetLength(1) - 10 + b] = new Pixel(0, 0, 0);
+                        }
+                    }
+                }
             }
+                
+                
 
             Pixel[,] bloc = BlocsRecherches(version);
             for (int a = 0; a < bloc.GetLength(0); a++)

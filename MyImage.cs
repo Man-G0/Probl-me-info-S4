@@ -612,7 +612,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
         #region Rotation
         /// <summary>
-        /// applique a une matrice de pixels les rotations de 90 degrés
+        /// applique a une matrice de pixels une rotation de 90 degrés
         /// </summary>
         /// <param name="imag">matrice de pixels à tourner de 90 degrés</param>
         /// <returns>la matrice de pixels avec une rotation de 90</returns>
@@ -942,14 +942,33 @@ namespace Manon_Aubry_Manon_Goffinet
         #region  Innovation
 
         /// <summary>
-        /// Prend une instance de MyImage et repousse les bords
+        /// Prend une instance de MyImage et applique un filtre de Sorel
         /// </summary>
-        /// <returns>une nouvelle instance avec les bords repoussés</returns>
-        public MyImage Innovation()
+        /// <returns>une nouvelle instance avec un effet Sorel </returns>
+        public MyImage Innovation1()
         {
             try
             {
-                int[,] noyau = { { 2, 5, 2 }, { 11, 3, 2 }, { 4, 9, 2 } };
+                int[,] noyau = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 0 } };//filtre de Sorel
+                MyImage res = Convolution(noyau);
+                return res;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
+        }
+        /// <summary>
+        /// Prend une instance de MyImage et applique un filtre inconnu
+        /// </summary>
+        /// <returns>une nouvelle instance avec un effet inconnu</returns>
+        public MyImage Innovation2()
+        {
+            try
+            {
+                int[,] noyau = { { -5,0, 2 }, { 11, 0, -6 }, { 7, 0, 25 } };//{ { 2, 5, 2 }, { 11, 3, 2 }, { 4, 9, 2 } }; //
                 MyImage res = Convolution(noyau);
                 return res;
             }
