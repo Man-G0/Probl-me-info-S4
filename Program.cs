@@ -93,7 +93,7 @@ namespace Manon_Aubry_Manon_Goffinet
             ImageDECoder.From_Image_To_File("sortieImageDEcoder.bmp");
             Console.WriteLine("fin");*/
 
-            string phrase = "HELLO WORLD";
+            string phrase = "HELLO WORLD AND FRIENDS AND CO";
             QRcode a = new QRcode(phrase);
             a.EncodageQRCode();
             MyImage Qr = a.ImageQRcode();

@@ -475,10 +475,15 @@ namespace Manon_Aubry_Manon_Goffinet
                for(int b= 0; b<7; b++)
                 {
                     bloc[a, b] = new Pixel(0, 0, 0);
-                    if (a == 1 || b == 1 || a == 4 || b == 4)
-                    {
+                    if (a == 1 || b == 1 || a == 5 || b == 5)
+                    { 
+                    
                         bloc[a, b] = new Pixel(255, 255, 255);
 
+                    }
+                    if (a == 0 || b == 0 || a == 6 || b == 6)
+                    {
+                        bloc[a, b] = new Pixel(0, 0, 0);
                     }
                 }
             }
@@ -535,6 +540,39 @@ namespace Manon_Aubry_Manon_Goffinet
                     resul[a, b] = new Pixel(50, 50, 50);
                 }
             }
+            if (version == 2)
+            {
+                for (int a = 0; a < resul.GetLength(0); a++)
+                {
+                    for (int b = 0; b < resul.GetLength(1); b++)
+                    {
+                        if (b == 7 )
+                        {
+                            if (a % 2 == 0)
+                            {
+                                resul[a, b] = new Pixel(0, 0, 0);
+                            }
+                            else
+                            {
+                                resul[a, b] = new Pixel(255, 255, 255);
+                                
+                            }
+                        }
+                        if (a == resul.GetLength(0) - 7)
+                        {
+                            if (b % 2 == 0)
+                            {
+                                resul[a, b] = new Pixel(0, 0, 0);
+                            }
+                            else
+                            {
+                                resul[a, b] = new Pixel(255, 255, 255);
+                                
+                            }
+                        }
+                    }
+                }
+            }
 
             Pixel[,] bloc = BlocsRecherches(version);
             for (int a = 0; a < bloc.GetLength(0); a++)
@@ -542,12 +580,12 @@ namespace Manon_Aubry_Manon_Goffinet
                 for (int b = 0; b < bloc.GetLength(1); b++)
                 {
                     resul[a, b] = bloc[a, b];
-                    //resul[resul.GetLength(0) - 1 - bloc.GetLength(0) - a, b] = bloc[a, b];
-                    //resul[ a, resul.GetLength(1) - 1 - bloc.GetLength(1) - b] = bloc[a, b];
+                    resul[resul.GetLength(0) - 1 - a, b] = bloc[a, b];
+                    resul[resul.GetLength(0) - 1 - a, resul.GetLength(1) - 1- b] = bloc[a, b];
                 }
             }
 
-
+            
 
             MyImage image = new MyImage(resul, typeImage, resul.GetLength(1) * resul.GetLength(0) * 3 + tailleOffset, tailleOffset, resul.GetLength(1), resul.GetLength(0), nombreDeBitsCouleurs);
             return image;
