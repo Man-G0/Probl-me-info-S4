@@ -78,7 +78,7 @@ namespace Manon_Aubry_Manon_Goffinet
             //Console.WriteLine(Im[14] + " " + Im[15] + " " + Im[16] + " " + Im[17]);
             int tailleHeader = Convert_Endian_To_Int(tailleHeaderEnBytes);
             tailleOffset = tailleHeader + 14; //additionne la taille header plus la taille du header info qui est de 14
-            Console.WriteLine(tailleOffset);
+            //Console.WriteLine(tailleOffset);
             //Console.WriteLine(tailleOffset);
             #endregion
 
@@ -105,7 +105,7 @@ namespace Manon_Aubry_Manon_Goffinet
 
                 #region AffichageHeader
 
-                Console.WriteLine("Header\n");
+                /*Console.WriteLine("Header\n");
                 for (int i = 0; i < 14; i++)
                 {
                 Console.Write(Im[i] + "   ");
@@ -114,11 +114,11 @@ namespace Manon_Aubry_Manon_Goffinet
                 for (int i = 14; i < tailleOffset; i++)
                 {
                 Console.Write(Im[i] + "   ");
-                }
+                }*/
                 #endregion
 
                 #region MatricePixels
-                Console.WriteLine("\n\nAFFICHER IMAGE\n");
+                //Console.WriteLine("\n\nAFFICHER IMAGE\n");
                 int ajout = 0;
                 if (largeurImage % 4 != 0)  ///les lignes doivent être de taille modulo 4
                 {

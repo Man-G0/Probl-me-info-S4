@@ -11,8 +11,10 @@ namespace Manon_Aubry_Manon_Goffinet
     {
         static void Main(string[] args)
         {            
+            
             string fileN = "coco.bmp";
             MyImage image = new MyImage(fileN);
+            
             //image.From_Image_To_File("sortie.bmp");
             //Console.WriteLine("fait");
             //byte[] tableauLargeur = image.Convertir_Int_To_Endian(68,image.LargeurImage);
@@ -94,10 +96,13 @@ namespace Manon_Aubry_Manon_Goffinet
             string phrase = "HELLO WORLD";
             QRcode a = new QRcode(phrase);
             a.EncodageQRCode();
-            
-          
-            
-            
+            MyImage Qr = a.ImageQRcode();
+            Qr.From_Image_To_File("Qr.bmp");
+
+
+
+
+
 
             Console.ReadKey();
         }
