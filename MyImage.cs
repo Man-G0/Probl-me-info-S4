@@ -938,6 +938,30 @@ namespace Manon_Aubry_Manon_Goffinet
         }
         #endregion
 
+
+        #region  Innovation
+
+        /// <summary>
+        /// Prend une instance de MyImage et repousse les bords
+        /// </summary>
+        /// <returns>une nouvelle instance avec les bords repoussés</returns>
+        public MyImage Innovation()
+        {
+            try
+            {
+                int[,] noyau = { { 2, 5, 2 }, { 11, 3, 2 }, { 4, 9, 2 } };
+                MyImage res = Convolution(noyau);
+                return res;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                MyImage Im = new MyImage(image, typeImage, tailleFichier, tailleOffset, largeurImage, hauteurImage, nombreDeBitsCouleurs);
+                return Im;
+            }
+        }
+        #endregion
+
         #region Détection des bords
         /// <summary>
         /// Prend une instance de MyImage et lui applique un filtre de détection des bords

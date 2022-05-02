@@ -12,7 +12,7 @@ namespace Manon_Aubry_Manon_Goffinet
         static void Main(string[] args)
         {            
             
-        {
+        
             ConsoleKeyInfo cki;
             Console.WindowHeight = 49;
             Console.WindowWidth = 100;
@@ -71,7 +71,7 @@ namespace Manon_Aubry_Manon_Goffinet
                                  + "Fonction 12 : Histogramme\n"
                                  + "Fonction 13 : Coder une image\n"
                                  + "Fonction 14 : Décoder une image\n"
-                                 /*+ "Fonction 15 : QR Code\n"*/
+                                 + "Fonction 15 : Innovation\n"
                                  + "\n"
                                  + "Sélectionnez l'exercice désiré ");
 
@@ -115,7 +115,9 @@ namespace Manon_Aubry_Manon_Goffinet
 
                     case 6:
                         Console.WriteLine("Fonction 6  : Rotationnez l'image\n");
-                        MyImage ImageRotation = image.Rotation(25);
+                        Console.WriteLine("Donner un angle en degré : \n");
+                        int angle = Convert.ToInt32(Console.ReadLine());
+                        MyImage ImageRotation = image.Rotation(angle);
                         ImageRotation.From_Image_To_File("sortieRotation.bmp");
                         Console.ReadKey();
                         break;
@@ -168,13 +170,19 @@ namespace Manon_Aubry_Manon_Goffinet
                         ImageDECoder.From_Image_To_File("sortieImageDEcoder.bmp");
                         Console.ReadKey();
                         break;
-                    /*case 15:
-                        string phrase = new string"HELLO WORLD".
-                        Console.WriteLine("Fonction 15 : QR Code\n"+"Phrase : "+phrase);
-                        QRcode QR_Code = new QRcode(phrase);
-                        QR_Code.From_Image_To_File("sortieQRcode.bmp");
+                    case 15:
+                        Console.WriteLine("Fonction 15 : Innovation\n");
+                        MyImage ImageIn = image.Innovation();
+                        ImageIn.From_Image_To_File("sortieInnovation.bmp");
                         Console.ReadKey();
-                        break;*/
+                        break;
+                        /*case 15:
+                            string phrase = new string"HELLO WORLD".
+                            Console.WriteLine("Fonction 15 : QR Code\n"+"Phrase : "+phrase);
+                            QRcode QR_Code = new QRcode(phrase);
+                            QR_Code.From_Image_To_File("sortieQRcode.bmp");
+                            Console.ReadKey();
+                            break;*/
                 }
                 Console.WriteLine("Tapez Escape pour refaire une fonction");
                 cki = Console.ReadKey();
@@ -221,10 +229,10 @@ namespace Manon_Aubry_Manon_Goffinet
             //MyImage imageReduire = image.Réduire();
             //imageReduire.From_Image_To_File("sortieRéduit.bmp");
 
-            MyImage imageFlou = image.Flou();
+           /* MyImage imageFlou = image.Flou();
             Console.WriteLine("fin");
             imageFlou.From_Image_To_File("sortie-Flou.bmp");
-            Console.WriteLine("fin");
+            Console.WriteLine("fin");*/
 
             ///////////////////////
             //MyImage imageRepoussage = image.Repoussage();
@@ -240,7 +248,7 @@ namespace Manon_Aubry_Manon_Goffinet
             /* MyImage Histogramme  = image.Histogramme();
              Histogramme.From_Image_To_File("sortieHistogramme1.bmp");*/
 
-            MyImage imageFractaleNOIR = image.FractaleNOIR();
+            /*MyImage imageFractaleNOIR = image.FractaleNOIR();
             Console.WriteLine("fin");
             imageFractaleNOIR.From_Image_To_File("sortie-FractaleNOIR.bmp");
             Console.WriteLine("fin");
